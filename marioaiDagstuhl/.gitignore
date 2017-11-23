@@ -6,3 +6,5 @@ nbdist/
 .nb-gradle/
 src/wox/serial/EncodeBase64.java
 src/competition
+out/
+
