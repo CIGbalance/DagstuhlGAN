@@ -317,14 +317,34 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         }
     }
 
-    public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit) {
+        public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit, String filename) {
         scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, levelLength, timeLimit);
         levelScene = ((LevelScene) scene);
-        String filename = "/media/vv/DATA/svn/DagstuhlGAN/lvlexample.txt";
         LevelParser parser = new LevelParser();
         ch.idsia.mario.engine.level.Level level = parser.createLevelASCII(filename);
         //ch.idsia.mario.engine.level.Level level = parser.test();
         scene.init(level);
+        
+        /**
+         * From Jacob Schrum
+         *
+         * To output a useful text representation of whatever level
+         * is generated, uncomment the code below and add the appropriate
+         * import statements.
+         */
+//      try {
+//          levelScene.level.saveText(new PrintStream(new FileOutputStream("TestLevel.txt")));
+//      } catch (IOException e) {
+//          // TODO Auto-generated catch block
+//          e.printStackTrace();
+//      }
+
+    }
+    
+    public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit) {
+        scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, levelLength, timeLimit);
+        levelScene = ((LevelScene) scene);
+        scene.init();
         
         /**
          * From Jacob Schrum

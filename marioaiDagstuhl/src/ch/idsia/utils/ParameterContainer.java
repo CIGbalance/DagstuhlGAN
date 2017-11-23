@@ -48,6 +48,7 @@ public class ParameterContainer
 //            "-levelType",
                     "-ll",
                     "-ls",
+                    "-lf",
                     "-lt",
                     "-m",
                     "-mm",
@@ -147,6 +148,10 @@ public class ParameterContainer
     {
         return String.valueOf(i);
     }
+    
+    public String s2(String s){
+        return s;
+    }
 
     public String s(Agent a)
     {
@@ -189,6 +194,7 @@ public class ParameterContainer
             defaultOptionsHashMap.put("-i","off"); // Invulnerability
             defaultOptionsHashMap.put("-ld","0"); //defaultOptionsHashMap.put("-levelDifficulty","0");
             defaultOptionsHashMap.put("-ll","320"); //defaultOptionsHashMap.put("-levelLength","320");
+            defaultOptionsHashMap.put("-lf","null"); //defaultOptionsHashMap.put("-levelLength","320");
             defaultOptionsHashMap.put("-ls","0"); //defaultOptionsHashMap.put("-levelRandSeed","1");
             defaultOptionsHashMap.put("-lt","0"); //defaultOptionsHashMap.put("-levelType","1");
             defaultOptionsHashMap.put("-maxFPS","off"); //defaultOptionsHashMap.put("-maxFPS","off");

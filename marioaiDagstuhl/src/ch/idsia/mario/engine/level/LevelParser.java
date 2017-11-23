@@ -73,16 +73,23 @@ public class LevelParser {
         int width = lines.get(0).length();
         int height = lines.size();
         int extraStones = 15;
-        Level level = new Level(width+extraStones,height);
+        Level level = new Level(width+2*extraStones,height);
+        
+        
         
         
         //Set Level Exit
         //Extend level by that
-        level.xExit = width;
+        level.xExit = width+extraStones;
         level.yExit = height-1;
         
         for(int i=0; i<extraStones; i++){
-            level.setBlock(width+i, height-1, (byte) 9);
+            level.setBlock(i, height-1, (byte) 9);
+        }
+        
+        
+        for(int i=0; i<extraStones; i++){
+            level.setBlock(width+i+extraStones, height-1, (byte) 9);
         }
 
 
@@ -94,13 +101,13 @@ public class LevelParser {
                 if("E".equals(code)){
                     //set Enemy
                     //new SpriteTemplate(type, boolean winged)
-                    level.setSpriteTemplate(j, i+1, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
+                    level.setSpriteTemplate(j+extraStones, i+1, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
                     //System.out.println("j: "+j+" i:"+i);
                     //set passable tile: everything not set is passable
                 }else{
                     int encoded = codeParserASCII(code);
                     if(encoded !=0){
-                        level.setBlock(j, i+1, (byte) encoded);
+                        level.setBlock(j+extraStones, i+1, (byte) encoded);
                         //System.out.println("j: "+j+" i:"+i+" encoded: "+encoded);
                     }
                 }
