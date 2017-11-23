@@ -34,7 +34,6 @@ public class CMASolver {
 
     }
 
-    @Override
     public void setDim(int n) {
         cma.setDimension(n);
     }
@@ -43,12 +42,10 @@ public class CMASolver {
         cma.setInitialX(x);
     }
 
-    @Override
     public void setObjective(IObjectiveFunction fitFun) {
         this.fitFun = fitFun;
     }
 
-    @Override
     public void setMaxEvals(int n) {
         cma.options.stopMaxFunEvals = n;
     }
