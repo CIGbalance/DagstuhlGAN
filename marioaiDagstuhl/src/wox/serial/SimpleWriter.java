@@ -6,9 +6,6 @@ import org.jdom.Comment;
 import java.lang.reflect.*;
 import java.util.*;
 
-import static com.sun.xml.internal.messaging.saaj.util.Base64.encode;
-import static java.util.Base64.*;
-
 
 // import crjaim.EncodeBase64;
 
@@ -106,7 +103,7 @@ public class SimpleWriter implements ObjectWriter {
 
     //method modified to include base64 encoding
     public String byteArrayString(byte[] a, Element e) {
-        byte[] target = encode(a);
+        byte[] target = Base64.getEncoder().encode(a);
         //set the lenght fro the new encoded array
         e.setAttribute(LENGTH, "" + target.length);
         String strTarget = new String(target);

@@ -1,7 +1,5 @@
 package wox.serial;
 
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.jdom.Element;
 
 import java.lang.reflect.Array;
@@ -198,13 +196,8 @@ public class SimpleReader implements ObjectReader {
         a = strByte.getBytes();
         //System.out.println("a.length after getting the real bytes: " + a.length);
         //decode the source byte[] array
-        byte[] decodedArray = new byte[0];
-        try {
-            decodedArray = Base64.decode(a);
-        } catch (Base64DecodingException e) {
-            e.printStackTrace();
-        }
-
+        // byte[] decodedArray = EncodeBase64.decode(a);
+        byte[] decodedArray = Base64.getDecoder().decode(a);
         //return the real array
         return decodedArray;
     }
