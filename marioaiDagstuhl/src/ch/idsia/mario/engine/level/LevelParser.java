@@ -79,17 +79,15 @@ public class LevelParser {
                     level.setSpriteTemplate(j, i, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
                     //set passable tile: everything not set is passable
                 }else{
-                    if(codeParser(code)!=0){
+                    if(code==0){
+                        
+                    }else if(codeParser(code)!=0){
                         level.setBlock(j, i, (byte) code);
                     }
                 }
             }
         }
-        
-        //set Level data?
-
-        
-        
+                
         
         return level;
     }
@@ -104,6 +102,21 @@ public class LevelParser {
             case 8: output = 26; break; //"[" : ["solid","left pipe","pipe"]
             case 9: output = 27; break; //"]" : ["solid","right pipe","pipe"]
             case 10: output = 34; break; //"o" : ["coin","collectable","passable"]
+            default: output=0; break; //"-" : ["passable","empty"],  "Q" : ["solid","question block", "empty question block"],  "E" : ["enemy","damaging","hazard","moving"],
+        }
+        return output;
+    }
+    
+    public int codeParserASCII(String code){
+        int output = 0;
+        switch(code){
+            case "S": output = 16; break; //"S" : ["solid","breakable"]
+            case "?": output = 21; break; //"?" : ["solid","question block", "full question block"]
+            case "<": output = 10; break; //"<" : ["solid","top-left pipe","pipe"]
+            case ">": output = 11; break; //">" : ["solid","top-right pipe","pipe"]
+            case "[": output = 26; break; //"[" : ["solid","left pipe","pipe"]
+            case "]": output = 27; break; //"]" : ["solid","right pipe","pipe"]
+            case "o": output = 34; break; //"o" : ["coin","collectable","passable"]
             default: output=0; break; //"-" : ["passable","empty"],  "Q" : ["solid","question block", "empty question block"],  "E" : ["enemy","damaging","hazard","moving"],
         }
         return output;
