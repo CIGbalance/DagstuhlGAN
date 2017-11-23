@@ -79,15 +79,16 @@ public class Visualizer {
 		case MARIO: return 'M';	// mario
 
 		case 16: return '$';	// coinbox
-		case 17: return '€';	// coinbox
-		case 18: return '¢';	// coinbox
+		// Removed by Jacob. Char encoding issue
+		//case 17: return 'â‚¬';	// coinbox
+		//case 18: return 'Â¢';	// coinbox
 		case 20: return 'P';	// pipe
 		// (it is now impossible to tell pipe from cannon stand in ZLevel-1)
 		case 21: return '?';	// mystery box
-		case 22: return '§';	// coinbox
+		//case 22: return 'Â§';	// coinbox
 
 		case COIN: return 'C';	// coin
-		case 46: return '¤';	// bullet shooter stand (old-school)
+		//case 46: return 'Â¤';	// bullet shooter stand (old-school)
 
 		// These are ZLevel-2 results
 		case 1: return '#';	// ground
@@ -109,17 +110,17 @@ public class Visualizer {
 		case -122: return '>';	// platform
 		case -123: return '=';	// platform
 		case -124: return '<';	// platform
-		case -76: return '«';	// platform underneath another platform
-		case -74: return '»';	// platform underneath another platform
+		//case -76: return 'Â«';	// platform underneath another platform
+		//case -74: return 'Â»';	// platform underneath another platform
 
-		case -125: return '▟';
-		case -126: return '▜';
-		case -128: return '▛';
-		case -109: return '▙';	// interior ground
+		//case -125: return 'â–Ÿ';
+		//case -126: return 'â–œ';
+		//case -128: return 'â–›';
+		//case -109: return 'â–™';	// interior ground
 
-		case 14: return 'Þ';	// bullet shooter
-		case 30: return '¤';	// bullet shooter stand
-//		case 46: return '¤';	// bullet shooter stand (old-school)
+		//case 14: return 'Ãž';	// bullet shooter
+		//case 30: return 'Â¤';	// bullet shooter stand
+//		case 46: return 'Â¤';	// bullet shooter stand (old-school)
 
 		case 4: return '!';	// punched coinbox
 //		case 16: return '$';	// coinbox or brick
@@ -127,8 +128,8 @@ public class Visualizer {
 
 		case 9: return '@';	// rock
 
-		case 10: return 'Ƥ';	// pipe - top-left corner
-		case 11: return 'Ƥ';	// pipe - top-right corner
+		//case 10: return 'Æ¤';	// pipe - top-left corner
+		//case 11: return 'Æ¤';	// pipe - top-right corner
 		case 26: return 'P';	// pipe
 		case 27: return 'P';	// pipe
 
@@ -144,8 +145,8 @@ public class Visualizer {
 		case MARIO: return 'M';	// mario
 		case ENEMY_GOOMBA: return 'X';	// goomba
 		case ENEMY_FLYING_GOOMBA: return 'x';	// flying goomba
-		case ENEMY_RED_KOOPA: return 'Ӂ';	// red koopa (turtle)
-		case 5: return 'ӂ';	// flying red koopa (turtle)
+		//case ENEMY_RED_KOOPA: return 'Ó�';	// red koopa (turtle)
+		//case 5: return 'Ó‚';	// flying red koopa (turtle)
 		case ENEMY_GREEN_KOOPA: return 'K';	// green koopa (turtle)
 		case 7: return 'k';	// flying green koopa (turtle)
 		case 8: return 'B';	// bullet
@@ -209,17 +210,17 @@ public class Visualizer {
 		case -122: return '>';	// platform
 		case -123: return '=';	// platform
 		case -124: return '<';	// platform
-		case -76: return '«';	// platform underneath another platform
-		case -74: return '»';	// platform underneath another platform
+		//case -76: return 'Â«';	// platform underneath another platform
+		//case -74: return 'Â»';	// platform underneath another platform
 
-		case -125: return '▟';
-		case -126: return '▜';
-		case -128: return '▛';
-		case -109: return '▙';	// interior ground
+		//case -125: return 'â–Ÿ';
+		//case -126: return 'â–œ';
+		//case -128: return 'â–›';
+		//case -109: return 'â–™';	// interior ground
 
 
 		// New-style scenery reporting (Aug. 13, 2009)
-		case -10: return '▒';	// Unknown type of solid ground
+		//case -10: return 'â–’';	// Unknown type of solid ground
 		case -11: return '=';	// Unknown type of platform
 		case -12: return '@';	// rock
 	
@@ -231,8 +232,8 @@ public class Visualizer {
 		case MARIO: return 'M';	// mario
 		case 2: return 'X';	// goomba
 		case 3: return 'x';	// flying goomba
-		case 4: return 'Ӂ';	// red koopa (turtle)
-		case 5: return 'ӂ';	// flying red koopa (turtle)
+		//case 4: return 'Ó�';	// red koopa (turtle)
+		//case 5: return 'Ó‚';	// flying red koopa (turtle)
 		case 6: return 'K';	// green koopa (turtle)
 		case 7: return 'k';	// flying green koopa (turtle)
 		case ENEMY_BULLET: return 'B';	// (8) bullet
@@ -243,19 +244,19 @@ public class Visualizer {
 
 		case 10: {
 			if (decodeEnemies(enemies) == 's') return 's';	// flying spiny
-			return 'Ƥ';	// pipe
+			return ' '; //'Æ¤';	// pipe
 		}
-		case 11: return 'Ƥ';	// pipe
+		case 11: return ' '; //'Æ¤';	// pipe
 
 		case 12: {
 			if (decodeEnemies(enemies) == 'Q') return 'Q';	// pirahna plant
 			return '$';	// coin box
 		}
 		case 13: return 'D';	// shell
-		case 14: return 'Þ';	// bullet shooter
+		//case 14: return 'Ãž';	// bullet shooter
 
 		case 16: return '@';	// brick
-		case 17: return '█';	// brick
+		//case 17: return 'â–ˆ';	// brick
 		case 18: return '$';	// brick
 		
 		case 20: return 'c';	// popup coin from a brick ?
@@ -268,7 +269,7 @@ public class Visualizer {
 		case 27: return 'P';	// pipe
 		case 30: return 'b';	// bullet
 		case COIN: return 'C';	// coin
-		case 46: return 'ß';	// bullet
+		//case 46: return 'ÃŸ';	// bullet
 		default: System.out.print(Byte.toString(b));
 		return '?';
 		}
@@ -369,14 +370,14 @@ public class Visualizer {
 		}
 
 		public String toString() {
-			if ((nSpeedX > 0) && (nSpeedY > 0)) return "↗";
-			if ((nSpeedX > 0) && (nSpeedY < 0)) return "↘";
-			if ((nSpeedX < 0) && (nSpeedY < 0)) return "↙";
-			if ((nSpeedX < 0) && (nSpeedY > 0)) return "↖";
-			if ((nSpeedX > 0) && (nSpeedY == 0)) return "→";
-			if ((nSpeedX < 0) && (nSpeedY == 0)) return "←";
-			if ((nSpeedX == 0) && (nSpeedY > 0)) return "↑";
-			if ((nSpeedX == 0) && (nSpeedY < 0)) return "↓";
+			if ((nSpeedX > 0) && (nSpeedY > 0)) return "â†—";
+			if ((nSpeedX > 0) && (nSpeedY < 0)) return "â†˜";
+			if ((nSpeedX < 0) && (nSpeedY < 0)) return "â†™";
+			if ((nSpeedX < 0) && (nSpeedY > 0)) return "â†–";
+			if ((nSpeedX > 0) && (nSpeedY == 0)) return "â†’";
+			if ((nSpeedX < 0) && (nSpeedY == 0)) return "â†�";
+			if ((nSpeedX == 0) && (nSpeedY > 0)) return "â†‘";
+			if ((nSpeedX == 0) && (nSpeedY < 0)) return "â†“";
 			return "*";
 		}
 	}
