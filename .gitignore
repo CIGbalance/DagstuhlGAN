@@ -15,7 +15,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -99,3 +98,13 @@ ENV/
 
 # mypy
 .mypy_cache/
+.DS_Stor
+/bin/
+
+
+out
+.idea/libraries/jdom.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+marioaiDagstuhl/marioaiDagstuhl.iml

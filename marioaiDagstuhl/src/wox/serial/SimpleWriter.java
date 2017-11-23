@@ -103,7 +103,7 @@ public class SimpleWriter implements ObjectWriter {
 
     //method modified to include base64 encoding
     public String byteArrayString(byte[] a, Element e) {
-        byte[] target = EncodeBase64.encode(a);
+        byte[] target = Base64.getEncoder().encode(a);
         //set the lenght fro the new encoded array
         e.setAttribute(LENGTH, "" + target.length);
         String strTarget = new String(target);

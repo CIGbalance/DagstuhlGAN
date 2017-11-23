@@ -93,6 +93,13 @@ public class SimulationOptions extends ParameterContainer
 
     public void setLevelLength(int levelLength) {
         setParameterValue("-ll", s(levelLength));    }
+    
+    //LevelFile
+    public int getLevelFile() {
+        return i(getParameterValue("-lf"));      }
+
+    public void setLevelFile(String levelFile) {
+        setParameterValue("-lf", s(levelFile));    }
 
     //LevelRandSeed
     public int getLevelRandSeed() {

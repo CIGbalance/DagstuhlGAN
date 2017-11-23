@@ -5,10 +5,7 @@ import org.jdom.Element;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.StringTokenizer;
-import java.util.List;
-import java.util.Iterator;
-import java.util.HashMap;
+import java.util.*;
 
 // import crjaim.EncodeBase64;
 
@@ -199,7 +196,8 @@ public class SimpleReader implements ObjectReader {
         a = strByte.getBytes();
         //System.out.println("a.length after getting the real bytes: " + a.length);
         //decode the source byte[] array
-        byte[] decodedArray = EncodeBase64.decode(a);
+        // byte[] decodedArray = EncodeBase64.decode(a);
+        byte[] decodedArray = Base64.getDecoder().decode(a);
         //return the real array
         return decodedArray;
     }
