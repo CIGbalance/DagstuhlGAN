@@ -31,7 +31,10 @@ public class Node {
             System.out.println(ERROR_MSG + "No type has been set.");
             this.accessible = false;
         } else {
-            switch ()
+            switch (type) {
+                case 10:
+                    accessible = true;
+            }
         }
         return this.accessible;
     }
