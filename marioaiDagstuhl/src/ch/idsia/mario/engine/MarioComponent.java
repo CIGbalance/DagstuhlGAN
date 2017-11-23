@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import reader.JsonReader;
 
 
 public class MarioComponent extends JComponent implements Runnable, /*KeyListener,*/ FocusListener, Environment {
@@ -317,11 +318,13 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         }
     }
 
-        public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit, String filename) {
+        public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit, String filename, int index) {
         scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, levelLength, timeLimit);
         levelScene = ((LevelScene) scene);
+        JsonReader reader = new JsonReader(filename);
+        List<List<Integer>> input = reader.getLevel(index);
         LevelParser parser = new LevelParser();
-        ch.idsia.mario.engine.level.Level level = parser.createLevelASCII(filename);
+        ch.idsia.mario.engine.level.Level level = parser.createLevelJson(input);
         //ch.idsia.mario.engine.level.Level level = parser.test();
         scene.init(level);
         

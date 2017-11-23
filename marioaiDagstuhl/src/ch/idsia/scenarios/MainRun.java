@@ -24,6 +24,8 @@ import competition.cig.spencerschumann.SpencerSchumann_SlideRule;
 import competition.cig.andysloane.AndySloane_BestFirstAgent;
 import competition.cig.alexandrupaler.PalerAgent;
 import competition.cig.peterlawford.PeterLawford_SlowAgent;
+import java.util.List;
+import reader.JsonReader;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,6 +39,7 @@ public class MainRun
 {
     final static int numberOfTrials = 1;
     final static boolean scoring = true;
+    final static boolean quick = true;
     private static int killsSum = 0;
     private static int marioStatusSum = 0;
     private static int timeLeftSum = 0;
@@ -45,11 +48,13 @@ public class MainRun
 
     public static void main(String[] args) {
         CmdLineOptions cmdLineOptions = new CmdLineOptions(args);
+        cmdLineOptions.setLevelFile("/media/vv/DATA/svn/DagstuhlGAN/sample_381.json");
+        cmdLineOptions.setTimeLimit(10);
         EvaluationOptions evaluationOptions = cmdLineOptions;  // if none options mentioned, all defalults are used.
         createAgentsPool();
 
         if (scoring)
-            scoreAllAgents(cmdLineOptions);
+            scoreAllAgents(cmdLineOptions, quick);
         else
         {
             Evaluator evaluator = new Evaluator(evaluationOptions);
@@ -100,16 +105,32 @@ public class MainRun
         }
     }
 
-    public static void scoreAllAgents(CmdLineOptions cmdLineOptions)
+    public static void scoreAllAgents(CmdLineOptions cmdLineOptions, boolean quick)
     {
         int startingSeed = cmdLineOptions.getLevelRandSeed();
-        for (Agent agent : AgentsPool.getAgentsCollection())
-            score(agent, startingSeed, cmdLineOptions);
+        for (Agent agent : AgentsPool.getAgentsCollection()){
+            if(quick){
+                quickScore(agent, cmdLineOptions);
+            }else{
+                score(agent, startingSeed, cmdLineOptions);
+            }
+        }
 
 //        startingSeed = 0;
 //        for (Agent agent : AgentsPool.getAgentsCollection())
 //            score(agent, startingSeed, cmdLineOptions);
 
+    }
+    
+    public static void quickScore(Agent agent, CmdLineOptions cmdLineOptions){
+        TimingAgent controller = new TimingAgent (agent);
+        EvaluationOptions options = cmdLineOptions;
+        options.setNumberOfTrials(1);
+        System.out.println("\nScoring controller " + agent.getName());
+
+        double competitionScore = 0;
+        competitionScore += testConfig(controller, options);
+        System.out.println("score: " + competitionScore);
     }
 
 
@@ -172,6 +193,24 @@ public class MainRun
     }
 
 
+    public static double testConfig(TimingAgent controller, EvaluationOptions options){
+        double distanceCovered = 0;
+        options.setNumberOfTrials(numberOfTrials);
+        options.resetCurrentTrial();
+        JsonReader reader = new JsonReader(options.getLevelFile());
+        for(int counter=0; counter<reader.getNumber(); counter++){
+            options.setLevelIndex(counter);
+            for (int i = 0; i < numberOfTrials; i++) {
+                controller.reset();
+                options.setAgent(controller);
+                Evaluator evaluator = new Evaluator (options);
+                EvaluationInfo result = evaluator.evaluate().get(0);
+                distanceCovered+= result.computeDistancePassed();
+            }
+        }
+        return distanceCovered;
+    }
+    
     public static double testConfig (TimingAgent controller, EvaluationOptions options, int seed, int levelDifficulty, boolean paused) {
         options.setLevelDifficulty(levelDifficulty);
         options.setPauseWorld(paused);

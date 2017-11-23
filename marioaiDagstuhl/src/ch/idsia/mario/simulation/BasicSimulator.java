@@ -52,7 +52,7 @@ public class BasicSimulator implements Simulation
         } else {
         marioComponent.startLevel(simulationOptions.getLevelRandSeed(), simulationOptions.getLevelDifficulty()
                      , simulationOptions.getLevelType(), simulationOptions.getLevelLength(),
-                      simulationOptions.getTimeLimit(), simulationOptions.getLevelFile());
+                      simulationOptions.getTimeLimit(), simulationOptions.getLevelFile(), simulationOptions.getLevelIndex());
         }
         marioComponent.setPaused(simulationOptions.isPauseWorld());
         marioComponent.setZLevelEnemies(simulationOptions.getZLevelEnemies());
