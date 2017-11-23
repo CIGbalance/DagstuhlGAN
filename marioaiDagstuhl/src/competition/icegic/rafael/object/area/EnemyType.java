@@ -1,0 +1,6 @@
+package competition.icegic.rafael.object.area;
+
+public enum EnemyType
+{
+	TORTOISE_RED, TORTOISE_RED_FLY, TORTOISE_GREEN, TORTOISE_GREEN_FLY, MUSHROOM_BAD, MUSHROOM_BAD_FLY, BARK, BARK_FLY, PLANT_CARNIVORE, MISSILE;
+}
