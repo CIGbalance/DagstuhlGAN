@@ -3,6 +3,7 @@ package ch.idsia.mario.engine;
 import ch.idsia.ai.agents.Agent;
 import ch.idsia.ai.agents.ai.RandomAgent;
 import ch.idsia.ai.agents.human.CheaterKeyboardAgent;
+import ch.idsia.mario.engine.level.LevelParser;
 import ch.idsia.mario.engine.sprites.Mario;
 import ch.idsia.mario.environments.Environment;
 import ch.idsia.tools.EvaluationInfo;
@@ -135,7 +136,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         long tm = System.currentTimeMillis();
         long tick = tm;
         int marioStatus = Mario.STATUS_RUNNING;
-        this.levelScene.mario.setMode(Mario.MODE.MODE_FIRE);
+        this.levelScene.mario.setMode(Mario.MODE.MODE_SMALL);
 
         int totalActionsPerfomed = 0;
 // TODO: Manage better place for this:
@@ -319,7 +320,11 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
     public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit) {
         scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, levelLength, timeLimit);
         levelScene = ((LevelScene) scene);
-        scene.init();
+        String filename = "/media/vv/DATA/svn/DagstuhlGAN/lvlexample.txt";
+        LevelParser parser = new LevelParser();
+        ch.idsia.mario.engine.level.Level level = parser.createLevelASCII(filename);
+        //ch.idsia.mario.engine.level.Level level = parser.test();
+        scene.init(level);
         
         /**
          * From Jacob Schrum

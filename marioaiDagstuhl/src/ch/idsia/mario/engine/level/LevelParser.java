@@ -41,6 +41,19 @@ public class LevelParser {
     10   "o" : ["coin","collectable","passable"]
     */
     
+    public Level test(){
+        Level level = new Level(202,14);
+        level.setBlock(1, 13, (byte) 9);
+        level.setBlock(2, 13, (byte) 9);
+        level.setBlock(3, 13, (byte) 9);
+        level.setBlock(4, 13, (byte) 9);
+        level.setBlock(5, 13, (byte) 9);
+        level.setBlock(6, 13, (byte) 9);
+        level.setBlock(7, 13, (byte) 9);
+        
+        return level;
+    }
+    
      public Level createLevelASCII(String filename)
     {
         //Read in level representation
@@ -59,28 +72,36 @@ public class LevelParser {
         }
         int width = lines.get(0).length();
         int height = lines.size();
-        Level level = new Level(width,height);
+        int extraStones = 15;
+        Level level = new Level(width+extraStones,height);
         
         
         //Set Level Exit
         //Extend level by that
-        level.xExit = width + 8;
-        level.yExit = height - 1 - 4;
+        level.xExit = width;
+        level.yExit = height-1;
         
+        for(int i=0; i<extraStones; i++){
+            level.setBlock(width+i, height-1, (byte) 9);
+        }
+
+
         
         //set Level map
         for(int i=0; i<height; i++){
-            for(int j=0; j<width; j++){
+            for(int j=0; j<lines.get(i).length(); j++){
                 String code = String.valueOf(lines.get(i).charAt(j));
-                if(code=="E"){
+                if("E".equals(code)){
                     //set Enemy
                     //new SpriteTemplate(type, boolean winged)
-                    level.setSpriteTemplate(j, i, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
+                    level.setSpriteTemplate(j, i+1, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
+                    //System.out.println("j: "+j+" i:"+i);
                     //set passable tile: everything not set is passable
                 }else{
                     int encoded = codeParserASCII(code);
                     if(encoded !=0){
-                        level.setBlock(j, i, (byte) encoded);
+                        level.setBlock(j, i+1, (byte) encoded);
+                        //System.out.println("j: "+j+" i:"+i+" encoded: "+encoded);
                     }
                 }
             }
@@ -110,6 +131,7 @@ public class LevelParser {
     public int codeParserASCII(String code){
         int output = 0;
         switch(code){
+            case "X": output = 9; break; //rocks
             case "S": output = 16; break; //"S" : ["solid","breakable"]
             case "?": output = 21; break; //"?" : ["solid","question block", "full question block"]
             case "<": output = 10; break; //"<" : ["solid","top-left pipe","pipe"]

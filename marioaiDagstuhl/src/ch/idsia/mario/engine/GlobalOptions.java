@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class GlobalOptions {
-    public static boolean Labels = true;
+    public static boolean Labels = false;
     public static boolean MarioAlwaysInCenter = false;
     public static Integer FPS = 24;
     public static int InfiniteFPS = 100;

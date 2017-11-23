@@ -1,5 +1,6 @@
 package ch.idsia.mario.engine;
 
+import ch.idsia.mario.engine.level.Level;
 import java.awt.Graphics;
 
 

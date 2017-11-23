@@ -15,7 +15,7 @@ public class LevelRenderer
     private Level level;
 
     private Random random = new Random();
-    public boolean renderBehaviors = true;
+    public boolean renderBehaviors = false;
 
     int width;
     int height;
