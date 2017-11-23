@@ -79,7 +79,9 @@ public class LevelParser {
                     level.setSpriteTemplate(j, i, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
                     //set passable tile: everything not set is passable
                 }else{
-                    level.setBlock(j, i, codeToByte(code));
+                    if(codeParser(code)!=0){
+                        level.setBlock(j, i, (byte) code);
+                    }
                 }
             }
         }
@@ -92,8 +94,18 @@ public class LevelParser {
         return level;
     }
      
-    public byte codeToByte(int code){
-        byte b = 0;
-        return b;
+    public int codeParser(int code){
+        int output = 0;
+        switch(code){
+            case 1: output = 16; break; //"S" : ["solid","breakable"]
+            case 3: output = 21; break; //"?" : ["solid","question block", "full question block"]
+            case 6: output = 10; break; //"<" : ["solid","top-left pipe","pipe"]
+            case 7: output = 11; break; //">" : ["solid","top-right pipe","pipe"]
+            case 8: output = 26; break; //"[" : ["solid","left pipe","pipe"]
+            case 9: output = 27; break; //"]" : ["solid","right pipe","pipe"]
+            case 10: output = 34; break; //"o" : ["coin","collectable","passable"]
+            default: output=0; break; //"-" : ["passable","empty"],  "Q" : ["solid","question block", "empty question block"],  "E" : ["enemy","damaging","hazard","moving"],
+        }
+        return output;
     }
 }
