@@ -7,10 +7,7 @@ import org.jdom.Element;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.StringTokenizer;
-import java.util.List;
-import java.util.Iterator;
-import java.util.HashMap;
+import java.util.*;
 
 // import crjaim.EncodeBase64;
 
@@ -207,6 +204,7 @@ public class SimpleReader implements ObjectReader {
         } catch (Base64DecodingException e) {
             e.printStackTrace();
         }
+
         //return the real array
         return decodedArray;
     }
