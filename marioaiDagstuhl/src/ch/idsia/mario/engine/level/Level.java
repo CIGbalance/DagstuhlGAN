@@ -169,7 +169,40 @@ public class Level implements Cloneable
             dos.write(data[i]);
         }
     }
+    
+    /**
+     * Added by Jacob Schrum
+     *
+     * Used to extract a more human understandable representation 
+     * of the level by printing out int values for each byte in the
+     * map description. Compare with the save method above.
+     */
+    public void saveText(PrintStream dos) throws IOException
+    {
+        dos.println("Header:" + Level.FILE_HEADER);
+        dos.println("Seperator:" + 0);
 
+        dos.println("Width:"+ width);
+        dos.println("Height:" +  height);
+
+        dos.println("Map:");
+    	for(int j = 0; j < height; j++) {
+    		for (int i = 0; i < width; i++)
+    		{
+        		dos.printf("%4d,",map[i][j]);
+        	}
+            dos.println();
+        }
+        dos.println("Data:");
+        for(int j = 0; j < height; j++) {
+        	for (int i = 0; i < width; i++)
+        	{
+        		dos.printf("%4d,",data[i][j]);
+        	}
+            dos.println();
+        }
+    }    
+    
     public void tick()
     {
         for (int x = 0; x < width; x++)
