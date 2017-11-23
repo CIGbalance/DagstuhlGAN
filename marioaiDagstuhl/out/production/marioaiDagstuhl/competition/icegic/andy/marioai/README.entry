@@ -1,0 +1,98 @@
+programming.reddit.com team's Mario AI Competition entry
+========================================================
+
+This is a relatively simple best-first-search agent primarily written by
+Andy Sloane <andy@a1k0n.net>, with testing, tool support, and visualization
+help from Caleb Anderson <caleb@l0ser.net> and Peter Burns
+<peter@metaweb.com>.
+
+This archive unpacks this README and
+marioai/src/com/reddit/programming/mario/*.java.
+
+To build: 
+unzip marioai.zip; unzip marioai_a1k0n.zip; cd marioai; ant
+
+To run:
+cd classes; java ch.idsia.scenarios.Play com.reddit.programming.mario.BestFirstAgent
+
+The competition score results I get on seed 0 are:
+Scoring controller ch.idsia.ai.agents.ai.TimingAgent@a18aa2 with starting
+seed 0
+Difficulty 0 score 4325.5874 (avg time 6.0379)
+Difficulty 3 score 4303.2063 (avg time 9.6070)
+Difficulty 5 score 4330.7710 (avg time 9.4616)
+Difficulty 10 score 4326.2982 (avg time 16.7745)
+Competition score: 17285.862939453124
+
+
+Needless to say, it passes all of the seed 0-9 levels.  The arbitrariness
+of scoring after completing a level (i.e. the score is level length +
+forward velocity at the moment Mario crosses the line) is still a concern
+of ours, though it certainly cannot complete *all* levels and a tiebreaker
+is sure to happen.
+
+
+How does it work?
+=================
+
+In short, it directly searches state space for the optimal action.  It has
+its own copy of the "rules" of the game of Mario: which actions cause which
+responses, and how enemies react to everything, etc.  Mario is a completely
+deterministic game, so it isn't very hard to predict and thus I didn't even
+consider a full-fledged learning algorithm, except perhaps as a heuristic
+to guide the search.
+
+So it does an A* search with the heuristic cost of "number of time steps
+necessary to reach the right side of screen".  MarioMath.java has a number
+of closed-form solutions to the recurrences in Mario movements (Mario's
+velocity is exponentially damped, reaching an asymptote of
+1.2*0.89/(1-0.89) = 9.70909...).  The "steps to run x units" function is
+solved using the secant method.
+
+The physics simulation is totally independent of the game's physics
+simulation, and is written in a mixture of functional and imperitave styles
+which attempt to maximize sharing of state between different search
+iterations.
+
+The forward prediction of enemies from their initial positions isn't
+perfect, and Mario sometimes misses a stomp by a pixel or two and then gets
+hurt; he also falls down holes once in a while due to a somewhat
+poorly-directed, incomplete search, but is able to walljump out once in a
+while.  In fact, it doesn't simulate fireballs nor koopa shells whatsoever,
+and doesn't understand carrying either.
+
+The A* heuristic, and A* in general, have a number of shortcomings for this
+application.  Primarily, if a course of action is likely to lead to falling
+down a hole, it will waste its entire search time on the exponentially
+large tree of possibilities to the right side of the hole, rather than
+backing up all the way to the root and moving to the left side of the hole,
+*then* leaping from there.
+
+I have a rudimentary system in place for propagating penalties upwards in
+the tree, but it doesn't really solve the problem.  For the Sept 3rd
+deadline, I am working on solving this problem by reformulating the search
+in terms of Bellman's equation.
+
+
+Parameters
+==========
+
+In BestFirstAgent.java there are a few parameters at the top that control the
+search breadth and depth.  For the contest submission I have set maxSteps
+to 5500, which is sufficient to complete the scoring with the timings
+above on a MacBook Pro.  It is only very loosely "realtime" at this
+setting; the average frame is far less than 40ms, but some difficult frames
+take much longer.  Since the realtime constraints were specified as average
+frames, I have taken the liberty to jack this value up.
+
+For actually watching its behavior, I recommend turning maxSteps down to
+500 or so.
+
+maxBreadth is the number of nodes kept when periodically pruning the
+priority queue of search nodes.
+
+Peter wrote a branch of code which launches a search thread on each CPU and
+abandons the search after 40ms, but given the rules, we deemed it
+unnecessary; it also has significant overhead.  For the next phase we will
+probably use this approach.
+
