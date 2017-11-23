@@ -602,7 +602,8 @@ public class LevelScene extends Scene implements SpriteContext, Cloneable
             ret.add("~level or mario is not available");
         return ret;
     }
-
+    
+    
     public void init()
     {
         try
@@ -622,6 +623,56 @@ public class LevelScene extends Scene implements SpriteContext, Cloneable
          {*/
 //        level = LevelGenerator.createLevel(320, 15, levelSeed);
         level = LevelGenerator.createLevel(levelLength, 15, levelSeed, levelDifficulty, levelType);
+        
+        //        }
+
+        /*        if (recorder != null)
+         {
+         recorder.addLong(LevelGenerator.lastSeed);
+         }*/
+
+
+        paused = false;
+        //Sprite.spriteContext = this;
+        sprites.clear();
+        layer = new LevelRenderer(level, graphicsConfiguration, 320, 240);
+        for (int i = 0; i < 2; i++)
+        {
+            int scrollSpeed = 4 >> i;
+            int w = ((level.width * 16) - 320) / scrollSpeed + 320;
+            int h = ((level.height * 16) - 240) / scrollSpeed + 240;
+            Level bgLevel = BgLevelGenerator.createLevel(w / 32 + 1, h / 32 + 1, i == 0, levelType);
+            bgLayer[i] = new BgRenderer(bgLevel, graphicsConfiguration, 320, 240, scrollSpeed);
+        }
+        mario = new Mario(this);
+        sprites.add(mario);
+        startTime = 1;
+
+        timeLeft = totalTime*15;
+
+        tick = 0;
+    }
+    
+      public void init(Level level)
+    {
+        try
+        {
+            Level.loadBehaviors(new DataInputStream(LevelScene.class.getResourceAsStream("resources/tiles.dat")));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            System.exit(0);
+        }
+        /*        if (replayer!=null)
+         {
+         level = LevelGenerator.createLevel(2048, 15, replayer.nextLong());
+         }
+         else
+         {*/
+//        level = LevelGenerator.createLevel(320, 15, levelSeed);
+        this.level = level;
+        
         //        }
 
         /*        if (recorder != null)

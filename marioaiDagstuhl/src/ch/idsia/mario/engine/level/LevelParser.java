@@ -22,9 +22,8 @@ public class LevelParser {
      *
      * @param args
      */
-    public static void main(String[] args){
-        Level createdLevel;
-        createdLevel = createLevel("/media/vv/DATA/svn/DagstuhlGAN/lvlexample.txt");
+    public LevelParser(){
+        
     }
     
     
@@ -42,7 +41,7 @@ public class LevelParser {
     10   "o" : ["coin","collectable","passable"]
     */
     
-     public Level createLevel(String filename)
+     public Level createLevelASCII(String filename)
     {
         //Read in level representation
         ArrayList<String> lines = new ArrayList<String>();
@@ -72,29 +71,30 @@ public class LevelParser {
         //set Level map
         for(int i=0; i<height; i++){
             for(int j=0; j<width; j++){
-                int code = (int) lines.get(i).charAt(j);
-                if(code==5){
+                String code = String.valueOf(lines.get(i).charAt(j));
+                if(code=="E"){
                     //set Enemy
                     //new SpriteTemplate(type, boolean winged)
                     level.setSpriteTemplate(j, i, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
                     //set passable tile: everything not set is passable
                 }else{
-                    if(code==0){
-                        
-                    }else if(codeParser(code)!=0){
-                        level.setBlock(j, i, (byte) code);
+                    int encoded = codeParserASCII(code);
+                    if(encoded !=0){
+                        level.setBlock(j, i, (byte) encoded);
                     }
                 }
             }
         }
                 
-        
         return level;
     }
+    
+    
      
     public int codeParser(int code){
         int output = 0;
         switch(code){
+            case 0: output = 9; break; //rocks
             case 1: output = 16; break; //"S" : ["solid","breakable"]
             case 3: output = 21; break; //"?" : ["solid","question block", "full question block"]
             case 6: output = 10; break; //"<" : ["solid","top-left pipe","pipe"]
@@ -121,4 +121,5 @@ public class LevelParser {
         }
         return output;
     }
+
 }
