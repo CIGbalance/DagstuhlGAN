@@ -42,8 +42,8 @@ public class Map {
             while ((line = reader.readLine()) != null) {
                 int j=0;
                 for (String token : line.split("")) {
-                    int nextInt = Integer.parseInt(token);
-                    grid[j][i] = new Node(j,i,nextInt==1);
+                    int type = Integer.parseInt(token);
+                    grid[j][i] = new Node(j,i, type);
                     System.out.println(DEBUG_MSG
                             + "(" + j + "," + i + ") is "
                             + grid[j][i].isAccessible());

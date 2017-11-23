@@ -104,3 +104,8 @@ ENV/
 
 
 out
+.idea/libraries/jdom.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+marioaiDagstuhl/marioaiDagstuhl.iml

@@ -1,24 +1,39 @@
 package basicMap;
 
+import static basicMap.Variables.ERROR_MSG;
+
 public class Node {
     private int xPos;
     private int yPos;
     private boolean accessible;
+    private int type = -1;
 
     private Node ancestor;
     private int costToGoal;
     private int costFromStart;
 
-    public Node(int xPos, int yPos) {
+    public Node(int xPos, int yPos, int type) {
         this.xPos = xPos;
         this.yPos = yPos;
+        this.type = type;
         this.accessible = true;
     }
 
-    public Node(int xPos, int yPos, boolean accessible) {
+    public Node(int xPos, int yPos, int type, boolean accessible) {
         this.xPos = xPos;
         this.yPos = yPos;
+        this.type = type;
         this.accessible = accessible;
+    }
+
+    public boolean checkAccessible() {
+        if (type == -1) {
+            System.out.println(ERROR_MSG + "No type has been set.");
+            this.accessible = false;
+        } else {
+            switch ()
+        }
+        return this.accessible;
     }
 
     public void setCostToGoal(int costToGoal) {
@@ -77,5 +92,13 @@ public class Node {
 
     public double getHeuristic(Node goal) {
         return Math.max(Math.abs(xPos - goal.xPos), Math.abs(yPos - goal.yPos));
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }
