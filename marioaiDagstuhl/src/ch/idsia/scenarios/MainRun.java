@@ -46,6 +46,8 @@ public class MainRun
     private static int marioModeSum = 0;
     private static boolean detailedStats = true;
 
+
+
     public static void main(String[] args) {
         CmdLineOptions cmdLineOptions = new CmdLineOptions(args);
         //cmdLineOptions.setLevelFile("/media/vv/DATA/svn/DagstuhlGAN/sample_381.json");
