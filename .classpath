@@ -3,5 +3,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="marioaiDagstuhl/src"/>
 	<classpathentry kind="lib" path="marioaiDagstuhl/lib/jdom.jar"/>
+	<classpathentry kind="lib" path="marioaiDagstuhl/lib/gson-2.2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
