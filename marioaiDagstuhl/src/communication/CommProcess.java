@@ -13,6 +13,14 @@ public class CommProcess {
     private PrintStream out;
     private static int THRESHOLD = 60000;
 
+    public static void main(String[] args) {
+
+        CommProcess commProcess = new CommProcess();
+
+
+
+    }
+
     private String processCommRecv(){
         String ret = null;
         if (in.hasNextLine()) {
