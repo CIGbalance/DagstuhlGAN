@@ -18,4 +18,4 @@ if __name__ == '__main__':
 	for line in sys.stdin.readlines():
 		zs = numpy.array(json.loads(line))
 		levels = model.predict(zs).argmin(-1)
-		print(json.dumps(level.tolist()))
+		print(json.dumps(levels.tolist()))
