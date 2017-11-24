@@ -54,77 +54,75 @@ public class LevelParser {
         
         return level;
     }
-    
-     public Level createLevelASCII(String filename)
+
+    public Level createLevelASCII(String filename)
     {
-        //Read in level representation
-        ArrayList<String> lines = new ArrayList<String>();
-        try {
-            File file = new File(filename);
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                    lines.add(line);
-            }
-            fileReader.close();
-        } catch (IOException e) {
-                    e.printStackTrace();
-        }
-        
-        
-        int width = lines.get(0).length();
-        int height = lines.size();
-        int extraStones = 15;
-        Level level = new Level(width+2*extraStones,height);
-        
-        //Set Level Exit
-        //Extend level by that
-        level.xExit = width+extraStones;
-        level.yExit = height-1;
-        
-        for(int i=0; i<extraStones; i++){
-            level.setBlock(i, height-1, (byte) 9);
-        }
-        
-        
-        for(int i=0; i<extraStones; i++){
-            level.setBlock(width+i+extraStones, height-1, (byte) 9);
-        }
+    	//Read in level representation
+    	ArrayList<String> lines = new ArrayList<String>();
+    	try {
+    		File file = new File(filename);
+    		FileReader fileReader = new FileReader(file);
+    		BufferedReader bufferedReader = new BufferedReader(fileReader);
+    		String line;
+    		while ((line = bufferedReader.readLine()) != null) {
+    			lines.add(line);
+    		}
+    		fileReader.close();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
 
+    	int width = lines.get(0).length();
+    	int height = lines.size();
+    	// For a buffer at both the start and the end of each level
+    	int extraStones = 15;
+    	Level level = new Level(width+2*extraStones,height);
 
-        
-        //set Level map
-        for(int i=0; i<height; i++){
-            for(int j=0; j<lines.get(i).length(); j++){
-                String code = String.valueOf(lines.get(i).charAt(j));
-                if("E".equals(code)){
-                    //set Enemy
-                    //new SpriteTemplate(type, boolean winged)
-                    level.setSpriteTemplate(j+extraStones, i+1, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
-                    //System.out.println("j: "+j+" i:"+i);
-                    //set passable tile: everything not set is passable
-                }else{
-                    int encoded = codeParserASCII(code);
-                    if(encoded !=0){
-                        level.setBlock(j+extraStones, i+1, (byte) encoded);
-                        //System.out.println("j: "+j+" i:"+i+" encoded: "+encoded);
-                    }
-                }
-            }
-        }
-                
-        return level;
+    	//Set Level Exit
+    	//Extend level by that
+    	level.xExit = width+extraStones;
+    	level.yExit = height-1;
+
+    	for(int i=0; i<extraStones; i++){
+    		level.setBlock(i, height-1, (byte) 9);
+    	}
+
+    	for(int i=0; i<extraStones; i++){
+    		level.setBlock(width+i+extraStones, height-1, (byte) 9);
+    	}
+
+    	//set Level map
+    	for(int i=0; i<height; i++){
+    		for(int j=0; j<lines.get(i).length(); j++){
+    			String code = String.valueOf(lines.get(i).charAt(j));
+    			if("E".equals(code)){
+    				//set Enemy
+    				//new SpriteTemplate(type, boolean winged)
+    				// TODO: QUESTION: Change this i+1 to i?
+    				level.setSpriteTemplate(j+extraStones, i+1, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
+    				//System.out.println("j: "+j+" i:"+i);
+    				//set passable tile: everything not set is passable
+    			}else{
+    				int encoded = codeParserASCII(code);
+    				if(encoded !=0){
+        				// TODO: QUESTION: Change this i+1 to i?
+    					level.setBlock(j+extraStones, i+1, (byte) encoded);
+    					//System.out.println("j: "+j+" i:"+i+" encoded: "+encoded);
+    				}
+    			}
+    		}
+    	}
+    	return level;
     }
-    
-     
+
+
     public Level createLevelJson(List<List<Integer>> input)
     {
-        int width = input.get(0).size();
-        int height = input.size();
-        int extraStones = 15;
-        Level level = new Level(width+2*extraStones,height);
-        
+    	int width = input.get(0).size();
+    	int height = input.size();
+    	int extraStones = 15;
+    	Level level = new Level(width+2*extraStones,height);
+
         //Set Level Exit
         //Extend level by that
         level.xExit = width+extraStones;
