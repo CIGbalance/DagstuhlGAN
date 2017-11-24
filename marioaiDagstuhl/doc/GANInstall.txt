@@ -1,0 +1,12 @@
+Installing GAN Package
+
+
+1. Install homebrew
+2. Use brew to install python3 (“brew install python3”)
+3. pip3 install jupyter
+4. pip3 install keras
+5. pip3 install matplotlib
+6. pip3 install tensorflow
+7. pip3 install h5py
+
+
