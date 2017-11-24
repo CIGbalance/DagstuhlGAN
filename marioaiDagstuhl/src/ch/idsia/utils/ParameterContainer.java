@@ -49,6 +49,7 @@ public class ParameterContainer
                     "-ll",
                     "-ls",
                     "-lf",
+                    "-li",
                     "-lt",
                     "-m",
                     "-mm",
@@ -195,6 +196,7 @@ public class ParameterContainer
             defaultOptionsHashMap.put("-ld","0"); //defaultOptionsHashMap.put("-levelDifficulty","0");
             defaultOptionsHashMap.put("-ll","320"); //defaultOptionsHashMap.put("-levelLength","320");
             defaultOptionsHashMap.put("-lf","null"); //defaultOptionsHashMap.put("-levelLength","320");
+            defaultOptionsHashMap.put("-li","0"); //defaultOptionsHashMap.put("-levelLength","320");
             defaultOptionsHashMap.put("-ls","0"); //defaultOptionsHashMap.put("-levelRandSeed","1");
             defaultOptionsHashMap.put("-lt","0"); //defaultOptionsHashMap.put("-levelType","1");
             defaultOptionsHashMap.put("-maxFPS","off"); //defaultOptionsHashMap.put("-maxFPS","off");

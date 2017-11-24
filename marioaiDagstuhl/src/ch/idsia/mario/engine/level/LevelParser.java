@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -70,13 +71,12 @@ public class LevelParser {
         } catch (IOException e) {
                     e.printStackTrace();
         }
+        
+        
         int width = lines.get(0).length();
         int height = lines.size();
         int extraStones = 15;
         Level level = new Level(width+2*extraStones,height);
-        
-        
-        
         
         //Set Level Exit
         //Extend level by that
@@ -108,6 +108,49 @@ public class LevelParser {
                     int encoded = codeParserASCII(code);
                     if(encoded !=0){
                         level.setBlock(j+extraStones, i+1, (byte) encoded);
+                        //System.out.println("j: "+j+" i:"+i+" encoded: "+encoded);
+                    }
+                }
+            }
+        }
+                
+        return level;
+    }
+    
+     
+    public Level createLevelJson(List<List<Integer>> input)
+    {
+        int width = input.get(0).size();
+        int height = input.size();
+        int extraStones = 15;
+        Level level = new Level(width+2*extraStones,height);
+        
+        //Set Level Exit
+        //Extend level by that
+        level.xExit = width+extraStones;
+        level.yExit = height-1;
+        
+        for(int i=0; i<extraStones; i++){
+            level.setBlock(i, height-1, (byte) 9);
+        }
+        for(int i=0; i<extraStones; i++){
+            level.setBlock(width+i+extraStones, height-1, (byte) 9);
+        }
+        
+        //set Level map
+        for(int i=0; i<height; i++){
+            for(int j=0; j<width; j++){
+                int code = input.get(i).get(j);
+                if(5==code){
+                    //set Enemy
+                    //new SpriteTemplate(type, boolean winged)
+                    level.setSpriteTemplate(j+extraStones, i, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
+                    //System.out.println("j: "+j+" i:"+i);
+                    //set passable tile: everything not set is passable
+                }else{
+                    int encoded = codeParser(code);
+                    if(encoded !=0){
+                        level.setBlock(j+extraStones, i, (byte) encoded);
                         //System.out.println("j: "+j+" i:"+i+" encoded: "+encoded);
                     }
                 }

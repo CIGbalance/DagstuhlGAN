@@ -36,6 +36,7 @@ public class SimulationOptions extends ParameterContainer
         ret.setLevelRandSeed(getLevelRandSeed());
         ret.setLevelType(getLevelType());
         ret.setLevelFile(getLevelFile());
+        ret.setLevelIndex(getLevelIndex());
 //        ret.setMarioComponent(marioComponent);
         ret.setVisualization(isVisualization());
         ret.setPauseWorld(isPauseWorld());
@@ -80,7 +81,13 @@ public class SimulationOptions extends ParameterContainer
     public void setLevelType(int levelType) {
         setParameterValue("-lt", s(levelType));    }
 
+    // Level Index
+    public int getLevelIndex() {
+        return i(getParameterValue("-li"));                           }
 
+    public void setLevelIndex(int levelIndex) {
+        setParameterValue("-li", s(levelIndex));    }
+    
     // LevelDifficulty
     public int getLevelDifficulty() {
         return i(getParameterValue("-ld"));                           }
