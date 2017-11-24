@@ -1,0 +1,51 @@
+    public static final int BIT_BLOCK_UPPER = cyan
+    public static final int BIT_BLOCK_ALL = red
+    public static final int BIT_BLOCK_LOWER = orange
+    public static final int BIT_SPECIAL = pink
+    public static final int BIT_BUMPABLE = blue => "?" question blocks
+    public static final int BIT_BREAKABLE = green => "S" breakable blocks
+    public static final int BIT_PICKUPABLE = yellow => "c" Coin
+    public static final int BIT_ANIMATED = white
+
+
+cannon:			14 + 0 * 16
+cannon +1:		14 + 1 * 16
+cannon else:		14 + 2 * 16
+
+block outside:		1  + 9 * 16
+block inside: 		9  + 0 * 16
+
+tube top left:		10 + 0 * 16
+tube top right:		11 + 0 * 16
+tube bottom left:	10 + 1 * 16
+tube bottom right:	11 + 1 * 16
+
+
+
+    "tiles" : {
+        "X" : ["solid","ground"],  top grass: -127, left grass: -112, without grass: -111, left top corner: -128, right bottom corner = -125, right top corner: = -126
+        "S" : ["solid","breakable"], 16
+        "-" : ["passable","empty"],
+        "?" : ["solid","question block", "full question block"], 21
+        "Q" : ["solid","question block", "empty question block"], 
+        "E" : ["enemy","damaging","hazard","moving"],
+        "<" : ["solid","top-left pipe","pipe"],
+        ">" : ["solid","top-right pipe","pipe"],
+        "[" : ["solid","left pipe","pipe"],
+        "]" : ["solid","right pipe","pipe"],
+"o" : ["coin","collectable","passable"] 34
+
+passable corner top left: -124, top right: -122, top: -123, left: -108, center: -107, right: -106
+
+stone: 9
+
+pipe: 
+left body: 26
+right body : 27
+top left : 10
+top right: 11
+
+body bullet bill: 46
+hinge : 30
+cannon : 14
+

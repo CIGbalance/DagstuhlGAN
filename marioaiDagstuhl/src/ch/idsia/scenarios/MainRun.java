@@ -48,7 +48,7 @@ public class MainRun
 
     public static void main(String[] args) {
         CmdLineOptions cmdLineOptions = new CmdLineOptions(args);
-        cmdLineOptions.setLevelFile("/media/vv/DATA/svn/DagstuhlGAN/sample_381.json");
+        //cmdLineOptions.setLevelFile("/media/vv/DATA/svn/DagstuhlGAN/sample_381.json");
         cmdLineOptions.setTimeLimit(10);
         EvaluationOptions evaluationOptions = cmdLineOptions;  // if none options mentioned, all defalults are used.
         createAgentsPool();
@@ -81,7 +81,8 @@ public class MainRun
             // They can be accessed by just setting the commandline property -ag to the name of desired agent.
             calledBefore = true;
             //addAgentToThePool
-            AgentsPool.addAgent(new ForwardAgent());
+            //AgentsPool.addAgent(new ForwardAgent());
+            AgentsPool.addAgent(new AStarAgent());
 //            AgentsPool.addAgent(new ForwardJumpingAgent());
             //ice-gic:
          //   AgentsPool.addAgent(new ScaredAgent());
@@ -199,6 +200,7 @@ public class MainRun
         options.resetCurrentTrial();
         JsonReader reader = new JsonReader(options.getLevelFile());
         for(int counter=0; counter<reader.getNumber(); counter++){
+        //for(int counter=0; counter<5; counter++){
             options.setLevelIndex(counter);
             for (int i = 0; i < numberOfTrials; i++) {
                 controller.reset();
