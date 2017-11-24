@@ -25,7 +25,7 @@ public class JsonReader {
     int current;
     
     public JsonReader(String filename){
-        json = JsonToInt(filename);
+        json = JsonToIntFromFile(filename);
         current = 0;
     }
     

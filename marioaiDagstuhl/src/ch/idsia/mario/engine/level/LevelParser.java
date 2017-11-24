@@ -168,6 +168,7 @@ public class LevelParser {
             case 0: output = 9; break; //rocks
             case 1: output = 16; break; //"S" : ["solid","breakable"]
             case 3: output = 21; break; //"?" : ["solid","question block", "full question block"]
+            case 4: output = 21; break; //"?" : ["solid","question block", "full question block"]
             case 6: output = 10; break; //"<" : ["solid","top-left pipe","pipe"]
             case 7: output = 11; break; //">" : ["solid","top-right pipe","pipe"]
             case 8: output = 26; break; //"[" : ["solid","left pipe","pipe"]
@@ -184,6 +185,7 @@ public class LevelParser {
             case "X": output = 9; break; //rocks
             case "S": output = 16; break; //"S" : ["solid","breakable"]
             case "?": output = 21; break; //"?" : ["solid","question block", "full question block"]
+            case "Q": output = 21; break; //"?" : ["solid","question block", "full question block"]
             case "<": output = 10; break; //"<" : ["solid","top-left pipe","pipe"]
             case ">": output = 11; break; //">" : ["solid","top-right pipe","pipe"]
             case "[": output = 26; break; //"[" : ["solid","left pipe","pipe"]
