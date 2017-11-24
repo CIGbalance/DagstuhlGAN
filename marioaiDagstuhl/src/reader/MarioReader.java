@@ -9,10 +9,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+
+import static basicMap.Settings.printErrorMsg;
+import static basicMap.Settings.printWarnMsg;
 
 public class MarioReader {
 
@@ -35,12 +35,15 @@ public class MarioReader {
     static int targetWidth = 28;
 
     public static void main(String[] args) throws Exception {
-
+        String dir = System.getProperty("user.dir");
+        System.out.println("Working Directory = " +
+                dir);
+        dir += "/marioaiDagstuhl/";
         // String inputFile = "data/mario/example.txt";
 
-        String inputDirectory = "data/mario/levels/";
+        String inputDirectory = dir + "data/mario/levels/";
 
-        String outputFile = "data/mario/example.json";
+        String outputFile = dir + "data/mario/example.json";
 
         // need to iterate over all the files in a directory
 
@@ -77,6 +80,27 @@ public class MarioReader {
         writer.close();
 
         System.out.println("Wrote file with " + examples.size() + " examples");
+
+
+        System.out.println("======== test 1 ===============");
+        Random rdm = new Random();
+
+        int[][] input1 = new int[5][10];
+        for (int i=0;i<input1.length;i++) {
+            for (int j=0;j<input1[0].length;j++) {
+                input1[i][j] = rdm.nextInt();
+            }
+        }
+        System.out.println(arrayToString(input1));
+
+        System.out.println("======== test 1 ===============");
+        int[][] input2 = new int[5][1];
+        for (int i=0;i<input2.length;i++) {
+            for (int j=0;j<input2[0].length;j++) {
+                input2[i][j] = rdm.nextInt();
+            }
+        }
+        System.out.println(arrayToString(input2));
 
     }
 
@@ -127,6 +151,56 @@ public class MarioReader {
         }
 
         return a;
+    }
+
+    static String arrayToString(int[][] inputArray) {
+        String outputStr = "";
+
+        // Null array
+        if (inputArray == null) {
+            printWarnMsg("arrayToString: null argument passed.");
+            return outputStr;
+        }
+
+        // Empty array
+        int nbRows = inputArray.length;
+        if (nbRows==0 ) {
+            printWarnMsg("arrayToString: input array is empty.");
+            outputStr += "[]";
+            return outputStr;
+        }
+        // Empty array
+        int nbCols = inputArray[0].length;
+        if (nbCols==0) {
+            printWarnMsg("arrayToString: input array is empty.");
+            outputStr += "[";
+            outputStr += "[]";
+            for (int i=1; i<nbRows; i++) { // TODO: 24/11/2017 will this happen?
+                outputStr += ", []";
+            }
+            outputStr += "]";
+            return outputStr;
+        }
+
+        // Non-empty array case
+        outputStr += "[";   // matrix starter
+        int i=0;
+        outputStr += "[";   // row starter
+        outputStr += inputArray[i][0];
+        for (int j = 1; j < nbCols - 1; j++) { // column
+            outputStr += "," + inputArray[i][j];
+        }
+        outputStr += "]";
+        for (i=1; i<nbRows-1; i++) { // loop rows
+            outputStr += ", [";   // row starter
+            outputStr += inputArray[i][0];
+            for (int j = 1; j < nbCols - 1; j++) { // column
+                outputStr += "," + inputArray[i][j];
+            }
+            outputStr += "]";
+        }
+        outputStr += "]";
+        return outputStr;
     }
 
 }

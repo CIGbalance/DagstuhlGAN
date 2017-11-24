@@ -3,7 +3,7 @@ package basicMap;
 import java.io.*;
 import java.util.*;
 
-import static basicMap.Variables.*;
+import static basicMap.Settings.*;
 
 public class Map {
     public int width;
@@ -71,15 +71,15 @@ public class Map {
     // Check if coordinate format correct
     public boolean isLegalCoordinate(int xPos, int yPos) {
         if (xPos<0 || yPos<0) {
-            System.out.println(Variables.WARN_MSG + "Position (" + xPos + "," + yPos + ") not accessible.");
+            System.out.println(Settings.WARN_MSG + "Position (" + xPos + "," + yPos + ") not accessible.");
             return false;
         }
         if (xPos > width-1) {
-            System.out.println(Variables.WARN_MSG + "Position (" + xPos + "," + yPos + ") not accessible.");
+            System.out.println(Settings.WARN_MSG + "Position (" + xPos + "," + yPos + ") not accessible.");
             return false;
         }
         if (yPos > height-1) {
-            System.out.println(Variables.WARN_MSG + "Position (" + xPos + "," + yPos + ") not accessible.");
+            System.out.println(Settings.WARN_MSG + "Position (" + xPos + "," + yPos + ") not accessible.");
             return false;
         }
         return true;
@@ -157,19 +157,19 @@ public class Map {
 
     public Node getGoalPos(int idx) {
         if (idx<0) {
-            System.out.println(Variables.ERROR_MSG + " idx is negative." );
+            System.out.println(Settings.ERROR_MSG + " idx is negative." );
             return null;
         }
         if (goalPosSet == null) {
-            System.out.println(Variables.ERROR_MSG + " goalPosSet is null." );
+            System.out.println(Settings.ERROR_MSG + " goalPosSet is null." );
             return null;
         }
         if (goalPosSet.isEmpty()) {
-            System.out.println(Variables.INFO_MSG + " No goal point available." );
+            System.out.println(Settings.INFO_MSG + " No goal point available." );
             return null;
         }
         if (idx>goalPosSet.size()-1) {
-            System.out.println(Variables.ERROR_MSG + " Out of bound: idx > goalPosSet.size()-1." );
+            System.out.println(Settings.ERROR_MSG + " Out of bound: idx > goalPosSet.size()-1." );
             return null;
         }
         return this.goalPosSet.get(idx);
@@ -177,19 +177,19 @@ public class Map {
 
     public Node getStartPos(int idx) {
         if (idx<0) {
-            System.out.println(Variables.ERROR_MSG + " idx is negative." );
+            System.out.println(Settings.ERROR_MSG + " idx is negative." );
             return null;
         }
         if (startPosSet == null) {
-            System.out.println(Variables.ERROR_MSG + " startPosSet is null." );
+            System.out.println(Settings.ERROR_MSG + " startPosSet is null." );
             return null;
         }
         if (startPosSet.isEmpty()) {
-            System.out.println(Variables.INFO_MSG + " No starting point available." );
+            System.out.println(Settings.INFO_MSG + " No starting point available." );
             return null;
         }
         if (idx>startPosSet.size()-1) {
-            System.out.println(Variables.ERROR_MSG + " Out of bound: idx > startPosSet.size()-1." );
+            System.out.println(Settings.ERROR_MSG + " Out of bound: idx > startPosSet.size()-1." );
             return null;
         }
         return this.startPosSet.get(idx);
@@ -378,4 +378,16 @@ public class Map {
         return nbSolution;
     }
 
+    public int calculateCoins() {
+        int nbCoins = 0;
+        for (int i=0; i<width; i++) {
+            for (int j = 0; j < height; j++) {
+                Node node = grid[i][j];
+                if (node.getType() == 10) {
+                    nbCoins++;
+                }
+            }
+        }
+        return nbCoins;
+    }
 }

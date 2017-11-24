@@ -1,6 +1,6 @@
 package basicMap;
 
-import static basicMap.Variables.ERROR_MSG;
+import static basicMap.Settings.ERROR_MSG;
 
 public class Node {
     private int xPos;
@@ -31,9 +31,22 @@ public class Node {
             System.out.println(ERROR_MSG + "No type has been set.");
             this.accessible = false;
         } else {
+//            tiles.put('X', 0);
+//            tiles.put('S', 1);
+//            tiles.put('-', 2);
+//            tiles.put('?', 3);
+//            tiles.put('Q', 4);
+//            tiles.put('E', 5);
+//            tiles.put('<', 6);
+//            tiles.put('>', 7);
+//            tiles.put('[', 8);
+//            tiles.put(']', 9);
+//            tiles.put('o', 10);
             switch (type) {
-                case 10:
-                    accessible = true;
+                case 0:
+                    accessible = false;
+                default:
+                    break;
             }
         }
         return this.accessible;
