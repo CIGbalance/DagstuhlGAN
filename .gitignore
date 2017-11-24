@@ -101,6 +101,7 @@ ENV/
 .DS_Stor
 /bin/
 
+sample_*.*
 
 out
 .idea/libraries/jdom.xml
