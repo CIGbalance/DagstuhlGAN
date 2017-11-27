@@ -3,7 +3,6 @@ package ch.idsia.mario.simulation;
 import ch.idsia.ai.agents.Agent;
 import ch.idsia.mario.engine.GlobalOptions;
 import ch.idsia.mario.engine.MarioComponent;
-import ch.idsia.mario.engine.sprites.Mario;
 import ch.idsia.tools.EvaluationInfo;
 
 /**
@@ -45,14 +44,18 @@ public class BasicSimulator implements Simulation
         prepareMarioComponent();
         marioComponent.setZLevelScene(simulationOptions.getZLevelMap());
         marioComponent.setZLevelEnemies(simulationOptions.getZLevelEnemies());
-        if(simulationOptions.getLevelFile().equals("null")){
-            marioComponent.startLevel(simulationOptions.getLevelRandSeed(), simulationOptions.getLevelDifficulty()
-             , simulationOptions.getLevelType(), simulationOptions.getLevelLength(),
-              simulationOptions.getTimeLimit());
-        } else {
-        marioComponent.startLevel(simulationOptions.getLevelRandSeed(), simulationOptions.getLevelDifficulty()
-                     , simulationOptions.getLevelType(), simulationOptions.getLevelLength(),
-                      simulationOptions.getTimeLimit(), simulationOptions.getLevelFile(), simulationOptions.getLevelIndex());
+        if(simulationOptions.getLevel() != null) { // Added by us: means a Level instance was directly bundled in the simulation options
+        	marioComponent.startLevel(simulationOptions.getLevelRandSeed(), simulationOptions.getLevelDifficulty()
+        			, simulationOptions.getLevelType(), simulationOptions.getLevelLength(),
+        			simulationOptions.getTimeLimit(), simulationOptions.getLevel());
+        } else if(simulationOptions.getLevelFile().equals("null")){ // The original default behavior: Randomly generates a level
+        	marioComponent.startLevel(simulationOptions.getLevelRandSeed(), simulationOptions.getLevelDifficulty()
+        			, simulationOptions.getLevelType(), simulationOptions.getLevelLength(),
+        			simulationOptions.getTimeLimit());
+        } else { // Added by us: A json file containing levels has been included in the simulation options
+        	marioComponent.startLevel(simulationOptions.getLevelRandSeed(), simulationOptions.getLevelDifficulty()
+        			, simulationOptions.getLevelType(), simulationOptions.getLevelLength(),
+        			simulationOptions.getTimeLimit(), simulationOptions.getLevelFile(), simulationOptions.getLevelIndex());
         }
         marioComponent.setPaused(simulationOptions.isPauseWorld());
         marioComponent.setZLevelEnemies(simulationOptions.getZLevelEnemies());

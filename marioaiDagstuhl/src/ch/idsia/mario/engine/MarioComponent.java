@@ -318,7 +318,38 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         }
     }
 
-        public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit, String filename, int index) {
+    /**
+     * Method we added to directly take a Level instance and create it
+     * 
+     * Many of these leftover parameters actually seem to be irrelevant when we directly specify the level
+     * @param seed
+     * @param difficulty
+     * @param type
+     * @param levelLength
+     * @param timeLimit
+     * @param level
+     */
+    public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit, ch.idsia.mario.engine.level.Level level) {
+        scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, levelLength, timeLimit);
+        levelScene = ((LevelScene) scene);
+        scene.init(level);
+    }
+    
+    /**
+     * Method we added to generate a level based on a json file that has been supplied
+     * as a command line parameter
+	 *
+     * Many of these leftover parameters actually seem to be irrelevant when we directly specify the level
+	 *
+     * @param seed
+     * @param difficulty
+     * @param type
+     * @param levelLength
+     * @param timeLimit
+     * @param filename
+     * @param index
+     */
+    public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit, String filename, int index) {
         scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, levelLength, timeLimit);
         levelScene = ((LevelScene) scene);
         JsonReader reader = new JsonReader(filename);
@@ -327,21 +358,6 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         ch.idsia.mario.engine.level.Level level = parser.createLevelJson(input);
         //ch.idsia.mario.engine.level.Level level = parser.test();
         scene.init(level);
-        
-        /**
-         * From Jacob Schrum
-         *
-         * To output a useful text representation of whatever level
-         * is generated, uncomment the code below and add the appropriate
-         * import statements.
-         */
-//      try {
-//          levelScene.level.saveText(new PrintStream(new FileOutputStream("TestLevel.txt")));
-//      } catch (IOException e) {
-//          // TODO Auto-generated catch block
-//          e.printStackTrace();
-//      }
-
     }
     
     public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit) {

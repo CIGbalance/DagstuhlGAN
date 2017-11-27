@@ -2,6 +2,7 @@ package ch.idsia.mario.simulation;
 
 import ch.idsia.ai.agents.Agent;
 import ch.idsia.ai.agents.AgentsPool;
+import ch.idsia.mario.engine.level.Level;
 import ch.idsia.utils.ParameterContainer;
 
 /**
@@ -16,6 +17,7 @@ import ch.idsia.utils.ParameterContainer;
 public class SimulationOptions extends ParameterContainer
 {
     protected Agent agent;
+    protected Level level = null; // default to null
 //    protected MarioComponent marioComponent = null;
 
     public static int currentTrial = 1;
@@ -31,6 +33,7 @@ public class SimulationOptions extends ParameterContainer
     {
         SimulationOptions ret = new SimulationOptions();
         ret.setAgent(getAgent());
+        ret.setLevel(getLevel());
         ret.setLevelDifficulty(getLevelDifficulty());
         ret.setLevelLength(getLevelLength());
         ret.setLevelRandSeed(getLevelRandSeed());
@@ -51,7 +54,16 @@ public class SimulationOptions extends ParameterContainer
         return ret;
     }
 
-    // Agent
+    /**
+     * Get the level if one has been specified.
+     * @return
+     */
+    public Level getLevel() {
+		return level;
+	}
+
+
+	// Agent
     public Agent getAgent()
     {
 //        return a(getParameterValue("-ag"));      }
@@ -63,6 +75,14 @@ public class SimulationOptions extends ParameterContainer
         return agent;
     }
 
+    /**
+     * If level is not null, then this level will be used for evaluation instead of any other
+     * @param level
+     */
+	public void setLevel(Level level) {
+		this.level = level;	
+	}
+    
     public void setAgent(Agent agent) {
 //        setParameterValue("-ag", s(agent));
         this.agent = agent;
