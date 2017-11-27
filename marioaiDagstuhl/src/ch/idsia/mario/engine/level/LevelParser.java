@@ -80,7 +80,7 @@ public class LevelParser {
 
     	//Set Level Exit
     	//Extend level by that
-    	level.xExit = width+extraStones;
+    	level.xExit = width+extraStones+1;
     	level.yExit = height-1;
 
     	for(int i=0; i<extraStones; i++){
