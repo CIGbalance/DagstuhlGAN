@@ -55,6 +55,12 @@ public class LevelParser {
         return level;
     }
 
+    /**
+     * This method doesn't seem to be used anywhere. I guess it was completely
+     * replaced by the createLevelJson method?
+     * @param filename
+     * @return
+     */
     public Level createLevelASCII(String filename)
     {
     	//Read in level representation
@@ -98,15 +104,13 @@ public class LevelParser {
     			if("E".equals(code)){
     				//set Enemy
     				//new SpriteTemplate(type, boolean winged)
-    				// TODO: QUESTION: Change this i+1 to i?
-    				level.setSpriteTemplate(j+extraStones, i+1, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
+    				level.setSpriteTemplate(j+extraStones, i, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
     				//System.out.println("j: "+j+" i:"+i);
     				//set passable tile: everything not set is passable
     			}else{
     				int encoded = codeParserASCII(code);
     				if(encoded !=0){
-        				// TODO: QUESTION: Change this i+1 to i?
-    					level.setBlock(j+extraStones, i+1, (byte) encoded);
+    					level.setBlock(j+extraStones, i, (byte) encoded);
     					//System.out.println("j: "+j+" i:"+i+" encoded: "+encoded);
     				}
     			}
@@ -125,7 +129,7 @@ public class LevelParser {
 
         //Set Level Exit
         //Extend level by that
-        level.xExit = width+extraStones;
+        level.xExit = width+extraStones+1; // Push exit point over by 1 so that goal post does not overlap with other level sprites
         level.yExit = height-1;
         
         for(int i=0; i<extraStones; i++){
