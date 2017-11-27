@@ -24,7 +24,7 @@ import reader.JsonReader;
  */
 public class GANEvaluator {
     public static void main(String[] args){
-        String filename = "/media/vv/DATA/svn/DagstuhlGAN/sample_381.json";
+        String filename = "sample_381.json";
         JsonReader reader = new JsonReader(filename);
         List<List<Integer>> input = reader.next();
         LevelParser parser = new LevelParser();

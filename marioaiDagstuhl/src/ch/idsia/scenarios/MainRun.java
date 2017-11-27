@@ -50,7 +50,7 @@ public class MainRun
 
     public static void main(String[] args) {
         CmdLineOptions cmdLineOptions = new CmdLineOptions(args);
-        cmdLineOptions.setLevelFile("/media/vv/DATA/svn/DagstuhlGAN/sample_381.json");
+        cmdLineOptions.setLevelFile("sample_381.json");
         cmdLineOptions.setTimeLimit(10);
         EvaluationOptions evaluationOptions = cmdLineOptions;  // if none options mentioned, all defalults are used.
         createAgentsPool();
