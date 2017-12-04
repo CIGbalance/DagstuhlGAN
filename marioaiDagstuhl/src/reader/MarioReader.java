@@ -30,8 +30,12 @@ public class MarioReader {
         tiles.put('[', 8);
         tiles.put(']', 9);
         tiles.put('o', 10);
+        // B and b are not mentioned in the json from VGLC, but represent the cannon and support for launching Bullet Bills
+        tiles.put('B', 11); 
+        tiles.put('b', 12);
     }
 
+    // Is this width value may be too small for the GAN to learn well?
     static int targetWidth = 28;
 
     public static void main(String[] args) throws Exception {
@@ -146,7 +150,15 @@ public class MarioReader {
         for (int y = 0; y < lines.size(); y++) {
             System.out.println("Processing line: " + lines.get(y));
             for (int x = 0; x < width; x++) {
+            	try { // Added error checking to deal with unrecognized tile types
                 a[y][x] = tiles.get(lines.get(y).charAt(x));
+            	} catch(Exception e) {
+            		System.out.println("Problem on ");
+            		System.out.println("\ty = " + y);
+            		System.out.println("\tx = " + x);
+            		System.out.println("\tlines.get(y).charAt(x) = " + lines.get(y).charAt(x));
+            		System.exit(1);
+            	}
             }
         }
 

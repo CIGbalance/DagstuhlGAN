@@ -40,6 +40,11 @@ public class LevelParser {
     8    "[" : ["solid","left pipe","pipe"],
     9    "]" : ["solid","right pipe","pipe"],
     10   "o" : ["coin","collectable","passable"]
+    
+    // These last two were not present in the json description from VDLC, but were present in the data
+    
+    11   "B" : Top of a Bullet Bill cannon, solid
+    12   "b" : Body/support of a Bullet Bill cannon, solid
     */
     
     public Level test(){
@@ -176,6 +181,10 @@ public class LevelParser {
             case 8: output = 26; break; //"[" : ["solid","left pipe","pipe"]
             case 9: output = 27; break; //"]" : ["solid","right pipe","pipe"]
             case 10: output = 34; break; //"o" : ["coin","collectable","passable"]
+            // Bullet Bill cannons not described in VDLC json, but were present in the data
+            case 11: output = 14; break; //"B" : Top of a Bullet Bill cannon, solid
+            // There may be a problem here: VGLC uses "b" to represent what is either sprite 30 or 46 in Infinite Mario
+            case 12: output = 46; break; //"b" : Body/support of a Bullet Bill cannon, solid
             default: output=0; break; //"-" : ["passable","empty"],  "Q" : ["solid","question block", "empty question block"],  "E" : ["enemy","damaging","hazard","moving"],
         }
         return output;
@@ -193,6 +202,10 @@ public class LevelParser {
             case "[": output = 26; break; //"[" : ["solid","left pipe","pipe"]
             case "]": output = 27; break; //"]" : ["solid","right pipe","pipe"]
             case "o": output = 34; break; //"o" : ["coin","collectable","passable"]
+            // Bullet Bill cannons not described in VDLC json, but were present in the data
+            case "B": output = 14; break; //"B" : Top of a Bullet Bill cannon, solid
+            // There may be a problem here: VGLC uses "b" to represent what is either sprite 30 or 46 in Infinite Mario
+            case "b": output = 46; break; //"b" : Body/support of a Bullet Bill cannon, solid
             default: output=0; break; //"-" : ["passable","empty"],  "Q" : ["solid","question block", "empty question block"],  "E" : ["enemy","damaging","hazard","moving"],
         }
         return output;

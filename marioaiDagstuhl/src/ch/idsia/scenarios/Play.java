@@ -1,8 +1,5 @@
 package ch.idsia.scenarios;
 
-import ch.idsia.ai.agents.Agent;
-import ch.idsia.ai.agents.AgentsPool;
-import ch.idsia.ai.agents.human.HumanKeyboardAgent;
 import ch.idsia.ai.tasks.ProgressTask;
 import ch.idsia.ai.tasks.Task;
 import ch.idsia.tools.CmdLineOptions;
@@ -45,6 +42,8 @@ public class Play {
 //        options.setMaxFPS(false);
 //        options.setVisualization(true);
 //        options.setNumberOfTrials(1);
+        options.setLevelFile("sample_381.json");
+        options.setLevelIndex(3);
         options.setLevelRandSeed((int) (Math.random () * Integer.MAX_VALUE));
         options.setLevelDifficulty(3);
         task.setOptions(options);
