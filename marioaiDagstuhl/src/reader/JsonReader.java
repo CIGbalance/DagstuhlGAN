@@ -59,9 +59,11 @@ public class JsonReader {
                 e1.printStackTrace();
             }
 		
-    	String myJSONString="";
-    	for(String s: lines)
-    		myJSONString+=s;
+        StringBuilder jsonStringBuilder = new StringBuilder(); 
+    	for(String s: lines) // Need to use StringBuilder here for efficiency
+    		jsonStringBuilder.append(s);
+    	
+    	String myJSONString=jsonStringBuilder.toString();
     	JsonArray jarray1 = new Gson().fromJson(myJSONString, JsonArray.class);//first array
     
     	List<List<List<Integer>>> myReturnList = new ArrayList();
