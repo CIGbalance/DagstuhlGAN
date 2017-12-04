@@ -2,7 +2,9 @@ package communication;
 
 import basicMap.Settings;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Scanner;
 
@@ -30,7 +32,6 @@ public class CommProcess {
     }
 
     public void executeCmd(String cmdStr) throws IOException {
-        Process client;
         ProcessBuilder builder;
         if (cmdStr == null) {
             printWarnMsg("The input cmd to execute is null.");
@@ -46,12 +47,22 @@ public class CommProcess {
         String[] args = cmdStr.split(CMD_SEPARATOR);
         int nbArgs = args.length;
         // TODO: 24/11/2017 check the length and input format
-        if (nbArgs == 5) {
-            builder = new ProcessBuilder(PY_NAME, args[0], args[1], args[2]);
+        if (nbArgs == 1) {
+            builder = new ProcessBuilder("python", PY_NAME, args[0], "<", "z.jsons" , ">", "levels.jsons");
+            builder.redirectErrorStream(true);
+
+            Process p = builder.start();
+            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            // TODO: 04/12/2017 change the stopping condition 
+            while (true) {
+                line = r.readLine();
+                if (line == null) { break; }
+                System.out.println(line);
+            }
         } else {
-            builder = new ProcessBuilder(PY_NAME, args[0], args[1], args[2]);
+            System.err.println("The input to " + PY_NAME + " is missing.");
         }
-        builder.redirectErrorStream(true);
-        client = builder.start();
-    }
+
+
 }
