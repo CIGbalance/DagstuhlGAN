@@ -42,14 +42,14 @@ public class Play {
 //        options.setMaxFPS(false);
 //        options.setVisualization(true);
 //        options.setNumberOfTrials(1);
-        options.setLevelFile("marioaiDagstuhl/data/mario/examples.json");
+        options.setLevelFile("marioaiDagstuhl/data/mario/largeExamples.json");
         options.setLevelRandSeed((int) (Math.random () * Integer.MAX_VALUE));
         options.setLevelDifficulty(3);
 
         int levelIndex = 0;
         // Goes through all levels in the json file
         while(true) { // This will eventually crash
-	        options.setLevelIndex(levelIndex += 100);
+	        options.setLevelIndex(levelIndex += 500);
 	        task.setOptions(options);
 	        System.out.println ("Score: " + task.evaluate (options.getAgent())[0]);
 	        System.out.println("Simulation/Play finished");       
