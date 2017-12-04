@@ -48,7 +48,7 @@ public class CommProcess {
         int nbArgs = args.length;
         // TODO: 24/11/2017 check the length and input format
         if (nbArgs == 1) {
-            builder = new ProcessBuilder("python", PY_NAME, args[0], "<", "z.jsons" , ">", "levels.jsons");
+            builder = new ProcessBuilder("python", PY_NAME, args[0], "<", "z.jsons", ">", "levels.jsons");
             builder.redirectErrorStream(true);
 
             Process p = builder.start();
@@ -57,12 +57,14 @@ public class CommProcess {
             // TODO: 04/12/2017 change the stopping condition 
             while (true) {
                 line = r.readLine();
-                if (line == null) { break; }
+                if (line == null) {
+                    break;
+                }
                 System.out.println(line);
             }
         } else {
             System.err.println("The input to " + PY_NAME + " is missing.");
         }
 
-
+    }
 }
