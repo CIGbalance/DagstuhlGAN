@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 
 import static basicMap.Settings.PY_NAME;
 import static basicMap.Settings.printErrorMsg;
+import static basicMap.Settings.printInfoMsg;
 import static communication.Commands.START_COMM;
 import static communication.ZCreator.printVectorInGson;
 
@@ -43,7 +44,11 @@ public class MarioEvalFunction implements IObjectiveFunction {
 
         ganProcess.commSend(START_COMM);
 
-        System.out.println("ganProcess Receive" + ganProcess.commRecv());
+        // TODO: 07/12/2017 this is for debugging
+        String response = ganProcess.commRecv();
+        if (response != null) {
+            printInfoMsg("getGsonLevelFromGAN: received " + response);
+        }
     }
 
     static double floor = 0.0;
@@ -60,6 +65,8 @@ public class MarioEvalFunction implements IObjectiveFunction {
         String response = ganProcess.commRecv();
         if (response == null || response == "") {
             printErrorMsg("No level in Gson from GAN.");
+        } else {
+            printInfoMsg("getGsonLevelFromGAN: received " + response);
         }
     }
 

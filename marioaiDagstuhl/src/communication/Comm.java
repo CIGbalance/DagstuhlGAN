@@ -14,8 +14,8 @@ public abstract class Comm extends Thread {
     protected boolean end;
 
     protected String threadName = "thread";
-//    protected BufferedReader reader;
-    protected Scanner reader;
+    protected BufferedReader reader;
+    protected Scanner scanner;
     protected PrintStream writer;
     protected Process process;
 
@@ -90,11 +90,12 @@ public abstract class Comm extends Thread {
 
     private String processCommRecv(){
         String msg = null;
-        if (reader.hasNextLine()) {
-            msg = reader.nextLine();
+        try {
+            msg = reader.readLine();
             if (msg != null) {
                 PrintWriter out = null;
                 try {
+                    // this is for testing
                     out = new PrintWriter("commwriter.txt");
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -102,13 +103,39 @@ public abstract class Comm extends Thread {
                 out.write(this.threadName + " read " + msg);
                 return msg;
             } else {
+                printErrorMsg("processCommRecv:Null message");
                 return null;
             }
-        } else {
-            printErrorMsg("No output from python");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-       return null;
+        printErrorMsg("No output from python");
+        return null;
     }
+
+//    private String processCommRecv(){
+//        String msg = null;
+//        if (scanner.hasNextLine()) {
+//            msg = scanner.nextLine();
+//            if (msg != null) {
+//                PrintWriter out = null;
+//                try {
+//                    // this is for testing
+//                    out = new PrintWriter("commwriter.txt");
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//                out.write(this.threadName + " read " + msg);
+//                return msg;
+//            } else {
+//                printErrorMsg("processCommRecv:Null message");
+//                return null;
+//            }
+//        } else {
+//            printErrorMsg("No output from python");
+//        }
+//       return null;
+//    }
 
     /**
      * This function is called at the beginning of the game for
