@@ -76,9 +76,8 @@ public abstract class Comm extends Thread {
      * @return the response
      */
     public String commRecv() {
-        float timeout = 0;
         String response = null;
-        while (timeout < THRESHOLD && response == null)
+        while (response == null)
         {
             response = processCommRecv();
         }
@@ -93,17 +92,9 @@ public abstract class Comm extends Thread {
         try {
             msg = reader.readLine();
             if (msg != null) {
-                PrintWriter out = null;
-                try {
-                    // this is for testing
-                    out = new PrintWriter("commwriter.txt");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                out.write(this.threadName + " read " + msg);
                 return msg;
             } else {
-                printErrorMsg("processCommRecv:Null message");
+                printErrorMsg("processCommRecv: Null message.");
                 return null;
             }
         } catch (IOException e) {
