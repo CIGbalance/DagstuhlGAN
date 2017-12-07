@@ -11,7 +11,7 @@ public class Settings {
     public static final boolean ACCESSIBLE = true;
 
     public static final String CMD_SEPARATOR = " ";
-    public static final String PY_NAME = "generator.py";
+    public static final String PY_NAME = "/Users/jliu/Documents/GitHub/DagstuhlGAN/marioaiDagstuhl/src/pytorch/Comm.py"; //"game_gan.py";
 
 
 
