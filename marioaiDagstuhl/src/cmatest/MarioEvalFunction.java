@@ -17,6 +17,7 @@ import static basicMap.Settings.printErrorMsg;
 import static basicMap.Settings.printInfoMsg;
 import static communication.Commands.START_COMM;
 import static communication.ZCreator.printVectorInGson;
+import static communication.ZCreator.sampleVectorInGson;
 
 public class MarioEvalFunction implements IObjectiveFunction {
     private GANProcess ganProcess;
@@ -45,17 +46,23 @@ public class MarioEvalFunction implements IObjectiveFunction {
         ganProcess.commSend(START_COMM);
 
         // TODO: 07/12/2017 this is for debugging
-        String response = ganProcess.commRecv();
-        if (response != null) {
-            printInfoMsg("getGsonLevelFromGAN: received " + response);
+        for (int i=0;i<10;i++) {
+            sendZVectorToGan(null);
+            String response = ganProcess.commRecv();
+            if (response != null) {
+                printInfoMsg("getGsonLevelFromGAN: received " + response);
+            }
         }
+
+        // for testing
     }
 
     static double floor = 0.0;
 
     public void sendZVectorToGan(double[][] x) throws IOException {
         // TODO: 07/12/2017 add send v to Gan
-        String gsonVector = printVectorInGson(x);
+//        String gsonVector = printVectorInGson(x);
+        String gsonVector = sampleVectorInGson();
         // send it to GAN
         ganProcess.commSend(gsonVector);
     }
@@ -75,7 +82,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
 
 
         // Interprete x to a level
-        // TODO: 07/12/2017 check  levelFromLatentVector
+        // TODO: 07/12/2017 check levelFromLatentVector
         Level level = MarioLevelObjective.levelFromLatentVector(x);
 
         // Do a simulation

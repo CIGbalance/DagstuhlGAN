@@ -15,7 +15,7 @@ public abstract class Comm extends Thread {
 
     protected String threadName = "thread";
     protected BufferedReader reader;
-    protected Scanner scanner;
+//    protected Scanner scanner;
     protected PrintStream writer;
     protected Process process;
 
@@ -35,7 +35,7 @@ public abstract class Comm extends Thread {
      * @param msg message to send.
      */
     public void commSend(String msg) throws IOException {
-        printInfoMsg("Comm:commSend will send "+ msg + " to GAN");
+        printInfoMsg("[" + this.threadName + "] Comm:commSend will send "+ msg + " to GAN");
         writer.println(msg);
         writer.flush();
     }
@@ -80,6 +80,7 @@ public abstract class Comm extends Thread {
         while (response == null)
         {
             response = processCommRecv();
+            printInfoMsg("[" + this.threadName + "] Received " + response);
         }
         if (response == null){
             System.err.println("SocketComm: commRecv: No message received. Time threshold exceeded.");
@@ -91,7 +92,11 @@ public abstract class Comm extends Thread {
         String msg = null;
         try {
             msg = reader.readLine();
+            System.out.println(msg);
+
             if (msg != null) {
+                System.out.println(msg);
+
                 return msg;
             } else {
                 printErrorMsg("processCommRecv: Null message.");
@@ -99,9 +104,8 @@ public abstract class Comm extends Thread {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        printErrorMsg("No output from python");
-        return null;
     }
 
 //    private String processCommRecv(){

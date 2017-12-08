@@ -42,7 +42,7 @@ public class ZCreator {
      * @param dim
      * @return
      */
-    public double[][] generateGaussianRandomVector(int dim) {
+    public static double[][] generateGaussianRandomVector(int dim) {
         Random random = new Random();
         double[] x = new double[dim];
         for (int i=0; i<dim; i++) {
@@ -57,7 +57,7 @@ public class ZCreator {
      * Write a vector to gson file
      * @param v
      */
-    public void writeVectorToGson(double[][] v, String filename) {
+    public static void writeVectorToGson(double[][] v, String filename) {
         Gson gson = new Gson();
         String out = gson.toJson(v);
         PrintWriter printWriter = null;
@@ -74,14 +74,14 @@ public class ZCreator {
         printWriter.close();
     }
 
-    public void printSampleVectorInGson() {
+    public static void printSampleVectorInGson() {
         double[][] v = generateGaussianRandomVector(16);
         Gson gson = new Gson();
         String out = gson.toJson(v);
         System.out.println(out);
     }
 
-    public String sampleVectorInGson() {
+    public static String sampleVectorInGson() {
         double[][] v = generateGaussianRandomVector(16);
         Gson gson = new Gson();
         String out = gson.toJson(v);

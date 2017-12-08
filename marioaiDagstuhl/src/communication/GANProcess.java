@@ -35,7 +35,7 @@ public class GANProcess extends Comm {
         if (this.process != null) {
             this.reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             //this.writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-            this.scanner = new Scanner(this.process.getInputStream());
+//            this.scanner = new Scanner(this.process.getInputStream());
             this.writer = new PrintStream(this.process.getOutputStream());
         } else {
             printErrorMsg("GANProcess:initBuffers:Null process!");

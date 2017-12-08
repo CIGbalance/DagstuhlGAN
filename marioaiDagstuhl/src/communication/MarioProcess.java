@@ -17,7 +17,7 @@ import java.io.IOException;
 import static basicMap.Settings.PY_NAME;
 
 public class MarioProcess extends Comm {
-    private  EvaluationOptions evaluationOptions;
+    private EvaluationOptions evaluationOptions;
     private Simulation simulator;
 
     public MarioProcess() {
@@ -34,6 +34,7 @@ public class MarioProcess extends Comm {
         evaluationOptions.setAgent(AgentsPool.getCurrentAgent());
         // set simulator
         this.simulator = new BasicSimulator(evaluationOptions.getSimulationOptionsCopy());
+        simulateOneLevel();
     }
 
     public static void createAgentsPool()
@@ -57,6 +58,7 @@ public class MarioProcess extends Comm {
     }
 
     public EvaluationInfo simulateOneLevel() {
+        evaluationOptions.setLevelFile("sample_1.json");
         EvaluationInfo info = this.simulator.simulateOneLevel();
         return info;
     }
