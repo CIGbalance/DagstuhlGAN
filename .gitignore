@@ -109,3 +109,4 @@ out
 .idea/modules.xml
 .idea/workspace.xml
 marioaiDagstuhl/marioaiDagstuhl.iml
+*.dat
