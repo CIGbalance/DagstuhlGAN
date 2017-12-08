@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class CMAMarioSolver {
-    // adapted from CMAExample1 with the main function
-    // becoming the run function
-
+	public static final int Z_SIZE = 16; // length of latent space vector
+	public static final int EVALS = 1000;
+	
     public static void main(String[] args) throws IOException {
         MarioEvalFunction marioEvalFunction = new MarioEvalFunction();
-        CMAMarioSolver solver = new CMAMarioSolver(marioEvalFunction, 10, 1000);
+        CMAMarioSolver solver = new CMAMarioSolver(marioEvalFunction, Z_SIZE, EVALS);
         double[] solution = solver.run();
         System.out.println("Best solution = " + Arrays.toString(solution));
     }

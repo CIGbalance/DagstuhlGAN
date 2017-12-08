@@ -90,7 +90,7 @@ public class ToolsConfigurator extends JFrame
         CreateMarioComponentFrame(new EvaluationOptions());
     }
 
-    static void CreateMarioComponentFrame(EvaluationOptions evaluationOptions)
+    public static void CreateMarioComponentFrame(EvaluationOptions evaluationOptions)
     {
 //        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //        frame.setLocation((screenSize.width-frame.getWidth())/2, (screenSize.height-frame.getHeight())/2);        

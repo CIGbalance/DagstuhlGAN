@@ -10,6 +10,7 @@ import ch.idsia.tools.CmdLineOptions;
 import ch.idsia.tools.EvaluationInfo;
 import ch.idsia.tools.EvaluationOptions;
 import ch.idsia.tools.Evaluator;
+import ch.idsia.tools.ToolsConfigurator;
 import competition.icegic.robin.AStarAgent;
 
 import java.io.IOException;
@@ -27,18 +28,25 @@ public class MarioProcess extends Comm {
 
     public void launchMario() {
         String[] options = new String[] {""};
-        this.evaluationOptions = new CmdLineOptions(options);;  // if none options mentioned, all defalults are used.
-
+        this.evaluationOptions = new CmdLineOptions(options);  // if none options mentioned, all defaults are used.
         // set agents
         createAgentsPool();
+        // TODO: Change this time limit
+        evaluationOptions.setTimeLimit(20);
+        // Create Mario Component
+        ToolsConfigurator.CreateMarioComponentFrame(evaluationOptions);
         evaluationOptions.setAgent(AgentsPool.getCurrentAgent());
+        System.out.println(evaluationOptions.getAgent().getClass().getName());
         // set simulator
         this.simulator = new BasicSimulator(evaluationOptions.getSimulationOptionsCopy());
     }
 
     public static void createAgentsPool()
     {
-        AgentsPool.addAgent(new AStarAgent());
+    	// Jacob: Adding the agent to the pool doesn't seem to be sufficient
+        //AgentsPool.addAgent(new AStarAgent());
+    	// TODO: Simple approach for now
+        AgentsPool.setCurrentAgent(new AStarAgent());
     }
 
     public void setLevel(Level level) {

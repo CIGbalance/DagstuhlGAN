@@ -66,7 +66,7 @@ public class LevelParser {
      * @param filename
      * @return
      */
-    public Level createLevelASCII(String filename)
+    public static Level createLevelASCII(String filename)
     {
     	//Read in level representation
     	ArrayList<String> lines = new ArrayList<String>();
@@ -125,7 +125,7 @@ public class LevelParser {
     }
 
 
-    public Level createLevelJson(List<List<Integer>> input)
+    public static Level createLevelJson(List<List<Integer>> input)
     {
     	int width = input.get(0).size();
     	int height = input.size();
@@ -169,7 +169,7 @@ public class LevelParser {
     
     
      
-    public int codeParser(int code){
+    public static int codeParser(int code){
         int output = 0;
         switch(code){
             case 0: output = 9; break; //rocks
@@ -190,7 +190,7 @@ public class LevelParser {
         return output;
     }
     
-    public int codeParserASCII(String code){
+    public static int codeParserASCII(String code){
         int output = 0;
         switch(code){
             case "X": output = 9; break; //rocks

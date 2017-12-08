@@ -19,9 +19,10 @@ public class GANProcess extends Comm {
      * Launch GAN, this should be called only once
      */
     public void launchGAN() {
-        // TODO: 07/12/2017   to change to the correct line command
-        ProcessBuilder builder = new ProcessBuilder("python", PY_NAME);
-        builder.redirectErrorStream(true);
+        // Jacob: I changed the command
+        ProcessBuilder builder = new ProcessBuilder("python", PY_NAME, GAN_ARCHITECTURE_FILE, GAN_WEIGHTS_FILE);
+        // Jacob: do not redirect all of the TensorFlow setup statements
+        //builder.redirectErrorStream(true);
         try {
             this.process = builder.start();
         } catch (IOException e) {
@@ -35,8 +36,9 @@ public class GANProcess extends Comm {
         if (this.process != null) {
             this.reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             //this.writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-            this.scanner = new Scanner(this.process.getInputStream());
+            //this.scanner = new Scanner(this.process.getInputStream());
             this.writer = new PrintStream(this.process.getOutputStream());
+            System.out.println("Process buffers initialized");
         } else {
             printErrorMsg("GANProcess:initBuffers:Null process!");
         }

@@ -46,19 +46,31 @@ public class JsonReader {
         return json.get(current-1);
     }
     
+    
     public List<List<List<Integer>>> JsonToIntFromFile(String fileLocation)
     {    	
     	//array, array, array int
     	List<String> lines = new ArrayList();
-            try 
-            {
-                lines = Files.readAllLines(Paths.get(fileLocation), Charset.defaultCharset());
-            } 
-            catch (IOException e1) 
-            {
-                e1.printStackTrace();
-            }
-		
+    	try 
+    	{
+    		lines = Files.readAllLines(Paths.get(fileLocation), Charset.defaultCharset());
+    	} 
+    	catch (IOException e1) 
+    	{
+    		e1.printStackTrace();
+    	}
+
+    	return JsonToIntFromFile(lines);
+    }
+    
+    /**
+     * Jacob: Designed entry point into method that does not require a file,
+     * only the contents of a file
+     * @param lines
+     * @return
+     */
+    public static List<List<List<Integer>>> JsonToIntFromFile(List<String> lines)
+    {
         StringBuilder jsonStringBuilder = new StringBuilder(); 
     	for(String s: lines) // Need to use StringBuilder here for efficiency
     		jsonStringBuilder.append(s);

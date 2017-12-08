@@ -15,7 +15,7 @@ public abstract class Comm extends Thread {
 
     protected String threadName = "thread";
     protected BufferedReader reader;
-    protected Scanner scanner;
+    //protected Scanner scanner;
     protected PrintStream writer;
     protected Process process;
 
@@ -76,32 +76,40 @@ public abstract class Comm extends Thread {
      * @return the response
      */
     public String commRecv() {
-        String response = null;
-        while (response == null)
-        {
-            response = processCommRecv();
-        }
-        if (response == null){
-            System.err.println("SocketComm: commRecv: No message received. Time threshold exceeded.");
-        }
-        return response;
+    	String msg = processCommRecv();
+    	return msg;
+    	// Jacob: Don't think any of this below was necessary
+//        String response = null;
+//        while (response == null)
+//        {
+//            response = processCommRecv();
+//        }
+//        if (response == null){
+//            System.err.println("SocketComm: commRecv: No message received. Time threshold exceeded.");
+//        }
+//        return response;
     }
 
     private String processCommRecv(){
-        String msg = null;
-        try {
-            msg = reader.readLine();
-            if (msg != null) {
-                return msg;
-            } else {
-                printErrorMsg("processCommRecv: Null message.");
-                return null;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        printErrorMsg("No output from python");
-        return null;
+    	String msg = null;
+    	//System.out.println("processCommRecv attempt: " + reader.ready() + " " + reader);
+    	//System.out.println("processCommRecv attempt: " + scanner);
+    	try {
+    		msg = reader.readLine();
+    		System.out.println("processCommRecv:"+msg);
+    		//msg = scanner.nextLine();
+    		if (msg != null) {
+    			return msg;
+    		} else {
+    			printErrorMsg("processCommRecv: Null message.");
+    			return null;
+    		}
+    	} catch (IOException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+		printErrorMsg("processCommRecv: exception.");
+		return null;
     }
 
 //    private String processCommRecv(){
@@ -133,31 +141,31 @@ public abstract class Comm extends Thread {
      * initialization.
      * Will give up if no "START_DONE" received after having received 11 responses
      */
-    public boolean startComm() {
-
-        try {
-            commSend(START_COMM);
-            String response = commRecv();
-            if (response==null) {
-                printWarnMsg("Null response. Failed to start the communication.");
-                return false;
-            }
-            if(response.equalsIgnoreCase(START_FAILED)) {
-                printWarnMsg("Failed to start the communication.");
-                return false;
-            }
-            if (response.equalsIgnoreCase(START_SUCCEED)) {
-                printInfoMsg("Successfully start the communication.");
-                return true;
-            }
-            printWarnMsg("Unrecognized response.");
-            return false;
-        } catch (IOException e) {
-            System.out.println("Error:");
-            e.printStackTrace();
-        }
-        return false;
-    }
+//    public boolean startComm() {
+//
+//        try {
+//            commSend(START_COMM);
+//            String response = commRecv();
+//            if (response==null) {
+//                printWarnMsg("Null response. Failed to start the communication.");
+//                return false;
+//            }
+//            if(response.equalsIgnoreCase(START_FAILED)) {
+//                printWarnMsg("Failed to start the communication.");
+//                return false;
+//            }
+//            if (response.equalsIgnoreCase(START_SUCCEED)) {
+//                printInfoMsg("Successfully start the communication.");
+//                return true;
+//            }
+//            printWarnMsg("Unrecognized response.");
+//            return false;
+//        } catch (IOException e) {
+//            System.out.println("Error:");
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 
 
 }
