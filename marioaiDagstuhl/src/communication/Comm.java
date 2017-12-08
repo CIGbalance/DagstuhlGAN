@@ -15,7 +15,6 @@ public abstract class Comm extends Thread {
 
     protected String threadName = "thread";
     protected BufferedReader reader;
-//    protected Scanner scanner;
     protected PrintStream writer;
     protected Process process;
 
@@ -76,91 +75,30 @@ public abstract class Comm extends Thread {
      * @return the response
      */
     public String commRecv() {
-        String response = null;
-        while (response == null)
-        {
-            response = processCommRecv();
-            printInfoMsg("[" + this.threadName + "] Received " + response);
-        }
-        if (response == null){
-            System.err.println("SocketComm: commRecv: No message received. Time threshold exceeded.");
-        }
-        return response;
+    	String msg = processCommRecv();
+    	return msg;
     }
 
     private String processCommRecv(){
-        String msg = null;
-        try {
-            msg = reader.readLine();
-            System.out.println(msg);
-
-            if (msg != null) {
-                System.out.println(msg);
-
-                return msg;
-            } else {
-                printErrorMsg("processCommRecv: Null message.");
-                return null;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-//    private String processCommRecv(){
-//        String msg = null;
-//        if (scanner.hasNextLine()) {
-//            msg = scanner.nextLine();
-//            if (msg != null) {
-//                PrintWriter out = null;
-//                try {
-//                    // this is for testing
-//                    out = new PrintWriter("commwriter.txt");
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//                out.write(this.threadName + " read " + msg);
-//                return msg;
-//            } else {
-//                printErrorMsg("processCommRecv:Null message");
-//                return null;
-//            }
-//        } else {
-//            printErrorMsg("No output from python");
-//        }
-//       return null;
-//    }
-
-    /**
-     * This function is called at the beginning of the game for
-     * initialization.
-     * Will give up if no "START_DONE" received after having received 11 responses
-     */
-    public boolean startComm() {
-
-        try {
-            commSend(START_COMM);
-            String response = commRecv();
-            if (response==null) {
-                printWarnMsg("Null response. Failed to start the communication.");
-                return false;
-            }
-            if(response.equalsIgnoreCase(START_FAILED)) {
-                printWarnMsg("Failed to start the communication.");
-                return false;
-            }
-            if (response.equalsIgnoreCase(START_SUCCEED)) {
-                printInfoMsg("Successfully start the communication.");
-                return true;
-            }
-            printWarnMsg("Unrecognized response.");
-            return false;
-        } catch (IOException e) {
-            System.out.println("Error:");
-            e.printStackTrace();
-        }
-        return false;
+    	String msg = null;
+    	//System.out.println("processCommRecv attempt: " + reader.ready() + " " + reader);
+    	//System.out.println("processCommRecv attempt: " + scanner);
+    	try {
+    		msg = reader.readLine();
+    		System.out.println("processCommRecv:"+msg);
+    		//msg = scanner.nextLine();
+    		if (msg != null) {
+    			return msg;
+    		} else {
+    			printErrorMsg("processCommRecv: Null message.");
+    			return null;
+    		}
+    	} catch (IOException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+		printErrorMsg("processCommRecv: exception.");
+		return null;
     }
 
 

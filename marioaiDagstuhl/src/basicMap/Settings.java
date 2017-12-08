@@ -11,9 +11,10 @@ public class Settings {
     public static final boolean ACCESSIBLE = true;
 
     public static final String CMD_SEPARATOR = " ";
-    public static final String PY_NAME = "/Users/jliu/Documents/GitHub/DagstuhlGAN/marioaiDagstuhl/src/pytorch/Comm.py"; //"game_gan.py";
-
-
+    // Next three lines changed by Jacob Schrum: 2017-12-07
+    public static final String PY_NAME = "generator.py"; //"/Users/jliu/Documents/GitHub/DagstuhlGAN/marioaiDagstuhl/src/pytorch/Comm.py"; //"game_gan.py";
+	public static final String GAN_ARCHITECTURE_FILE = "generator.json";
+	public static final String GAN_WEIGHTS_FILE = "generator.h5";
 
     public static void printWarnMsg(String msg) {
         System.out.println(WARN_MSG + msg);

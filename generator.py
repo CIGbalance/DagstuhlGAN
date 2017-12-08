@@ -14,8 +14,11 @@ if __name__ == '__main__':
 	with open(architecture_filename) as f:
 		model = model_from_json(f.read())
 	model.load_weights(weights_filename, True)
-
-	for line in sys.stdin.readlines():
+	print("READY") # Java loops until it seem this special signal
+	sys.stdout.flush() # Make sure Java can sense this output before Python blocks waiting for input
+	#for line in sys.stdin.readlines(): # Jacob: I changed this to make this work on Windows ... did this break on Mac?
+	for line in sys.stdin:
 		zs = numpy.array(json.loads(line))
 		levels = model.predict(zs).argmin(-1)
 		print(json.dumps(levels.tolist()))
+		sys.stdout.flush() # Make Java sense output before blocking on next input

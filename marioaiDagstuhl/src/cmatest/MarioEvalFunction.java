@@ -1,16 +1,23 @@
 package cmatest;
 
 import ch.idsia.mario.engine.level.Level;
+import ch.idsia.mario.engine.level.LevelParser;
 import ch.idsia.tools.EvaluationInfo;
 import cmatest.marioobjectives.MarioLevelObjective;
 import communication.Comm;
 import communication.GANProcess;
 import communication.MarioProcess;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
+import reader.JsonReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import com.google.gson.Gson;
 
 import static basicMap.Settings.PY_NAME;
 import static basicMap.Settings.printErrorMsg;
@@ -37,24 +44,14 @@ public class MarioEvalFunction implements IObjectiveFunction {
         // set up process for GAN
         ganProcess = new GANProcess();
         ganProcess.start();
-
-
         // set up mario game
         marioProcess = new MarioProcess();
-        marioProcess.start();
-
-        ganProcess.commSend(START_COMM);
-
-        // TODO: 07/12/2017 this is for debugging
-        for (int i=0;i<10;i++) {
-            sendZVectorToGan(null);
-            String response = ganProcess.commRecv();
-            if (response != null) {
-                printInfoMsg("getGsonLevelFromGAN: received " + response);
-            }
-        }
-
-        // for testing
+        marioProcess.start();        
+		// consume all start-up messages that are not data responses
+		String response = "";
+		while(!response.equals("READY")) {
+			response = ganProcess.commRecv();
+		}
     }
 
     static double floor = 0.0;
@@ -67,7 +64,6 @@ public class MarioEvalFunction implements IObjectiveFunction {
         ganProcess.commSend(gsonVector);
     }
 
-
     public void getGsonLevelFromGAN() {
         String response = ganProcess.commRecv();
         if (response == null || response == "") {
@@ -79,19 +75,36 @@ public class MarioEvalFunction implements IObjectiveFunction {
 
     @Override
     public double valueOf(double[] x) {
+        // Interpret x to a level
+    	try {
+    		ganProcess.commSend("[" + Arrays.toString(x) + "]");
+    		String levelString = ganProcess.commRecv(); // Response to command just sent
+//    		System.out.println("----------------------------------");
+//    		System.out.println(levelString); // debugging
+//    		if(levelString.equals("")) System.out.println(ganProcess.commRecv());
+//    		System.out.println("----------------------------------");
+    		// For debugging
+//    		while(response != null) {
+//    			response = ganProcess.commRecv();
+//    		}    		
+    		List<String> input = new ArrayList<String>(1); // Will only contain one level
+    		input.add(levelString); // "File" with only one line
+    		List<List<List<Integer>>> allLevels = JsonReader.JsonToIntFromFile(input);
+    		List<List<Integer>> listForm = allLevels.get(0); // Assumes there is only one level
+            Level level = LevelParser.createLevelJson(listForm);
 
+    		// Do a simulation
+    		EvaluationInfo info = this.marioProcess.simulateOneLevel(level);
+    		// Jacob 2017-12-07: This assumes the fitness is the distance travelled
+    		//                   in the level. May need to generalize
+    		return info.computeDistancePassed();
 
-        // Interprete x to a level
-        // TODO: 07/12/2017 check levelFromLatentVector
-        Level level = MarioLevelObjective.levelFromLatentVector(x);
-
-        // Do a simulation
-        EvaluationInfo info = this.marioProcess.simulateOneLevel(level);
-        // TODO: 07/12/2017 use info to get a scalar fitness
-
-        double tot = floor;
-        for (double a : x) tot += (5+a)*(5+a);
-        return tot;
+		} catch (IOException e) {
+			// Error occurred
+			e.printStackTrace();
+			System.exit(1);
+			return Double.NaN;
+		}
     }
 
     @Override
