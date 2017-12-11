@@ -1,12 +1,11 @@
 package communication;
 
-import java.io.*;
-import java.util.Scanner;
-
 import static basicMap.Settings.printErrorMsg;
 import static basicMap.Settings.printInfoMsg;
-import static basicMap.Settings.printWarnMsg;
-import static communication.Commands.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintStream;
 
 public abstract class Comm extends Thread {
     public static final int THRESHOLD = 60000; // milliseconds
@@ -39,36 +38,6 @@ public abstract class Comm extends Thread {
         writer.flush();
     }
 
-
-    /**
-     * This function is called at the end of the whole process. Closes the communication.
-     */
-    public boolean endComm(){
-        try {
-            commSend(END_COMM);
-            String response = commRecv();
-            if (response == null) {
-                printWarnMsg("Null response. Failed to start the communication.");
-                return false;
-            }
-            if (response.equalsIgnoreCase(END_FAILED)) {
-                printWarnMsg("Failed to end the communication.");
-                return false;
-            }
-            if (response.equalsIgnoreCase(END_SUCCEED)) {
-                printInfoMsg("Successfully end the communication.");
-                return true;
-            }
-            printWarnMsg("Unrecognized response.");
-            return false;
-        } catch(Exception e) {
-            System.out.println("Error:");
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
     /**
      * Receives a message.
      *
@@ -81,12 +50,9 @@ public abstract class Comm extends Thread {
 
     private String processCommRecv(){
     	String msg = null;
-    	//System.out.println("processCommRecv attempt: " + reader.ready() + " " + reader);
-    	//System.out.println("processCommRecv attempt: " + scanner);
     	try {
     		msg = reader.readLine();
     		System.out.println("processCommRecv:"+msg);
-    		//msg = scanner.nextLine();
     		if (msg != null) {
     			return msg;
     		} else {
@@ -100,6 +66,5 @@ public abstract class Comm extends Thread {
 		printErrorMsg("processCommRecv: exception.");
 		return null;
     }
-
 
 }

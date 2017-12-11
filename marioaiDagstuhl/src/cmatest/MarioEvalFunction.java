@@ -1,44 +1,26 @@
 package cmatest;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import ch.idsia.mario.engine.level.Level;
 import ch.idsia.mario.engine.level.LevelParser;
 import ch.idsia.tools.EvaluationInfo;
-import cmatest.marioobjectives.MarioLevelObjective;
-import communication.Comm;
 import communication.GANProcess;
 import communication.MarioProcess;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
 import reader.JsonReader;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import com.google.gson.Gson;
-
-import static basicMap.Settings.PY_NAME;
-import static basicMap.Settings.printErrorMsg;
-import static basicMap.Settings.printInfoMsg;
-import static communication.Commands.START_COMM;
-import static communication.ZCreator.printVectorInGson;
-import static communication.ZCreator.sampleVectorInGson;
-
 public class MarioEvalFunction implements IObjectiveFunction {
     private GANProcess ganProcess;
     private MarioProcess marioProcess;
 
-    public static void main(String[] args) throws IOException {
-        MarioEvalFunction mef = new MarioEvalFunction();
-
-    }
-
     // changing floor will change the reason for termination
     // (in conjunction with the target value)
     // see cma.options.stopFitness
-
+    static double floor = 0.0;
 
     public MarioEvalFunction() throws IOException {
         // set up process for GAN
@@ -54,49 +36,59 @@ public class MarioEvalFunction implements IObjectiveFunction {
 		}
     }
 
-    static double floor = 0.0;
+    // Incomplete, and not necessary. We only need this if
+    // we switch to bulk processing.
+//    public void sendZVectorToGan(double[][] x) throws IOException {
+//        // TODO: 07/12/2017 add send v to Gan
+//        String gsonVector = sampleVectorInGson();
+//        // send it to GAN
+//        ganProcess.commSend(gsonVector);
+//    }
 
-    public void sendZVectorToGan(double[][] x) throws IOException {
-        // TODO: 07/12/2017 add send v to Gan
-//        String gsonVector = printVectorInGson(x);
-        String gsonVector = sampleVectorInGson();
-        // send it to GAN
-        ganProcess.commSend(gsonVector);
-    }
-
-    public void getGsonLevelFromGAN() {
-        String response = ganProcess.commRecv();
-        if (response == null || response == "") {
-            printErrorMsg("No level in Gson from GAN.");
-        } else {
-            printInfoMsg("getGsonLevelFromGAN: received " + response);
-        }
-    }
-
+    /**
+     * Takes a json String representing several levels (or just one)
+     * and returns an array of all of those Mario levels.
+     * @param json Json String representation of multiple Mario levels
+     * @return Array of those levels
+     */
+    // TODO: This method could be used to generate multiple levels from the json
+    //       returned by generator.py, but it currently only makes sense to send
+    //       generator.py one vector at a time because the CMA-ES objective function 
+    //       interface explicitly expects to be able to generate a single fitness 
+    //       value when given a single input vector (valueOf method below). 
+    //       As long as we adhere to that interface
+    //       we won't be able to do bulk processing.
+    public static Level[] marioLevelsFromJson(String json) {
+		List<String> input = new ArrayList<String>(1); // Will only contain one line
+		input.add(json); // "File" with only one line (though there could be multiple levels)
+		List<List<List<Integer>>> allLevels = JsonReader.JsonToIntFromFile(input);
+		Level[] result = new Level[allLevels.size()];
+		int index = 0;
+		for(List<List<Integer>> listRepresentation : allLevels) {
+			result[index++] = LevelParser.createLevelJson(listRepresentation);
+		}
+		return result;
+    }    
+    
+    /**
+     * Gets objective score for single latent vector.
+     */
     @Override
     public double valueOf(double[] x) {
         // Interpret x to a level
     	try {
+    		// Brackets required since generator.py expects of list of multiple levels, though only one is being sent here
     		ganProcess.commSend("[" + Arrays.toString(x) + "]");
     		String levelString = ganProcess.commRecv(); // Response to command just sent
-//    		System.out.println("----------------------------------");
-//    		System.out.println(levelString); // debugging
-//    		if(levelString.equals("")) System.out.println(ganProcess.commRecv());
-//    		System.out.println("----------------------------------");
-    		// For debugging
-//    		while(response != null) {
-//    			response = ganProcess.commRecv();
-//    		}    		
-    		List<String> input = new ArrayList<String>(1); // Will only contain one level
-    		input.add(levelString); // "File" with only one line
-    		List<List<List<Integer>>> allLevels = JsonReader.JsonToIntFromFile(input);
-    		List<List<Integer>> listForm = allLevels.get(0); // Assumes there is only one level
-            Level level = LevelParser.createLevelJson(listForm);
+    		Level[] levels = marioLevelsFromJson(levelString); // Really only one level in this array
+            Level level = levels[0];
 
     		// Do a simulation
     		EvaluationInfo info = this.marioProcess.simulateOneLevel(level);
-    		// Jacob 2017-12-07: This assumes the fitness is the distance travelled
+    		// Jacob 2017-12-07: This assumes the fitness is the distance traveled
     		//                   in the level. May need to generalize
+            // TODO: I think CMA-ES actually expects a minimization problem.
+            //       Either change this fitness or configure CMA-ES for maximization.
     		return info.computeDistancePassed();
 
 		} catch (IOException e) {
@@ -111,7 +103,4 @@ public class MarioEvalFunction implements IObjectiveFunction {
     public boolean isFeasible(double[] x) {
         return true;
     }
-
-
-
 }

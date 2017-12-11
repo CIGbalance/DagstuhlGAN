@@ -1,28 +1,22 @@
 package communication;
 
 import java.io.*;
-import java.util.Scanner;
-
 import static basicMap.Settings.*;
 import static basicMap.Settings.PY_NAME;
 
 public class GANProcess extends Comm {
 
-
     public GANProcess() {
         super();
         this.threadName = "GANThread";
-
     }
 
     /**
      * Launch GAN, this should be called only once
      */
     public void launchGAN() {
-        // Jacob: I changed the command
+        // Run program with model architecture and weights specified as parameters
         ProcessBuilder builder = new ProcessBuilder("python", PY_NAME, GAN_ARCHITECTURE_FILE, GAN_WEIGHTS_FILE);
-        // Jacob: do not redirect all of the TensorFlow setup statements
-        //builder.redirectErrorStream(true);
         try {
             this.process = builder.start();
         } catch (IOException e) {
@@ -30,6 +24,9 @@ public class GANProcess extends Comm {
         }
     }
 
+    /**
+     * Buffers used for communicating with process via stdin and stdout
+     */
     @Override
     public void initBuffers() {
         //Initialize input and output
@@ -43,13 +40,11 @@ public class GANProcess extends Comm {
     }
 
     @Override
-    public void start()
-    {
+    public void start() {
         try {
             launchGAN();
             initBuffers();
             printInfoMsg(this.threadName + " has started");
-
         } catch (Exception e) {
             e.printStackTrace();
         }

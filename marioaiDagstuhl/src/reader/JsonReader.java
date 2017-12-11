@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package reader;
 
 
@@ -46,11 +41,17 @@ public class JsonReader {
         return json.get(current-1);
     }
     
-    
-    public List<List<List<Integer>>> JsonToIntFromFile(String fileLocation)
+    /**
+     * Creates integer list representation of multiple levels from a json
+     * file whose path is designated by the parameter.
+     * @param fileLocation Path to json file
+     * @return List of levels: A level is a list of rows, and each integer
+     *         represents a tile/sprite type.
+     */
+    public static List<List<List<Integer>>> JsonToIntFromFile(String fileLocation)
     {    	
     	//array, array, array int
-    	List<String> lines = new ArrayList();
+    	List<String> lines = new ArrayList<String>();
     	try 
     	{
     		lines = Files.readAllLines(Paths.get(fileLocation), Charset.defaultCharset());
@@ -66,8 +67,9 @@ public class JsonReader {
     /**
      * Jacob: Designed entry point into method that does not require a file,
      * only the contents of a file
-     * @param lines
-     * @return
+     * @param lines Array of the individual lines within the file
+     * @return List of levels: A level is a list of rows, and each integer
+     *         represents a tile/sprite type.
      */
     public static List<List<List<Integer>>> JsonToIntFromFile(List<String> lines)
     {
@@ -78,15 +80,15 @@ public class JsonReader {
     	String myJSONString=jsonStringBuilder.toString();
     	JsonArray jarray1 = new Gson().fromJson(myJSONString, JsonArray.class);//first array
     
-    	List<List<List<Integer>>> myReturnList = new ArrayList();
+    	List<List<List<Integer>>> myReturnList = new ArrayList<List<List<Integer>>>();
     	
     	for(int i = 0; i < jarray1.size();i++)
     	{
-    		List<List<Integer>> myFirstSubList = new ArrayList();
+    		List<List<Integer>> myFirstSubList = new ArrayList<List<Integer>>();
     		JsonArray jarrayi = ((JsonArray)jarray1.get(i));
     		for(int j = 0; j < jarrayi.size();j++)
     		{
-    			List<Integer> mySecondSubList = new ArrayList();
+    			List<Integer> mySecondSubList = new ArrayList<Integer>();
     			JsonArray jarrayj = ((JsonArray)jarrayi.get(j));
     			for(JsonElement je: jarrayj)
     			{
@@ -99,19 +101,20 @@ public class JsonReader {
     	return myReturnList;
     }
     
+    // The method above may unnecessarily duplicate some functionality of this method
     public List<List<List<Integer>>> JsonToInt(String myJSONString)
     {    	
     	JsonArray jarray1 = new Gson().fromJson(myJSONString, JsonArray.class);//first array
     
-    	List<List<List<Integer>>> myReturnList = new ArrayList();
+    	List<List<List<Integer>>> myReturnList = new ArrayList<List<List<Integer>>>();
     	
     	for(int i = 0; i < jarray1.size();i++)
     	{
-    		List<List<Integer>> myFirstSubList = new ArrayList();
+    		List<List<Integer>> myFirstSubList = new ArrayList<List<Integer>>();
     		JsonArray jarrayi = ((JsonArray)jarray1.get(i));
     		for(int j = 0; j < jarrayi.size();j++)
     		{
-    			List<Integer> mySecondSubList = new ArrayList();
+    			List<Integer> mySecondSubList = new ArrayList<Integer>();
     			JsonArray jarrayj = ((JsonArray)jarrayi.get(j));
     			for(JsonElement je: jarrayj)
     			{

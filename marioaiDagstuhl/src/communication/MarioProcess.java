@@ -4,18 +4,11 @@ import ch.idsia.ai.agents.AgentsPool;
 import ch.idsia.mario.engine.level.Level;
 import ch.idsia.mario.simulation.BasicSimulator;
 import ch.idsia.mario.simulation.Simulation;
-import ch.idsia.mario.simulation.SimulationOptions;
-import ch.idsia.scenarios.MainRun;
 import ch.idsia.tools.CmdLineOptions;
 import ch.idsia.tools.EvaluationInfo;
 import ch.idsia.tools.EvaluationOptions;
-import ch.idsia.tools.Evaluator;
 import ch.idsia.tools.ToolsConfigurator;
 import competition.icegic.robin.AStarAgent;
-
-import java.io.IOException;
-
-import static basicMap.Settings.PY_NAME;
 
 public class MarioProcess extends Comm {
     private EvaluationOptions evaluationOptions;
