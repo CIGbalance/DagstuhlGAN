@@ -14,7 +14,7 @@ if __name__ == '__main__':
 	with open(architecture_filename) as f:
 		model = model_from_json(f.read())
 	model.load_weights(weights_filename, True)
-	print("READY") # Java loops until it seem this special signal
+	print("READY") # Java loops until it sees this special signal
 	sys.stdout.flush() # Make sure Java can sense this output before Python blocks waiting for input
 	#for line in sys.stdin.readlines(): # Jacob: I changed this to make this work on Windows ... did this break on Mac?
 	for line in sys.stdin:
