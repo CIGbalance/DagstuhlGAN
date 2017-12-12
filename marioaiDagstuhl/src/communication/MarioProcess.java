@@ -32,7 +32,7 @@ public class MarioProcess extends Comm {
         System.out.println(evaluationOptions.getAgent().getClass().getName());
         // set simulator
         this.simulator = new BasicSimulator(evaluationOptions.getSimulationOptionsCopy());
-        simulateOneLevel();
+        //simulateOneLevel(); // Jacob: don't simulate until GAN provides level
     }
 
     public static void createAgentsPool()
