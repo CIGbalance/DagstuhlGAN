@@ -9,27 +9,37 @@ from torch.autograd import Variable
 import sys
 import json
 import numpy
+import models.dcgan as dcgan
 
-#Fix correct level dimensions
-
-generator = torch.load('mario_gan.pth', map_location=lambda storage, loc: storage)
-
-batchSize = 32 
+batchSize = 64
 nz = 32 #Dimensionality of latent vector
+
+imageSize = 32
+ngf = 64
+ngpu = 1
+n_extra_layers = 0
+generator = dcgan.DCGAN_G(imageSize, nz, 1, ngf, ngpu, n_extra_layers)
+
+generator.load_state_dict(torch.load('netG_epoch_24.pth'))
+
+#generator = torch.load('mario_gan.pth', map_location=lambda storage, loc: storage)
+#generator = torch.load('mario_gan_2.pth', map_location=lambda storage, loc: storage)
+
 
 generate_example = True
 
 #Testing the system to generate an exampel picture
 if generate_example:
-  fixed_noise = torch.FloatTensor(batchSize, nz, 1, 1).normal_(0, 1)
+  for i in range(10):
+    fixed_noise = torch.FloatTensor(batchSize, nz, 1, 1).normal_(0, 1)
 
-  fake = generator(Variable(fixed_noise, volatile=True))
-  fake.data = fake.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
+    fake = generator(Variable(fixed_noise, volatile=True))
+    fake.data = fake.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
 
-  fake.data[fake.data > 0.] = 1.
-  fake.data[fake.data < 0.] = -1.
+    fake.data[fake.data > 0.] = 1.
+    fake.data[fake.data < 0.] = -1.
 
-  vutils.save_image(fake.data, 'fake_samples.png')
+    vutils.save_image(fake.data, 'fake_samples_{0}.png'.format(i))
 
 print("READY") # Java loops until it sees this special signal
 sys.stdout.flush() # Make sure Java can sense this output before Python blocks waiting for input
