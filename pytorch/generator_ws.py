@@ -20,7 +20,8 @@ ngpu = 1
 n_extra_layers = 0
 generator = dcgan.DCGAN_G(imageSize, nz, 1, ngf, ngpu, n_extra_layers)
 
-generator.load_state_dict(torch.load('netG_epoch_24.pth'))
+generator.load_state_dict(torch.load('netG_epoch_24.pth', map_location=lambda storage, loc: storage))
+
 
 #generator = torch.load('mario_gan.pth', map_location=lambda storage, loc: storage)
 #generator = torch.load('mario_gan_2.pth', map_location=lambda storage, loc: storage)
