@@ -6,6 +6,10 @@ import static basicMap.Settings.PY_NAME;
 
 public class GANProcess extends Comm {
 
+	// Use Sebastian's Wasserstein GAN instead of Adam's generic GAN
+	public static final boolean WASSERSTEIN = true;
+	public static final String WASSERSTEIN_PATH = "pytorch" + File.separator + "generator_ws.py";
+	
     public GANProcess() {
         super();
         this.threadName = "GANThread";
@@ -16,7 +20,9 @@ public class GANProcess extends Comm {
      */
     public void launchGAN() {
         // Run program with model architecture and weights specified as parameters
-        ProcessBuilder builder = new ProcessBuilder("python", PY_NAME, GAN_ARCHITECTURE_FILE, GAN_WEIGHTS_FILE);
+        ProcessBuilder builder = WASSERSTEIN ?
+        		new ProcessBuilder("python", WASSERSTEIN_PATH) :
+        		new ProcessBuilder("python", PY_NAME, GAN_ARCHITECTURE_FILE, GAN_WEIGHTS_FILE);
         try {
             this.process = builder.start();
         } catch (IOException e) {
