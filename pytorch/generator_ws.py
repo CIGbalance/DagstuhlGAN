@@ -13,7 +13,7 @@ import models.dcgan as dcgan
 
 import random
 
-batchSize = 64
+batchSize = 1
 nz = 32 #Dimensionality of latent vector
 
 imageSize = 32
@@ -49,7 +49,7 @@ if testing:
     line.append( [ random.uniform(-1.0, 1.0) ]*nz )
 
   #This is the format that we expect from sys.stdin
-  print line 
+  print(line) 
 
   line = json.dumps(line)
   lv = numpy.array(json.loads(line))
@@ -76,6 +76,7 @@ sys.stdout.flush() # Make sure Java can sense this output before Python blocks w
 
 
 for line in sys.stdin:
+  #print(line)
   lv = numpy.array(json.loads(line))
   latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) 
 
