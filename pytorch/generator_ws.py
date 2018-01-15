@@ -13,80 +13,84 @@ import models.dcgan as dcgan
 
 import random
 
-batchSize = 1
-nz = 32 #Dimensionality of latent vector
+if __name__ == '__main__':
+	_, modelToLoad = sys.argv
 
-imageSize = 32
-ngf = 64
-ngpu = 1
-n_extra_layers = 0
-generator = dcgan.DCGAN_G(imageSize, nz, 1, ngf, ngpu, n_extra_layers)
+	batchSize = 1
+	nz = 32 #Dimensionality of latent vector
 
-generator.load_state_dict(torch.load('netG_epoch_24.pth', map_location=lambda storage, loc: storage))
+	imageSize = 32
+	ngf = 64
+	ngpu = 1
+	n_extra_layers = 0
+	generator = dcgan.DCGAN_G(imageSize, nz, 1, ngf, ngpu, n_extra_layers)
 
-
-# generate_example = True
-
-# #Testing the system to generate an exampel picture
-# if generate_example:
-#   for i in range(10):
-#     fixed_noise = torch.FloatTensor(batchSize, nz, 1, 1).normal_(0, 1)
-
-#     fake = generator(Variable(fixed_noise, volatile=True))
-#     fake.data = fake.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
-
-#     fake.data[fake.data > 0.] = 1.
-#     fake.data[fake.data < 0.] = -1.
-
-#     vutils.save_image(fake.data, 'fake_samples_{0}.png'.format(i))
+	#generator.load_state_dict(torch.load('netG_epoch_24.pth', map_location=lambda storage, loc: storage))
+	generator.load_state_dict(torch.load(modelToLoad, map_location=lambda storage, loc: storage))
 
 
-testing = False
+	# generate_example = True
 
-if testing:  
-  line = []
-  for i in range (batchSize):
-    line.append( [ random.uniform(-1.0, 1.0) ]*nz )
+	# #Testing the system to generate an exampel picture
+	# if generate_example:
+	#   for i in range(10):
+	#     fixed_noise = torch.FloatTensor(batchSize, nz, 1, 1).normal_(0, 1)
 
-  #This is the format that we expect from sys.stdin
-  print(line) 
+	#     fake = generator(Variable(fixed_noise, volatile=True))
+	#     fake.data = fake.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
 
-  line = json.dumps(line)
-  lv = numpy.array(json.loads(line))
+	#     fake.data[fake.data > 0.] = 1.
+	#     fake.data[fake.data < 0.] = -1.
 
-  latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) #torch.from_numpy(lv)# torch.FloatTensor( torch.from_numpy(lv) )
-
-  #latent_vector = numpy.array(json.loads(line))
-  levels = generator(Variable(latent_vector, volatile=True))
-
-  levels.data = levels.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
-
-  levels.data[levels.data > 0.] = 1  #SOLID BLOCK
-  levels.data[levels.data < 0.] = -1.  #EMPTY TILE
-
-  #print(json.dumps(levels.data.tolist()))
-  vutils.save_image(levels.data, 'fake_samples.png')
-
-  exit()
+	#     vutils.save_image(fake.data, 'fake_samples_{0}.png'.format(i))
 
 
-print("READY") # Java loops until it sees this special signal
-sys.stdout.flush() # Make sure Java can sense this output before Python blocks waiting for input
-#for line in sys.stdin.readlines(): # Jacob: I changed this to make this work on Windows ... did this break on Mac?
+	testing = False
+
+	if testing:  
+	  line = []
+	  for i in range (batchSize):
+	    line.append( [ random.uniform(-1.0, 1.0) ]*nz )
+
+	  #This is the format that we expect from sys.stdin
+	  print(line) 
+
+	  line = json.dumps(line)
+	  lv = numpy.array(json.loads(line))
+
+	  latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) #torch.from_numpy(lv)# torch.FloatTensor( torch.from_numpy(lv) )
+
+	  #latent_vector = numpy.array(json.loads(line))
+	  levels = generator(Variable(latent_vector, volatile=True))
+
+	  levels.data = levels.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
+
+	  levels.data[levels.data > 0.] = 1  #SOLID BLOCK
+	  levels.data[levels.data < 0.] = -1.  #EMPTY TILE
+
+	  #print(json.dumps(levels.data.tolist()))
+	  vutils.save_image(levels.data, 'fake_samples.png')
+
+	  exit()
 
 
-for line in sys.stdin:
-  #print(line)
-  lv = numpy.array(json.loads(line))
-  latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) 
+	print("READY") # Java loops until it sees this special signal
+	sys.stdout.flush() # Make sure Java can sense this output before Python blocks waiting for input
+	#for line in sys.stdin.readlines(): # Jacob: I changed this to make this work on Windows ... did this break on Mac?
 
-  levels = generator(Variable(latent_vector, volatile=True))
 
-  levels.data = levels.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
+	for line in sys.stdin:
+	  #print(line)
+	  lv = numpy.array(json.loads(line))
+	  latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) 
 
-  levels.data[levels.data > 0.] = 1  #SOLID BLOCK
-  levels.data[levels.data < 0.] = 2  #EMPTY TILE
+	  levels = generator(Variable(latent_vector, volatile=True))
 
-  print(json.dumps(levels.data.tolist()))
-  sys.stdout.flush() # Make Java sense output before blocking on next input
+	  levels.data = levels.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
+
+	  levels.data[levels.data > 0.] = 1  #SOLID BLOCK
+	  levels.data[levels.data < 0.] = 2  #EMPTY TILE
+
+	  print(json.dumps(levels.data.tolist()))
+	  sys.stdout.flush() # Make Java sense output before blocking on next input
 

@@ -9,6 +9,7 @@ public class GANProcess extends Comm {
 	// Use Sebastian's Wasserstein GAN instead of Adam's generic GAN
 	public static final boolean WASSERSTEIN = true;
 	public static final String WASSERSTEIN_PATH = "pytorch" + File.separator + "generator_ws.py";
+	public static final String WASSERSTEIN_GAN = "pytorch" + File.separator + "netG_epoch_24.pth";
 	
     public GANProcess() {
         super();
@@ -21,9 +22,10 @@ public class GANProcess extends Comm {
     public void launchGAN() {
         // Run program with model architecture and weights specified as parameters
         ProcessBuilder builder = WASSERSTEIN ?
-        		new ProcessBuilder("python", WASSERSTEIN_PATH) :
+        		new ProcessBuilder("python", WASSERSTEIN_PATH, WASSERSTEIN_GAN) :
         		new ProcessBuilder("python", PY_NAME, GAN_ARCHITECTURE_FILE, GAN_WEIGHTS_FILE);
         try {
+        		System.out.println(builder.command());
             this.process = builder.start();
         } catch (IOException e) {
             e.printStackTrace();
