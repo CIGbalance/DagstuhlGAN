@@ -1,6 +1,8 @@
 package communication;
 
 import java.io.*;
+import java.lang.ProcessBuilder.Redirect;
+
 import static basicMap.Settings.*;
 import static basicMap.Settings.PY_NAME;
 
@@ -24,7 +26,8 @@ public class GANProcess extends Comm {
         ProcessBuilder builder = WASSERSTEIN ?
         		new ProcessBuilder("python", WASSERSTEIN_PATH, WASSERSTEIN_GAN) :
         		new ProcessBuilder("python", PY_NAME, GAN_ARCHITECTURE_FILE, GAN_WEIGHTS_FILE);
-        try {
+        builder.redirectError(Redirect.INHERIT); // Standard error will print to console
+        	try {
         		System.out.println(builder.command());
             this.process = builder.start();
         } catch (IOException e) {
