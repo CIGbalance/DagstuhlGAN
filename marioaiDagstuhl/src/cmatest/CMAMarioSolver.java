@@ -6,8 +6,11 @@ import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
 import java.io.IOException;
 import java.util.Arrays;
 
+import communication.GANProcess;
+
 public class CMAMarioSolver {
-	public static final int Z_SIZE = 16; // length of latent space vector
+	// Sebastian's Wasserstein GAN expects latent vectors of length 32 rather than Adam's length 16 vectors
+	public static final int Z_SIZE = GANProcess.WASSERSTEIN ? 32 : 16; // length of latent space vector
 	public static final int EVALS = 1000;
 	
     public static void main(String[] args) throws IOException {
