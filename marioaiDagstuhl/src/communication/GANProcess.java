@@ -4,15 +4,9 @@ import java.io.*;
 import java.lang.ProcessBuilder.Redirect;
 
 import static basicMap.Settings.*;
-import static basicMap.Settings.PY_NAME;
 
 public class GANProcess extends Comm {
 
-	// Use Sebastian's Wasserstein GAN instead of Adam's generic GAN
-	public static final boolean WASSERSTEIN = true;
-	public static final String WASSERSTEIN_PATH = "pytorch" + File.separator + "generator_ws.py";
-	public static final String WASSERSTEIN_GAN = "pytorch" + File.separator + "netG_epoch_24.pth";
-	
     public GANProcess() {
         super();
         this.threadName = "GANThread";
@@ -22,10 +16,17 @@ public class GANProcess extends Comm {
      * Launch GAN, this should be called only once
      */
     public void launchGAN() {
+    	
+    		if(!(new File(PYTHON_PROGRAM).exists())) {
+    			throw new RuntimeException("Before launching this program, you need to configure Settings.PYTHON_PROGRAM " +
+    									  "to point to the correct version of Python you intend to use on your system. If " +
+    									  "using the Wasserstein GAN, this Python version must support PyTorch.");
+    		}
+    	
         // Run program with model architecture and weights specified as parameters
         ProcessBuilder builder = WASSERSTEIN ?
-        		new ProcessBuilder("python", WASSERSTEIN_PATH, WASSERSTEIN_GAN) :
-        		new ProcessBuilder("python", PY_NAME, GAN_ARCHITECTURE_FILE, GAN_WEIGHTS_FILE);
+        		new ProcessBuilder(PYTHON_PROGRAM, WASSERSTEIN_PATH, WASSERSTEIN_GAN) :
+        		new ProcessBuilder(PYTHON_PROGRAM, PY_NAME, GAN_ARCHITECTURE_FILE, GAN_WEIGHTS_FILE);
         builder.redirectError(Redirect.INHERIT); // Standard error will print to console
         	try {
         		System.out.println(builder.command());
