@@ -91,6 +91,7 @@ if __name__ == '__main__':
 	  levels.data[levels.data > 0.] = 1  #SOLID BLOCK
 	  levels.data[levels.data < 0.] = 2  #EMPTY TILE
 
-	  print(json.dumps(levels.data.tolist()))
+	  # Jacob: Only output first level, since we are only really evaluating one at a time
+	  print(json.dumps(levels.data[0].tolist()))
 	  sys.stdout.flush() # Make Java sense output before blocking on next input
 
