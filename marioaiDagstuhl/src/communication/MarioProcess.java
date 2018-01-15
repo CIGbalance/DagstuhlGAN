@@ -26,6 +26,9 @@ public class MarioProcess extends Comm {
         createAgentsPool();
         // TODO: Change this time limit
         evaluationOptions.setTimeLimit(20);
+        // TODO: Make these configurable from commandline?
+        evaluationOptions.setMaxFPS(true); // Set true to run faster
+        evaluationOptions.setVisualization(true); // Set true to watch evaluations
         // Create Mario Component
         ToolsConfigurator.CreateMarioComponentFrame(evaluationOptions);
         evaluationOptions.setAgent(AgentsPool.getCurrentAgent());
