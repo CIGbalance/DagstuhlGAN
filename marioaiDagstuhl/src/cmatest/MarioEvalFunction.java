@@ -85,10 +85,10 @@ public class MarioEvalFunction implements IObjectiveFunction {
 
     		// Do a simulation
     		EvaluationInfo info = this.marioProcess.simulateOneLevel(level);
-    		// Jacob 2017-12-07: This assumes the fitness is the distance traveled
-    		//                   in the level. May need to generalize
-            // TODO: I think CMA-ES actually expects a minimization problem.
-            //       Either change this fitness or configure CMA-ES for maximization.
+    		// Jacob 2018-01-15: This assumes the fitness is the distance traveled
+    		//                   in the level. May need to generalize. Also, I put a minus sign
+    		//                   in front because I think CMA-ES is actually trying to minimize
+    		//                   the objective score, but I hope someone else can confirm.
     		return -info.computeDistancePassed();
 
 		} catch (IOException e) {
