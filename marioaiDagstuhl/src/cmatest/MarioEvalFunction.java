@@ -89,7 +89,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
     		//                   in the level. May need to generalize
             // TODO: I think CMA-ES actually expects a minimization problem.
             //       Either change this fitness or configure CMA-ES for maximization.
-    		return info.computeDistancePassed();
+    		return -info.computeDistancePassed();
 
 		} catch (IOException e) {
 			// Error occurred
