@@ -11,11 +11,13 @@ public class GANProcess extends Comm {
         super();
         this.threadName = "GANThread";
     }
+    /**
 
     /**
      * Launch GAN, this should be called only once
      */
     public void launchGAN() {
+        System.out.println(PYTHON_PROGRAM);
     	
     		if(!(new File(PYTHON_PROGRAM).exists())) {
     			throw new RuntimeException("Before launching this program, you need to configure Settings.PYTHON_PROGRAM " +

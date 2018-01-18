@@ -78,20 +78,20 @@ if __name__ == '__main__':
 	sys.stdout.flush() # Make sure Java can sense this output before Python blocks waiting for input
 	#for line in sys.stdin.readlines(): # Jacob: I changed this to make this work on Windows ... did this break on Mac?
 
-
 	for line in sys.stdin:
-	  #print(line)
-	  lv = numpy.array(json.loads(line))
-	  latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) 
+	#while 1:
+		#line = sys.stdin.readline()
+		lv = numpy.array(json.loads(line))
+		latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) 
 
-	  levels = generator(Variable(latent_vector, volatile=True))
+		levels = generator(Variable(latent_vector, volatile=True))
 
-	  levels.data = levels.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
+		levels.data = levels.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
 
-	  levels.data[levels.data > 0.] = 1  #SOLID BLOCK
-	  levels.data[levels.data < 0.] = 2  #EMPTY TILE
+		levels.data[levels.data > 0.] = 1  #SOLID BLOCK
+		levels.data[levels.data < 0.] = 2  #EMPTY TILE
 
 	  # Jacob: Only output first level, since we are only really evaluating one at a time
-	  print(json.dumps(levels.data[0].tolist()))
-	  sys.stdout.flush() # Make Java sense output before blocking on next input
+		print(json.dumps(levels.data[0].tolist()))
+		sys.stdout.flush() # Make Java sense output before blocking on next input
 

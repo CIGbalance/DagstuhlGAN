@@ -45,7 +45,7 @@ def marioAStarGAN(x):
 	levels = model.predict(z).argmin(-1)
 	# TODO: Launch Mario Java with levels[0]
 	# TODO: Add the json representation of the level as a command-line parameter
-	call(["java","-jar","EvalMario.jar"])
+	call(["java","-jar","marioaiDagstuhl/marioaiDagstuhl.jar", "-lf ["+levels[0]+"]"])
 	# TODO: Have Java program output fitness score to stdout
 	# TODO: Capture that output in Python and return from this function
 	return 0 # TODO: Change
