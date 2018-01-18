@@ -1,6 +1,7 @@
 package reader;
 
 
+import ch.idsia.mario.engine.GlobalOptions;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -20,7 +21,11 @@ public class JsonReader {
     int current;
     
     public JsonReader(String filename){
-        json = JsonToIntFromFile(filename);
+        if(GlobalOptions.JsonAsString){
+            json = JsonToInt(filename);
+        }else{
+            json = JsonToIntFromFile(filename);
+        }
         current = 0;
     }
     
@@ -102,9 +107,8 @@ public class JsonReader {
     }
     
     // The method above may unnecessarily duplicate some functionality of this method
-    public List<List<List<Integer>>> JsonToInt(String myJSONString)
-    {    	
-    	JsonArray jarray1 = new Gson().fromJson(myJSONString, JsonArray.class);//first array
+    public static List<List<List<Integer>>> JsonToInt(String myJSONString)
+    {   JsonArray jarray1 = new Gson().fromJson(myJSONString, JsonArray.class);//first array
     
     	List<List<List<Integer>>> myReturnList = new ArrayList<List<List<Integer>>>();
     	

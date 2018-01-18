@@ -50,7 +50,7 @@ public class MainRun
 
     public static void main(String[] args) {
         CmdLineOptions cmdLineOptions = new CmdLineOptions(args);
-        cmdLineOptions.setLevelFile("sample_381.json");
+        //cmdLineOptions.setLevelFile("sample_381.json");
         cmdLineOptions.setTimeLimit(10);
         EvaluationOptions evaluationOptions = cmdLineOptions;  // if none options mentioned, all defalults are used.
         createAgentsPool();
@@ -129,11 +129,11 @@ public class MainRun
         TimingAgent controller = new TimingAgent (agent);
         EvaluationOptions options = cmdLineOptions;
         options.setNumberOfTrials(1);
-        System.out.println("\nScoring controller " + agent.getName());
+        //System.out.println("\nScoring controller " + agent.getName());
 
         double competitionScore = 0;
         competitionScore += testConfig(controller, options);
-        System.out.println("score: " + competitionScore);
+        System.out.println(competitionScore);
     }
 
 

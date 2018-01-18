@@ -20,11 +20,11 @@ public class Settings {
 	
 	// Use Sebastian's Wasserstein GAN instead of Adam's generic GAN
 	public static final boolean WASSERSTEIN = true;
-	public static final String WASSERSTEIN_PATH = "pytorch" + File.separator + "generator_ws.py";
-	public static final String WASSERSTEIN_GAN = "pytorch" + File.separator + "netG_epoch_24.pth";
+	public static final String WASSERSTEIN_PATH = "/media/vv/DATA/svn/DagstuhlGAN/pytorch" + File.separator + "generator_ws.py";
+	public static final String WASSERSTEIN_GAN = "/media/vv/DATA/svn/DagstuhlGAN/pytorch" + File.separator + "netG_epoch_24.pth";
 	
 	// Jacob: IMPORTANT! This is a system-specific path that I had to set.
-	public static final String PYTHON_PROGRAM = "/anaconda/bin/python";
+	public static final String PYTHON_PROGRAM = "/usr/bin/python";
 
     public static void printWarnMsg(String msg) {
         System.out.println(WARN_MSG + msg);
