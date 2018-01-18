@@ -58,5 +58,5 @@ if __name__ == '__main__':
 		model = model_from_json(f.read())
 	model.load_weights(weights_filename, True)
 	# Run CMA-ES
-	es = cma.CMAEvolutionStrategy(16 * [1], 1)
+	es = cma.CMAEvolutionStrategy(16 * [0], 1/math.sqrt(16))
 	es.optimize(marioAStarGAN)
