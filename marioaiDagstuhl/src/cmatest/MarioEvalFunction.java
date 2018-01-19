@@ -81,6 +81,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	 */
 	@Override
 	public double valueOf(double[] x) {
+		x = mapArrayToOne(x);
 		// Interpret x to a level
 		try {
 			// Brackets required since generator.py expects of list of multiple levels, though only one is being sent here
@@ -112,5 +113,24 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	@Override
 	public boolean isFeasible(double[] x) {
 		return true;
+	}
+
+
+	/**
+	 * Map the value in R to (-1, 1)
+	 * @param valueInR
+	 * @return
+	 */
+	public static double mapToOne(double valueInR) {
+		return ( valueInR / Math.sqrt(1+valueInR*valueInR) );
+	}
+
+	public static double[] mapArrayToOne(double[] arrayInR) {
+		double[] newArray = new double[arrayInR.length];
+		for(int i=0; i<newArray.length; i++) {
+			double valueInR = arrayInR[i];
+			newArray[i] = mapToOne(valueInR);
+		}
+		return newArray;
 	}
 }

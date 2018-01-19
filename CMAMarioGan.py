@@ -37,6 +37,7 @@ from keras.models import model_from_json
 import cma
 # for communicating with Java
 from subprocess import call
+import math
 
 def marioAStarGAN(x):
 	z = numpy.array(x)
@@ -58,5 +59,7 @@ if __name__ == '__main__':
 		model = model_from_json(f.read())
 	model.load_weights(weights_filename, True)
 	# Run CMA-ES
-	es = cma.CMAEvolutionStrategy(16 * [0], 1/math.sqrt(16))
+	options = cma.CMAOptions()
+	options.set('bounds', [-1, 1])
+	es = cma.CMAEvolutionStrategy(16 * [0], 1/math.sqrt(16), options)
 	es.optimize(marioAStarGAN)
