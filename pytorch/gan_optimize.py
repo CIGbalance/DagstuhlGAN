@@ -71,7 +71,7 @@ def gan_fitness_function(x):
     levels = generator(Variable(latent_vector, volatile=True))
     levels.data = levels.data[:, :, :14, :28]
     #return solid_blocks_fraction(levels.data, 0.2)
-    return ground_blocks_fraction(levels.data,0.8)
+    return solid_blocks_fraction(levels.data, 0.4)*ground_blocks_fraction(levels.data,0.8)
 
 
 def ground_blocks_fraction(data, frac):

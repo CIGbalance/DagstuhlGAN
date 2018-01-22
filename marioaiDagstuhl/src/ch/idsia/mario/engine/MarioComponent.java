@@ -140,6 +140,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         this.levelScene.mario.setMode(Mario.MODE.MODE_SMALL);
 
         int totalActionsPerfomed = 0;
+        int jumpActionsPerformed = 0;
 // TODO: Manage better place for this:
         levelScene.mario.resetCoins();
         LevelScene backup = null;
@@ -168,12 +169,16 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
             boolean[] action = agent.getAction(this/*DummyEnvironment*/);
             if (action != null)
             {
-                for (int i = 0; i < Environment.numberOfButtons; ++i)
+                for (int i = 0; i < Environment.numberOfButtons; ++i){
                     if (action[i])
                     {
+                        if(i==Mario.KEY_JUMP){
+                            jumpActionsPerformed++;
+                        }
                         ++totalActionsPerfomed;
                         break;
                     }
+                }
             }
             else
             {
@@ -302,6 +307,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         evaluationInfo.numberOfGainedCoins = levelScene.mario.coins;
 //        evaluationInfo.totalNumberOfCoins   = -1 ; // TODO: total Number of coins.
         evaluationInfo.totalActionsPerfomed = totalActionsPerfomed; // Counted during the play/simulation process
+        evaluationInfo.jumpActionsPerformed = jumpActionsPerformed; // Counted during play/simulation
         evaluationInfo.totalFramesPerfomed = frame;
         evaluationInfo.marioMode = levelScene.mario.getMode();
         evaluationInfo.killsTotal = levelScene.mario.world.killedCreaturesTotal;

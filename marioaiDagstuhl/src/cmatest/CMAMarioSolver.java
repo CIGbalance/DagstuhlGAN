@@ -83,6 +83,7 @@ public class CMAMarioSolver {
                     // compute fitness/objective value
                 }
                 fitness[i] = fitFun.valueOf(pop[i]); // fitfun.valueOf() is to be minimized
+                System.out.println(fitness[i]);
             }
             cma.updateDistribution(fitness);         // pass fitness array to update search distribution
             // --- end core iteration step ---

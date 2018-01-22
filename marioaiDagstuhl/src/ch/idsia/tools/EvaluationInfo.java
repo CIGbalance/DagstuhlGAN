@@ -26,6 +26,7 @@ public class EvaluationInfo
     public int numberOfGainedCoins = MagicNumberUndef;
 //    public int totalNumberOfCoins = MagicNumberUndef;
     public int totalActionsPerfomed = MagicNumberUndef;
+    public int jumpActionsPerformed = MagicNumberUndef;
     public int totalFramesPerfomed = MagicNumberUndef;
     // Number Of collisions with creatures
     // if large
@@ -55,6 +56,10 @@ public class EvaluationInfo
     public int computeKillsTotal()
     {
         return this.killsTotal;
+    }
+    
+    public double computeJumpFraction(){
+        return (double)this.jumpActionsPerformed/this.totalActionsPerfomed;
     }
 
     //TODO: possible fitnesses adjustments: penalize for collisions with creatures and especially for  suicide. It's a sin.

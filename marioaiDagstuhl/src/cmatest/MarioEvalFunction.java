@@ -93,13 +93,18 @@ public class MarioEvalFunction implements IObjectiveFunction {
 			// Do a simulation
 			EvaluationInfo info = this.marioProcess.simulateOneLevel(level);
 			// Fitness is negative since CMA-ES tries to minimize
+                        //System.out.println("done");
+                        //System.out.println(info.jumpActionsPerformed);
+                        //System.out.println(info.computeJumpFraction());
 			if(info.computeDistancePassed() < LEVEL_LENGTH) { // Did not beat level
 				// Only optimize distance passed in this case
-				return -info.computeDistancePassed();    			
-			} else { // Did beat level
+				return (double) -info.computeDistancePassed()/LEVEL_LENGTH;    			
+			} else{ // Did beat level
 				//System.out.println("Beat level!");
+                                //System.out.println(info.computeJumpFraction());
 				// Also maximize time, since this would imply the level is more challenging/interesting
-				return -info.computeDistancePassed() - info.timeSpentOnLevel; 			
+				//return -info.computeDistancePassed() - info.timeSpentOnLevel; 
+                                return (double) -info.computeDistancePassed()/LEVEL_LENGTH - info.jumpActionsPerformed;
 			}
 
 		} catch (IOException e) {
