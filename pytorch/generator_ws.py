@@ -60,7 +60,6 @@ if __name__ == '__main__':
    im = levels.data.cpu().numpy()
    im = im[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
    im = numpy.argmax( im, axis = 1)
-
    #print(json.dumps(levels.data.tolist()))
    print("Saving to file ")
    im = ( plt.get_cmap('rainbow')( im/float(z_dims) ) )
