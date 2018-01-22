@@ -26,12 +26,13 @@ n_extra_layers = 0
 features = 10
 
 generator = dcgan.DCGAN_G(imageSize, nz, features, ngf, ngpu, n_extra_layers)
-generator.load_state_dict(torch.load('netG_epoch_2500.pth', map_location=lambda storage, loc: storage))
+generator.load_state_dict(torch.load('netG_epoch_5000.pth', map_location=lambda storage, loc: storage))
 
 
 
 GROUND = 0
 ENEMY = 5
+PIPE = 6 #7, 8 9
 
 # generate_example = True
 
@@ -73,7 +74,7 @@ def gan_maximse_title_type(x):
     im = levels.data.cpu().numpy()
     im = numpy.argmax( im, axis = 1)
 
-    num_titles =  (len (im[im == ENEMY]))
+    num_titles =  (len (im[im == PIPE]))
     return 100.0 - num_titles
 
 

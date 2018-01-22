@@ -28,7 +28,9 @@ def combine_images(generated_images):
     return image
 
 if __name__ == '__main__':
- _, modelToLoad = sys.argv   #e.g. netG_epoch_2500.pth
+ #We always load the same model   _, modelToLoad = sys.argv   #e.g. netG_epoch_2500.pth
+ 
+ modelToLoad = "netG_epoch_5000.pth"
 
  batchSize = 1
  nz = 32 #Dimensionality of latent vector
@@ -63,6 +65,7 @@ if __name__ == '__main__':
    #print(json.dumps(levels.data.tolist()))
    print("Saving to file ")
    im = ( plt.get_cmap('rainbow')( im/float(z_dims) ) )
+
    plt.imsave('fake_sample.png', combine_images(im) )
 
    exit()
