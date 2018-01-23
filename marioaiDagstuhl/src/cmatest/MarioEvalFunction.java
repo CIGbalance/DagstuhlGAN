@@ -88,7 +88,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
 		// Brackets required since generator.py expects of list of multiple levels, though only one is being sent here
 		ganProcess.commSend("[" + Arrays.toString(x) + "]");
 		String levelString = ganProcess.commRecv(); // Response to command just sent
-		Level[] levels = marioLevelsFromJson(levelString); // Really only one level in this array
+		Level[] levels = marioLevelsFromJson("[" + levelString + "]"); // Really only one level in this array
 		Level level = levels[0];
 		return level;
 	}
