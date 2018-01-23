@@ -80,6 +80,35 @@ public class LevelRenderer
 		}
 	}
 
+	public static void renderAreaWhiteBack(Graphics2D g, Level level, int x0, int y0, int xCam, int yCam, int w, int h) {
+
+		Art.init(getConfiguration());
+
+		MarioComponent mc = new MarioComponent(w,h);
+		LevelScene world = new LevelScene(getConfiguration(), mc, 0, 0, 0, w, 0);
+
+		g.setBackground(Color.WHITE); // Might change this to add an interesting background
+		g.clearRect(x0, y0, w, h);
+		int xTileStart = (x0 + xCam) / 16;
+		int yTileStart = (y0 + yCam) / 16;
+		int xTileEnd = (x0 + xCam + w) / 16;
+		int yTileEnd = (y0 + yCam + h) / 16;
+		for (int x = xTileStart; x <= xTileEnd; x++)
+		{
+			for (int y = yTileStart; y <= yTileEnd; y++)
+			{
+				int b = level.getBlock(x, y) & 0xff;
+				g.drawImage(Art.level[b % 16][b / 16], (x << 4) - xCam, (y << 4) - yCam, null);
+				SpriteTemplate sprite = level.getSpriteTemplate(x,y);
+				if(sprite != null) {
+					sprite.spawn(world, x, y, -1); // dir = -1 means face left
+					sprite.sprite.render(g, 0); // alpha = 0 means fully visible
+				}
+			}
+		}
+	}
+
+
 	public void setCam(int xCam, int yCam)
 	{
 		int xCamD = this.xCam - xCam;

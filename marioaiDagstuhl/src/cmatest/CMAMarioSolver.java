@@ -37,8 +37,8 @@ public class CMAMarioSolver {
         cma = new CMAEvolutionStrategy();
         cma.readProperties(); // read options, see file CMAEvolutionStrategy.properties
         cma.setDimension(nDim); // overwrite some loaded properties
-        cma.setInitialX(0.0); // in each dimension, also setTypicalX can be used
-        cma.setInitialStandardDeviation(2); // also a mandatory setting
+        cma.setInitialX(0.5); // in each dimension, also setTypicalX can be used
+        cma.setInitialStandardDeviation(1/Math.sqrt(nDim)); // also a mandatory setting
         cma.options.stopFitness = -1e6; // 1e-14;       // optional setting
         // cma.options.stopMaxIter = 100;
         cma.options.stopMaxFunEvals = maxEvals;
