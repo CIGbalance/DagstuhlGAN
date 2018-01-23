@@ -4,18 +4,23 @@ import fr.inria.optimization.cmaes.CMAEvolutionStrategy;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import basicMap.Settings;
 
 import static basicMap.Settings.DEBUG_MSG;
+import static basicMap.Settings.printErrorMsg;
 
 public class CMAMarioSolver {
 	// Sebastian's Wasserstein GAN expects latent vectors of length 32 rather than Adam's length 16 vectors
 	public static final int Z_SIZE = Settings.WASSERSTEIN ? 32 : 16; // length of latent space vector
 	public static final int EVALS = 1000;
+
 	
     public static void main(String[] args) throws IOException {
+        Settings.setPythonProgram();
         MarioEvalFunction marioEvalFunction = new MarioEvalFunction();
         CMAMarioSolver solver = new CMAMarioSolver(marioEvalFunction, Z_SIZE, EVALS);
         double[] solution = solver.run();
