@@ -74,7 +74,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
 			result[index++] = LevelParser.createLevelJson(listRepresentation);
 		}
 		return result;
-	}    
+	}
 
 	/**
 	 * Helper method to get the Mario Level from the latent vector
