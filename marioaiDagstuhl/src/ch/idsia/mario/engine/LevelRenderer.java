@@ -1,7 +1,6 @@
 package ch.idsia.mario.engine;
 
 import java.awt.*;
-import java.util.Random;
 import ch.idsia.mario.engine.level.*;
 
 
@@ -14,7 +13,6 @@ public class LevelRenderer
     private static final Color transparent = new Color(0, 0, 0, 0);
     private Level level;
 
-    private Random random = new Random();
     public boolean renderBehaviors = false;
 
     int width;
@@ -31,6 +29,47 @@ public class LevelRenderer
         g.setComposite(AlphaComposite.Src);
 
         updateArea(0, 0, width, height);
+    }
+    
+	/**
+	 * Determine the default graphics configuration for the current system.
+	 * Used to preview Mario levels.
+	 * @return
+	 */
+	public static GraphicsConfiguration getConfiguration() { 
+		return GraphicsEnvironment.getLocalGraphicsEnvironment(). 
+				getDefaultScreenDevice().getDefaultConfiguration(); 
+	} 
+    
+    /**
+     * A Graphics2D object and a Level are sent in, along with some information
+     * about the area to view. The level is then drawn to the Graphics2D, which
+     * is modified by side effects.
+     * @param g
+     * @param level
+     * @param x0
+     * @param y0
+     * @param w
+     * @param h
+     */
+    public static void renderArea(Graphics2D g, Level level, int x0, int y0, int xCam, int yCam, int w, int h)
+    {
+    	Art.init(getConfiguration());
+
+    	g.setBackground(transparent); // Might change this to add an interesting background
+        g.clearRect(x0, y0, w, h);
+        int xTileStart = (x0 + xCam) / 16;
+        int yTileStart = (y0 + yCam) / 16;
+        int xTileEnd = (x0 + xCam + w) / 16;
+        int yTileEnd = (y0 + yCam + h) / 16;
+        for (int x = xTileStart; x <= xTileEnd; x++)
+        {
+            for (int y = yTileStart; y <= yTileEnd; y++)
+            {
+                int b = level.getBlock(x, y) & 0xff;
+                g.drawImage(Art.level[b % 16][b / 16], (x << 4) - xCam, (y << 4) - yCam, null);
+            }
+        }
     }
 
     public void setCam(int xCam, int yCam)
