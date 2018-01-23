@@ -95,7 +95,7 @@ class DCGAN_G(nn.Module):
         main.add_module('final.{0}-{1}.convt'.format(cngf, nc),
                         nn.ConvTranspose2d(cngf, nc, 4, 2, 1, bias=False))
         main.add_module('final.{0}.tanh'.format(nc),
-                        nn.Tanh())#nn.ReLU(True))    #Was TANH
+                        nn.ReLU())#nn.Softmax(1))    #Was TANH nn.Tanh())#
         self.main = main
 
     def forward(self, input):
@@ -103,6 +103,9 @@ class DCGAN_G(nn.Module):
             output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
         else: 
             output = self.main(input)
+
+        #print (output[0,:,0,0])
+        #exit()
         return output 
 ###############################################################################
 class DCGAN_D_nobn(nn.Module):
@@ -188,7 +191,7 @@ class DCGAN_G_nobn(nn.Module):
         main.add_module('final.{0}-{1}.convt'.format(cngf, nc),
                         nn.ConvTranspose2d(cngf, nc, 4, 2, 1, bias=False))
         main.add_module('final.{0}.tanh'.format(nc),
-                        nn.Softmax(1))#Tanh())
+                        nn.Softmax())#Tanh())
         self.main = main
 
     def forward(self, input):
