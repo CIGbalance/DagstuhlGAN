@@ -86,6 +86,10 @@ def solid_blocks_fraction(data, frac):
 
 
 es = cma.CMAEvolutionStrategy(nz * [0], 0.5)
+#cma.CMAEvolutionStrategy(4 * [1], 1, {'seed':234})
+#'BoundaryHandler': 'BoundTransform  # or BoundPenalty, unused when ``bounds in (None, [None, None])``',
+#'bounds': '[None, None]  # lower (=bounds[0]) and upper domain boundaries, each a scalar or a list/vector',
+
 es.optimize(gan_fitness_function)
 # es.result_pretty()
 best = numpy.array(es.best.get()[0])

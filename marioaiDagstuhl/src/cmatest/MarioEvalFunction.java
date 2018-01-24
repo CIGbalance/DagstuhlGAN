@@ -65,9 +65,9 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	//       As long as we adhere to that interface
 	//       we won't be able to do bulk processing.
 	public static Level[] marioLevelsFromJson(String json) {
-		List<String> input = new ArrayList<String>(1); // Will only contain one line
-		input.add(json); // "File" with only one line (though there could be multiple levels)
-		List<List<List<Integer>>> allLevels = JsonReader.JsonToIntFromFile(input);
+		//List<String> input = new ArrayList<String>(1); // Will only contain one line
+		//input.add(json); // "File" with only one line (though there could be multiple levels)
+		List<List<List<Integer>>> allLevels = JsonReader.JsonToInt("["+json+"]");
 		Level[] result = new Level[allLevels.size()];
 		int index = 0;
 		for(List<List<Integer>> listRepresentation : allLevels) {
