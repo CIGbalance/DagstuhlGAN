@@ -1,6 +1,17 @@
 #This does a lhc sample of the latent vector space in order to get a rough estimate of the variability of different
 #levels produced
 
+#import torch
+#import torchvision.utils as vutils
+#from torch.autograd import Variable
+
+#import sys
+#import json
+#import numpy
+#import models.dcgan as dcgan
+
+import random
+
 batchSize = 64
 nz = 32  # Dimensionality of latent vector
 

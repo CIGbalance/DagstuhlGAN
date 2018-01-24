@@ -10,7 +10,7 @@ import sys
 import json
 import numpy
 import models.dcgan as dcgan
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import math
 
 import random
@@ -29,6 +29,14 @@ def combine_images(generated_images):
 
 if __name__ == '__main__':
  _, modelToLoad = sys.argv   #e.g. netG_epoch_2500.pth
+ print("READY")
+ # Since the Java program is not launched from the pytorch directory,
+ # it cannot find this file when it is specified as being in the current
+ # working directory. This is why the network has to be a command line
+ # parameter. However, this model should load by default if no parameter
+ # is provided.
+ if not modelToLoad:
+ 	modelToLoad = "netG_epoch_5000.pth"
 
  batchSize = 1
  nz = 32 #Dimensionality of latent vector
@@ -38,8 +46,8 @@ if __name__ == '__main__':
  ngpu = 1
  n_extra_layers = 0
  z_dims = 10 #number different titles
- generator = dcgan.DCGAN_G(imageSize, nz, z_dims, ngf, ngpu, n_extra_layers)
 
+ generator = dcgan.DCGAN_G(imageSize, nz, z_dims, ngf, ngpu, n_extra_layers)
  #generator.load_state_dict(torch.load('netG_epoch_24.pth', map_location=lambda storage, loc: storage))
  generator.load_state_dict(torch.load(modelToLoad, map_location=lambda storage, loc: storage))
 
@@ -60,10 +68,10 @@ if __name__ == '__main__':
    im = levels.data.cpu().numpy()
    im = im[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
    im = numpy.argmax( im, axis = 1)
-
    #print(json.dumps(levels.data.tolist()))
    print("Saving to file ")
    im = ( plt.get_cmap('rainbow')( im/float(z_dims) ) )
+
    plt.imsave('fake_sample.png', combine_images(im) )
 
    exit()
@@ -72,9 +80,9 @@ if __name__ == '__main__':
  sys.stdout.flush() # Make sure Java can sense this output before Python blocks waiting for input
  #for line in sys.stdin.readlines(): # Jacob: I changed this to make this work on Windows ... did this break on Mac?
 
- #for line in sys.stdin:
- while 1:
-  line = sys.stdin.readline()
+ for line in sys.stdin:
+ #while 1:
+  #line = sys.stdin.readline()
   lv = numpy.array(json.loads(line))
   latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) 
 

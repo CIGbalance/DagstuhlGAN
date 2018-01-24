@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class LevelParser {
     
+	public static final int BUFFER_WIDTH = 15; // This is the extra space added at the start and ends of levels
+	
     /**
      *
      * @param args
@@ -86,7 +88,7 @@ public class LevelParser {
     	int width = lines.get(0).length();
     	int height = lines.size();
     	// For a buffer at both the start and the end of each level
-    	int extraStones = 15;
+    	int extraStones = BUFFER_WIDTH;
     	Level level = new Level(width+2*extraStones,height);
 
     	//Set Level Exit
@@ -129,7 +131,7 @@ public class LevelParser {
     {
     	int width = input.get(0).size();
     	int height = input.size();
-    	int extraStones = 15;
+    	int extraStones = BUFFER_WIDTH;
     	Level level = new Level(width+2*extraStones,height);
 
         //Set Level Exit

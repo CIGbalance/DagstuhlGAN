@@ -68,7 +68,7 @@ public class JsonReader {
 
     	return JsonToIntFromFile(lines);
     }
-    
+
     /**
      * Jacob: Designed entry point into method that does not require a file,
      * only the contents of a file
@@ -105,7 +105,9 @@ public class JsonReader {
     	}	
     	return myReturnList;
     }
-    
+
+
+
     // The method above may unnecessarily duplicate some functionality of this method
     public static List<List<List<Integer>>> JsonToInt(String myJSONString)
     {   JsonArray jarray1 = new Gson().fromJson(myJSONString, JsonArray.class);//first array
@@ -130,4 +132,18 @@ public class JsonReader {
     	}	
     	return myReturnList;
     }
+
+	public static double[] JsonToDoubleArray(String myJSONString) {
+		JsonArray jarray1 = new Gson().fromJson(myJSONString, JsonArray.class);//first array
+		List<Double> myList = new ArrayList<>();
+		for(JsonElement je: jarray1)
+		{
+			myList.add(je.getAsDouble());
+		}
+		double[] myArray = new double[myList.size()];
+		for (int i=0; i<myList.size(); i++) {
+			myArray[i] = myList.get(i);
+		}
+		return myArray;
+	}
 }

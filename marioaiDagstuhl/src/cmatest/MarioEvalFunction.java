@@ -74,22 +74,33 @@ public class MarioEvalFunction implements IObjectiveFunction {
 			result[index++] = LevelParser.createLevelJson(listRepresentation);
 		}
 		return result;
-	}    
+	}
 
+	/**
+	 * Helper method to get the Mario Level from the latent vector
+	 * @param x Latent vector
+	 * @return Mario Level
+	 * @throws IOException Problems communicating with Python GAN process
+	 */
+	public Level levelFromLatentVector(double[] x) throws IOException {
+		x = mapArrayToOne(x);
+		// Interpret x to a level
+		// Brackets required since generator.py expects of list of multiple levels, though only one is being sent here
+		ganProcess.commSend("[" + Arrays.toString(x) + "]");
+		String levelString = ganProcess.commRecv(); // Response to command just sent
+		Level[] levels = marioLevelsFromJson("[" + levelString + "]"); // Really only one level in this array
+		Level level = levels[0];
+		return level;
+	}
+	
 	/**
 	 * Gets objective score for single latent vector.
 	 */
 	@Override
 	public double valueOf(double[] x) {
-		x = mapArrayToOne(x);
-		// Interpret x to a level
 		try {
-			// Brackets required since generator.py expects of list of multiple levels, though only one is being sent here
-			ganProcess.commSend("[" + Arrays.toString(x) + "]");
-			String levelString = ganProcess.commRecv(); // Response to command just sent
-			Level[] levels = marioLevelsFromJson(levelString); // Really only one level in this array
-			Level level = levels[0];
-
+			Level level = levelFromLatentVector(x);
+			
 			// Do a simulation
 			EvaluationInfo info = this.marioProcess.simulateOneLevel(level);
 			// Fitness is negative since CMA-ES tries to minimize
@@ -132,6 +143,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
 
 	public static double[] mapArrayToOne(double[] arrayInR) {
 		double[] newArray = new double[arrayInR.length];
+                //System.out.println("arrayInR" + arrayInR);
 		for(int i=0; i<newArray.length; i++) {
 			double valueInR = arrayInR[i];
 			newArray[i] = mapToOne(valueInR);

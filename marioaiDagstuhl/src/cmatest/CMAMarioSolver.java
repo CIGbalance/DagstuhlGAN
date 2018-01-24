@@ -4,18 +4,23 @@ import fr.inria.optimization.cmaes.CMAEvolutionStrategy;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import basicMap.Settings;
 
 import static basicMap.Settings.DEBUG_MSG;
+import static basicMap.Settings.printErrorMsg;
 
 public class CMAMarioSolver {
 	// Sebastian's Wasserstein GAN expects latent vectors of length 32 rather than Adam's length 16 vectors
 	public static final int Z_SIZE = Settings.WASSERSTEIN ? 32 : 16; // length of latent space vector
 	public static final int EVALS = 1000;
+
 	
     public static void main(String[] args) throws IOException {
+        Settings.setPythonProgram();
         MarioEvalFunction marioEvalFunction = new MarioEvalFunction();
         CMAMarioSolver solver = new CMAMarioSolver(marioEvalFunction, Z_SIZE, EVALS);
         double[] solution = solver.run();
@@ -32,8 +37,8 @@ public class CMAMarioSolver {
         cma = new CMAEvolutionStrategy();
         cma.readProperties(); // read options, see file CMAEvolutionStrategy.properties
         cma.setDimension(nDim); // overwrite some loaded properties
-        cma.setInitialX(0.0); // in each dimension, also setTypicalX can be used
-        cma.setInitialStandardDeviation(2); // also a mandatory setting
+        cma.setInitialX(-1,1); // set initial seach point xmean coordinate-wise uniform between l and u, dimension needs to have been set before
+        cma.setInitialStandardDeviation(1/Math.sqrt(nDim)); // also a mandatory setting
         cma.options.stopFitness = -1e6; // 1e-14;       // optional setting
         // cma.options.stopMaxIter = 100;
         cma.options.stopMaxFunEvals = maxEvals;
@@ -45,9 +50,9 @@ public class CMAMarioSolver {
         cma.setDimension(n);
     }
 
-    public void setInitialX(double x) {
+    /*public void setInitialX(double x) {
         cma.setInitialX(x);
-    }
+    }*/
 
     public void setObjective(IObjectiveFunction fitFun) {
         this.fitFun = fitFun;

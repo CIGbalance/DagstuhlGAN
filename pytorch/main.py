@@ -21,7 +21,7 @@ import models.dcgan as dcgan
 import models.mlp as mlp
 import json
 
-#python main.py --dataset cifar10 --dataroot . --cuda
+#python main.py --dataset mario --dataroot . --cuda
 #TODO.   Use different loss function? Cross-entropy (together with softmax) instead of 
 #Make images smaller so large empty parts doesn't dominate 
 
@@ -35,7 +35,7 @@ parser.add_argument('--nc', type=int, default=3, help='input image channels')
 parser.add_argument('--nz', type=int, default=100, help='size of the latent z vector')
 parser.add_argument('--ngf', type=int, default=64)
 parser.add_argument('--ndf', type=int, default=64)
-parser.add_argument('--niter', type=int, default=2500, help='number of epochs to train for')
+parser.add_argument('--niter', type=int, default=5000, help='number of epochs to train for')
 parser.add_argument('--lrD', type=float, default=0.00005, help='learning rate for Critic, default=0.00005')
 parser.add_argument('--lrG', type=float, default=0.00005, help='learning rate for Generator, default=0.00005')
 parser.add_argument('--beta1', type=float, default=0.5, help='beta1 for adam. default=0.5')
@@ -69,59 +69,11 @@ cudnn.benchmark = True
 if torch.cuda.is_available() and not opt.cuda:
     print("WARNING: You have a CUDA device, so you should probably run with --cuda")
 
-if opt.dataset in ['imagenet', 'folder', 'lfw']:
-    # folder dataset
-    dataset = dset.ImageFolder(root=opt.dataroot,
-                               transform=transforms.Compose([
-                                   transforms.Scale(opt.imageSize),
-                                   transforms.CenterCrop(opt.imageSize),
-                                   transforms.ToTensor(),
-                                   transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                               ]))
-elif opt.dataset == 'lsun':
-    dataset = dset.LSUN(db_path=opt.dataroot, classes=['bedroom_train'],
-                        transform=transforms.Compose([
-                            transforms.Scale(opt.imageSize),
-                            transforms.CenterCrop(opt.imageSize),
-                            transforms.ToTensor(),
-                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                        ]))
-elif opt.dataset == 'cifar10':
-    dataset = dset.CIFAR10(root=opt.dataroot, download=True,
-                           transform=transforms.Compose([
-                               transforms.Scale(opt.imageSize),
-                               transforms.ToTensor(),
-                               transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                           ])
-    )
+
+if True:
+
+
     
-    #opt.batchSize = 30
-    dataloader = torch.utils.data.DataLoader(dataset, batch_size=opt.batchSize,
-                                       shuffle=True, num_workers=int(opt.workers))
-
-
-    num_batches = len(dataloader)
-    z_dims = 3
-    if (False):
-        data_iter = iter(dataloader)
-        i = 0
-        X_train = []
-        while i < num_batches:
-            k = data_iter.next()
-            print (k.type())#k.size())# len(k), k)# np.array(k).shape)
-            X_train += k
-            i += 1
-        #print(X_train)
-        X_train = np.stack(X_train, axis=0)
-        print(X_train.shape)#X_train.shape)
-
-       
-        exit()
-
-elif opt.dataset == 'mario':
-
-
-    z_dims = 10
     map_size = 32
     #opt.nz = 10
     opt.imageSize = 32
@@ -133,10 +85,10 @@ elif opt.dataset == 'mario':
     if (smallExample):
         X = np.array ( json.load(open('example.json')) )
         opt.batchSize = 32
-
+        z_dims = 10
     else:
         opt.batchSize = 32
-
+        z_dims = 13
         X = np.array ( json.load(open('largeExamples.json')) )
         #X_train = np.zeros ( (X.shape[0], 14, 28) )
 
@@ -173,7 +125,7 @@ elif opt.dataset == 'mario':
     X_train = np.zeros ( (X.shape[0], z_dims, map_size, map_size) )*2
     #print ("SHAPE ",X_train.shape)  
     #X_train = np.eye(z_dims, dtype='uint8')[X_train]
-    X_train[:, 2, :, :] = 1.0  #Will with empty space
+    X_train[:, 2, :, :] = 1.0  #Fill with empty space
 
     #Pad part of level so its a square
     X_train[:X.shape[0], :, :X.shape[1], :X.shape[2]] = X_onehot
