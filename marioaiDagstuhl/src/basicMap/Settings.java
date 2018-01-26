@@ -22,7 +22,7 @@ public class Settings {
 	public static final String GAN_WEIGHTS_FILE = "generator.h5";
 	
 	// Use Sebastian's Wasserstein GAN instead of Adam's generic GAN
-	//public static final boolean WASSERSTEIN = true;
+	public static final boolean WASSERSTEIN = true;
 	//public static final String WASSERSTEIN_PATH = "/media/vv/DATA/svn/DagstuhlGAN/pytorch" + File.separator + "generator_ws.py";
 	//public static final String WASSERSTEIN_GAN = "/media/vv/DATA/svn/DagstuhlGAN/pytorch" + File.separator + "netG_epoch_5000.pth";
 	public static final String WASSERSTEIN_PATH = "pytorch" + File.separator + "generator_ws.py";
