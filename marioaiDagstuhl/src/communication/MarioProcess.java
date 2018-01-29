@@ -4,6 +4,7 @@ import ch.idsia.ai.agents.AgentsPool;
 import ch.idsia.mario.engine.level.Level;
 import ch.idsia.mario.simulation.BasicSimulator;
 import ch.idsia.mario.simulation.Simulation;
+import ch.idsia.mario.simulation.SimulationOptions;
 import ch.idsia.tools.CmdLineOptions;
 import ch.idsia.tools.EvaluationInfo;
 import ch.idsia.tools.EvaluationOptions;
@@ -34,7 +35,9 @@ public class MarioProcess extends Comm {
         evaluationOptions.setAgent(AgentsPool.getCurrentAgent());
         System.out.println(evaluationOptions.getAgent().getClass().getName());
         // set simulator
-        this.simulator = new BasicSimulator(evaluationOptions.getSimulationOptionsCopy());
+        SimulationOptions simopts = evaluationOptions.getSimulationOptionsCopy();
+        simopts.setVisualization(false);
+        this.simulator = new BasicSimulator(simopts);
         //simulateOneLevel(); // Jacob: don't simulate until GAN provides level
     }
 

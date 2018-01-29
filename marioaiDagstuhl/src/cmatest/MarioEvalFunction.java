@@ -67,7 +67,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	public static Level[] marioLevelsFromJson(String json) {
 		//List<String> input = new ArrayList<String>(1); // Will only contain one line
 		//input.add(json); // "File" with only one line (though there could be multiple levels)
-		List<List<List<Integer>>> allLevels = JsonReader.JsonToInt("["+json+"]");
+		List<List<List<Integer>>> allLevels = JsonReader.JsonToInt(json);
 		Level[] result = new Level[allLevels.size()];
 		int index = 0;
 		for(List<List<Integer>> listRepresentation : allLevels) {
@@ -88,7 +88,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
 		// Brackets required since generator.py expects of list of multiple levels, though only one is being sent here
 		ganProcess.commSend("[" + Arrays.toString(x) + "]");
 		String levelString = ganProcess.commRecv(); // Response to command just sent
-		Level[] levels = marioLevelsFromJson("[" + levelString + "]"); // Really only one level in this array
+		Level[] levels = marioLevelsFromJson("[" +levelString + "]"); // Really only one level in this array
 		Level level = levels[0];
 		return level;
 	}
@@ -100,7 +100,6 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	public double valueOf(double[] x) {
 		try {
 			Level level = levelFromLatentVector(x);
-			
 			// Do a simulation
 			EvaluationInfo info = this.marioProcess.simulateOneLevel(level);
 			// Fitness is negative since CMA-ES tries to minimize
@@ -109,7 +108,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
                         //System.out.println(info.computeJumpFraction());
 			if(info.computeDistancePassed() < LEVEL_LENGTH) { // Did not beat level
 				// Only optimize distance passed in this case
-				return (double) -info.computeDistancePassed()/LEVEL_LENGTH;    			
+				return (double) -info.computeDistancePassed()/LEVEL_LENGTH;//+20;    			
 			} else{ // Did beat level
 				//System.out.println("Beat level!");
                                 //System.out.println(info.computeJumpFraction());
@@ -143,10 +142,10 @@ public class MarioEvalFunction implements IObjectiveFunction {
 
 	public static double[] mapArrayToOne(double[] arrayInR) {
 		double[] newArray = new double[arrayInR.length];
-                //System.out.println("arrayInR" + arrayInR);
 		for(int i=0; i<newArray.length; i++) {
 			double valueInR = arrayInR[i];
 			newArray[i] = mapToOne(valueInR);
+                        //System.out.println(valueInR);
 		}
 		return newArray;
 	}

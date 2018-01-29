@@ -29,7 +29,6 @@ def combine_images(generated_images):
 
 if __name__ == '__main__':
  _, modelToLoad = sys.argv   #e.g. netG_epoch_2500.pth
- print("READY")
  # Since the Java program is not launched from the pytorch directory,
  # it cannot find this file when it is specified as being in the current
  # working directory. This is why the network has to be a command line
@@ -80,9 +79,9 @@ if __name__ == '__main__':
  sys.stdout.flush() # Make sure Java can sense this output before Python blocks waiting for input
  #for line in sys.stdin.readlines(): # Jacob: I changed this to make this work on Windows ... did this break on Mac?
 
- for line in sys.stdin:
- #while 1:
-  #line = sys.stdin.readline()
+ #for line in sys.stdin:
+ while 1:
+  line = sys.stdin.readline()
   lv = numpy.array(json.loads(line))
   latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) 
 
