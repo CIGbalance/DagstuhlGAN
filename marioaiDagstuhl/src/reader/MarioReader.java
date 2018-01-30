@@ -24,7 +24,7 @@ public class MarioReader {
         tiles.put('-', 2);
         tiles.put('?', 3);
         tiles.put('Q', 4);
-        tiles.put('E', 5);
+        tiles.put('E', 5);  //Enemy
         tiles.put('<', 6);
         tiles.put('>', 7);
         tiles.put('[', 8);
