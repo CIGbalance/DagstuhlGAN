@@ -35,14 +35,14 @@ public class MarioProcess extends Comm {
         System.out.println(evaluationOptions.getAgent().getClass().getName());
         // set simulator
         this.simulator = new BasicSimulator(evaluationOptions.getSimulationOptionsCopy());
-        //simulateOneLevel(); // Jacob: don't simulate until GAN provides level
     }
 
+    /**
+     * Set the agent that is evaluated in the evolved levels
+     */
     public static void createAgentsPool()
     {
-    	// Jacob: Adding the agent to the pool doesn't seem to be sufficient
-        //AgentsPool.addAgent(new AStarAgent());
-    	// TODO: Simple approach for now
+    	// TODO: Simple approach for now. Might generalize later
         AgentsPool.setCurrentAgent(new AStarAgent());
     }
 

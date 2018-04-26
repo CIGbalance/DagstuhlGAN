@@ -11,7 +11,6 @@ public class GANProcess extends Comm {
         super();
         this.threadName = "GANThread";
     }
-    /**
 
     /**
      * Launch GAN, this should be called only once
