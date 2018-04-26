@@ -31,7 +31,7 @@ code from this project is used in any way:
 
 ## Installing
 
-TODO: How to setup Pytorch
+TODO: How to setup Pytorch? Sebastian?
 
 ```
 python -m pip install cma
@@ -46,4 +46,23 @@ There are two separate aspects to this codebase:
 
 ### Training the GAN
 
-An already trained model is part of this repository. 
+An already trained Pytorch model is part of this repository. It is in 
+[pytorch/netG_epoch_5000.pth](https://github.com/TheHedgeify/DagstuhlGAN/blob/master/pytorch/netG_epoch_5000.pth).
+However, if you would like to re-train the GAN yourself from scratch here is how you would do it.
+
+TODO: Ask Sebastian.
+
+### Evolving Levels Based on Static Features
+
+The trained GAN model can be used to generate Mario levels that optimize certain tile distributions.
+
+TODO: Ask Sebastian where these files are and how to run them.
+
+### Evolving Levels Based on Agent Performance
+
+The trained GAN model can also be used to evolve levels based on how a Java-based agent performs in them.
+This approach uses the Java version of CMA-ES, though the Java code still executes the Python Pytorch model.
+The Java class to execute is [cmatest.CMAMarioSolver](https://github.com/TheHedgeify/DagstuhlGAN/blob/master/marioaiDagstuhl/src/cmatest/CMAMarioSolver.java).
+This code will evaluate the levels by playing them with Robin Baumgarten's A* Agent that won the 2009 Mario AI Competition.
+
+TODO: Vanessa: how do we look at/play the levels after evolution is complete?
