@@ -1,4 +1,4 @@
-# DagstuhlGAN
+# MarioGAN
 
 This project allows for the unsepervised learning of a Generative Adversarial Network (GAN) that
 understands the structure of Super Mario Bros. levels. The model is trained on actual Mario levels from
@@ -29,5 +29,21 @@ code from this project is used in any way:
 }
 ```
 
+## Installing
+
+TODO: How to setup Pytorch
+
+```
+python -m pip install cma
+```
+
 ## Using the Code
 
+There are two separate aspects to this codebase:
+
+1. The GAN code written in Python and trained with Pytorch
+2. The Mario and CMA-ES code written in Java
+
+### Training the GAN
+
+An already trained model is part of this repository. 
