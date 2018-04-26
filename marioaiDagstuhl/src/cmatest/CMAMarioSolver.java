@@ -1,21 +1,17 @@
 package cmatest;
 
-import fr.inria.optimization.cmaes.CMAEvolutionStrategy;
-import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
+import static basicMap.Settings.DEBUG_MSG;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 import basicMap.Settings;
-
-import static basicMap.Settings.DEBUG_MSG;
-import static basicMap.Settings.printErrorMsg;
+import fr.inria.optimization.cmaes.CMAEvolutionStrategy;
+import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
 
 public class CMAMarioSolver {
-	// Sebastian's Wasserstein GAN expects latent vectors of length 32 rather than Adam's length 16 vectors
-	public static final int Z_SIZE = Settings.WASSERSTEIN ? 32 : 16; // length of latent space vector
+	// Sebastian's Wasserstein GAN expects latent vectors of length 32
+	public static final int Z_SIZE = 32; // length of latent space vector
 	public static final int EVALS = 1000;
 
 	
