@@ -1,6 +1,6 @@
 # MarioGAN
 
-This project allows for the unsepervised learning of a Generative Adversarial Network (GAN) that
+This project allows for the unsupervised learning of a Generative Adversarial Network (GAN) that
 understands the structure of Super Mario Bros. levels. The model is trained on actual Mario levels from
 the [Video Game Level Corpus](https://github.com/TheVGLC/TheVGLC). The trained model is capable of generating
 new level segments with the input of a latent vector, and these segments can be stitched together to
@@ -65,4 +65,6 @@ This approach uses the Java version of CMA-ES, though the Java code still execut
 The Java class to execute is [cmatest.CMAMarioSolver](https://github.com/TheHedgeify/DagstuhlGAN/blob/master/marioaiDagstuhl/src/cmatest/CMAMarioSolver.java).
 This code will evaluate the levels by playing them with Robin Baumgarten's A* Agent that won the 2009 Mario AI Competition.
 
-TODO: Vanessa: how do we look at/play the levels after evolution is complete?
+The level is specified by a latent vector of modifiable size. The values need to be between -1 and 1 and should otherwise be mapped to that value range. To generate an image of the generated level, the class to execute is [cmatest.MarioLevelViewer](https://github.com/TheHedgeify/DagstuhlGAN/blob/master/marioaiDagstuhl/src/viewer/MarioLevelViewer.java). To do this, the class [cmatest.MarioEvalFunction](https://github.com/TheHedgeify/DagstuhlGAN/blob/master/marioaiDagstuhl/src/cmatest/MarioEvalFunction.java) has the function levelFromLatentVector that returns a level, which can be played by an agent (human or artifical) via the BasicSimulator [ch.idsia.mario.simulation.BasicSimulator](https://github.com/TheHedgeify/DagstuhlGAN/blob/master/marioaiDagstuhl/src/ch/idsia/mario/simulation/BasicSimulator.java).
+
+Alternatively, the level can created from a .json file (as produced by the GAN) that describes the level with nested arrays and encodes the different tiles available according to the video level corpus. To do this, use function marioLevelsFromJson in [cmatest.MarioEvalFunction](https://github.com/TheHedgeify/DagstuhlGAN/blob/master/marioaiDagstuhl/src/cmatest/MarioEvalFunction.java)
