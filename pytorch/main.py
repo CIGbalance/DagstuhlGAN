@@ -63,7 +63,7 @@ if torch.cuda.is_available() and not opt.cuda:
 map_size = 32
 
 X = np.array ( json.load(open('example.json')) )
-z_dims = 10
+z_dims = 10 #Numer different title types
 
 num_batches = X.shape[0] / opt.batchSize
 
