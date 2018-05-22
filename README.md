@@ -52,6 +52,9 @@ However, if you would like to re-train the GAN yourself from scratch here is how
 
 TODO: Ask Sebastian.
 
+Once the GAN is trained (or if you use the included GAN), you can run the Java class viewer.MarioRandomLevelViewer
+to generate level images by sending several randomly generated latent vectors to the GAN.
+
 ### Evolving Levels Based on Static Features
 
 The trained GAN model can be used to generate Mario levels that optimize certain tile distributions.
