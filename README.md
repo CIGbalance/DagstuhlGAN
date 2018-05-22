@@ -54,6 +54,9 @@ TODO: Ask Sebastian.
 
 Once the GAN is trained (or if you use the included GAN), you can run the Java class viewer.MarioRandomLevelViewer
 to generate level images by sending several randomly generated latent vectors to the GAN.
+If you want to see what level is generated for a specific vector of your choice, then you can use
+viewer.MarioLevelViewer, which takes a json array of length 32 as a command line parameter that represents
+a latent vector for the GAN.
 
 ### Evolving Levels Based on Static Features
 
