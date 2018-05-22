@@ -57,7 +57,9 @@ to generate level images by sending several randomly generated latent vectors to
 If you want to see what level is generated for a specific vector of your choice, then you can use
 viewer.MarioLevelViewer, which takes a json array of length 32 as a command line parameter that represents
 a latent vector for the GAN. If you want to actually play these levels, then you should launch
-viewer.MarioLevelPlayer in the same way.
+viewer.MarioLevelPlayer in the same way. Additionally, if MarioLevelPlayer is sent a 2D json array,
+then each sub-array is interpreted as a separate latent vector for the GAN, and the segments are
+stitched together into a larger level.
 
 ### Evolving Levels Based on Static Features
 

@@ -77,6 +77,21 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	}
 	
 	/**
+	 * Directly send a string to the GAN (Should be array of arrays of doubles in Json format).
+	 * 
+	 * Note: A bit redundant: This could be called from the method above.
+	 * 
+	 * @param input
+	 * @return
+	 * @throws IOException
+	 */
+	public String stringToFromGAN(String input) throws IOException {
+		ganProcess.commSend(input);
+		String levelString = ganProcess.commRecv(); // Response to command just sent
+		return levelString;
+	}
+	
+	/**
 	 * Gets objective score for single latent vector.
 	 */
 	@Override
