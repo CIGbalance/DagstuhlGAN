@@ -43,7 +43,7 @@ public class Settings {
 
     public static void setPythonProgram() {
         try {
-            Settings.PYTHON_PROGRAM = new String(Files.readAllBytes(Paths.get("my_python_path.txt")));//
+            Settings.PYTHON_PROGRAM = Files.readAllLines(Paths.get("my_python_path.txt")).get(0); // Should only have one line, get first
         } catch (IOException e) {
             printErrorMsg("Can not find the my_python_path.txt which specifies the python program and locates under DagstuhlGAN.");
             e.printStackTrace();
