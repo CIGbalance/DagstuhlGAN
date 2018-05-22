@@ -42,13 +42,15 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	}
 
 	/**
-	 * Takes a json String representing several levels (or just one)
+	 * Takes a json String representing several levels 
 	 * and returns an array of all of those Mario levels.
+	 * In order to convert a single level, it needs to be put into
+	 * a json array by adding extra square brackets [ ] around it.
 	 * @param json Json String representation of multiple Mario levels
 	 * @return Array of those levels
 	 */
 	public static Level[] marioLevelsFromJson(String json) {
-		List<List<List<Integer>>> allLevels = JsonReader.JsonToInt("["+json+"]");
+		List<List<List<Integer>>> allLevels = JsonReader.JsonToInt(json);
 		Level[] result = new Level[allLevels.size()];
 		int index = 0;
 		for(List<List<Integer>> listRepresentation : allLevels) {
