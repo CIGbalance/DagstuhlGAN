@@ -20,7 +20,7 @@ public class CMAMarioSolver {
 
 	
     public static void main(String[] args) throws IOException {
-        //Settings.setPythonProgram();
+        Settings.setPythonProgram();
         int loops = 100;
         double[][] bestX = new double[loops][32];
         double[] bestY = new double[loops];

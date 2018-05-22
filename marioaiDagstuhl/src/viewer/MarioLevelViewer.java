@@ -70,7 +70,7 @@ public class MarioLevelViewer {
 	}
 
 	public static void main(String[] args) throws IOException {
-		//Settings.setPythonProgram();
+		Settings.setPythonProgram();
 		// This is used because it contains code for communicating with the GAN
 		MarioEvalFunction eval = new MarioEvalFunction();
 
