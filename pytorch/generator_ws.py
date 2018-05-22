@@ -29,6 +29,7 @@ def combine_images(generated_images):
 
 if __name__ == '__main__':
  _, modelToLoad = sys.argv   #e.g. netG_epoch_2500.pth
+
  # Since the Java program is not launched from the pytorch directory,
  # it cannot find this file when it is specified as being in the current
  # working directory. This is why the network has to be a command line

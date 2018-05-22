@@ -1,5 +1,13 @@
 package viewer;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
+
 import basicMap.Settings;
 import ch.idsia.ai.tasks.ProgressTask;
 import ch.idsia.mario.engine.LevelRenderer;
@@ -9,15 +17,10 @@ import ch.idsia.tools.CmdLineOptions;
 import ch.idsia.tools.EvaluationOptions;
 import cmatest.MarioEvalFunction;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Random;
-
-import static reader.JsonReader.JsonToDoubleArray;
-
+/**
+ * This file generates several level images by querying the
+ * trained GAN with random latent vectors.
+ */
 public class MarioRandomLevelViewer {
 
 	public static final int BLOCK_SIZE = 16;

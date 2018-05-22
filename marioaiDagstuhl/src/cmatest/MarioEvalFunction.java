@@ -1,7 +1,6 @@
 package cmatest;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,31 +41,15 @@ public class MarioEvalFunction implements IObjectiveFunction {
 		}
 	}
 
-	// Incomplete, and not necessary. We only need this if
-	// we switch to bulk processing.
-	//    public void sendZVectorToGan(double[][] x) throws IOException {
-	//        // TODO: 07/12/2017 add send v to Gan
-	//        String gsonVector = sampleVectorInGson();
-	//        // send it to GAN
-	//        ganProcess.commSend(gsonVector);
-	//    }
-
 	/**
-	 * Takes a json String representing several levels (or just one)
+	 * Takes a json String representing several levels 
 	 * and returns an array of all of those Mario levels.
+	 * In order to convert a single level, it needs to be put into
+	 * a json array by adding extra square brackets [ ] around it.
 	 * @param json Json String representation of multiple Mario levels
 	 * @return Array of those levels
 	 */
-	// TODO: This method could be used to generate multiple levels from the json
-	//       returned by generator.py, but it currently only makes sense to send
-	//       generator.py one vector at a time because the CMA-ES objective function 
-	//       interface explicitly expects to be able to generate a single fitness 
-	//       value when given a single input vector (valueOf method below). 
-	//       As long as we adhere to that interface
-	//       we won't be able to do bulk processing.
 	public static Level[] marioLevelsFromJson(String json) {
-		//List<String> input = new ArrayList<String>(1); // Will only contain one line
-		//input.add(json); // "File" with only one line (though there could be multiple levels)
 		List<List<List<Integer>>> allLevels = JsonReader.JsonToInt(json);
 		Level[] result = new Level[allLevels.size()];
 		int index = 0;
@@ -94,6 +77,21 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	}
 	
 	/**
+	 * Directly send a string to the GAN (Should be array of arrays of doubles in Json format).
+	 * 
+	 * Note: A bit redundant: This could be called from the method above.
+	 * 
+	 * @param input
+	 * @return
+	 * @throws IOException
+	 */
+	public String stringToFromGAN(String input) throws IOException {
+		ganProcess.commSend(input);
+		String levelString = ganProcess.commRecv(); // Response to command just sent
+		return levelString;
+	}
+	
+	/**
 	 * Gets objective score for single latent vector.
 	 */
 	@Override
@@ -114,7 +112,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
                                 //System.out.println(info.computeJumpFraction());
 				// Also maximize time, since this would imply the level is more challenging/interesting
 				//return -info.computeDistancePassed() - info.timeSpentOnLevel; 
-                                return (double) -info.computeDistancePassed()/LEVEL_LENGTH - info.jumpActionsPerformed;
+                return (double) -info.computeDistancePassed()/LEVEL_LENGTH - info.jumpActionsPerformed;
 			}
 
 		} catch (IOException e) {
@@ -129,7 +127,6 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	public boolean isFeasible(double[] x) {
 		return true;
 	}
-
 
 	/**
 	 * Map the value in R to (-1, 1)

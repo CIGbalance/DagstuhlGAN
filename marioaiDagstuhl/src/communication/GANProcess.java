@@ -11,7 +11,6 @@ public class GANProcess extends Comm {
         super();
         this.threadName = "GANThread";
     }
-    /**
 
     /**
      * Launch GAN, this should be called only once
@@ -26,9 +25,7 @@ public class GANProcess extends Comm {
     		}
     	
         // Run program with model architecture and weights specified as parameters
-        ProcessBuilder builder = WASSERSTEIN ?
-        		new ProcessBuilder(PYTHON_PROGRAM, WASSERSTEIN_PATH, WASSERSTEIN_GAN) :
-        		new ProcessBuilder(PYTHON_PROGRAM, PY_NAME, GAN_ARCHITECTURE_FILE, GAN_WEIGHTS_FILE);
+        ProcessBuilder builder = new ProcessBuilder(PYTHON_PROGRAM, WASSERSTEIN_PATH, WASSERSTEIN_GAN);
         builder.redirectError(Redirect.INHERIT); // Standard error will print to console
         	try {
         		System.out.println(builder.command());

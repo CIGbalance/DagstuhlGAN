@@ -1,6 +1,7 @@
 package communication;
 
 import ch.idsia.ai.agents.AgentsPool;
+import ch.idsia.ai.agents.human.HumanKeyboardAgent;
 import ch.idsia.mario.engine.level.Level;
 import ch.idsia.mario.simulation.BasicSimulator;
 import ch.idsia.mario.simulation.Simulation;
@@ -20,33 +21,47 @@ public class MarioProcess extends Comm {
         this.threadName = "MarioProcess";
     }
 
+    /**
+     * Default mario launcher does not have any command line parameters
+     */
     public void launchMario() {
-        String[] options = new String[] {""};
+    	String[] options = new String[] {""};
+    	launchMario(options, false);
+    }
+ 
+    /**
+     * This version of launching Mario allows for several parameters
+     * @param options General command line options (currently not really used)
+     * @param humanPlayer Whether a human is playing rather than a bot
+     */
+    public void launchMario(String[] options, boolean humanPlayer) {
         this.evaluationOptions = new CmdLineOptions(options);  // if none options mentioned, all defaults are used.
         // set agents
-        createAgentsPool();
-        // TODO: Change this time limit
-        evaluationOptions.setTimeLimit(20);
+        createAgentsPool(humanPlayer);
+        // Short time for evolution, but more for human
+        if(!humanPlayer) evaluationOptions.setTimeLimit(20);
         // TODO: Make these configurable from commandline?
-        evaluationOptions.setMaxFPS(true); // Set true to run faster
+        evaluationOptions.setMaxFPS(!humanPlayer); // Slow for human players, fast otherwise
         evaluationOptions.setVisualization(true); // Set true to watch evaluations
         // Create Mario Component
         ToolsConfigurator.CreateMarioComponentFrame(evaluationOptions);
         evaluationOptions.setAgent(AgentsPool.getCurrentAgent());
         System.out.println(evaluationOptions.getAgent().getClass().getName());
         // set simulator
-        SimulationOptions simopts = evaluationOptions.getSimulationOptionsCopy();
-        simopts.setVisualization(false);
-        this.simulator = new BasicSimulator(simopts);
-        //simulateOneLevel(); // Jacob: don't simulate until GAN provides level
+        this.simulator = new BasicSimulator(evaluationOptions.getSimulationOptionsCopy());
     }
 
-    public static void createAgentsPool()
+    /**
+     * Set the agent that is evaluated in the evolved levels
+     */
+    public static void createAgentsPool(boolean humanPlayer)
     {
-    	// Jacob: Adding the agent to the pool doesn't seem to be sufficient
-        //AgentsPool.addAgent(new AStarAgent());
-    	// TODO: Simple approach for now
-        AgentsPool.setCurrentAgent(new AStarAgent());
+    	// Could still generalize this more
+    	if(humanPlayer) {
+    		AgentsPool.setCurrentAgent(new HumanKeyboardAgent());
+        } else {
+        	AgentsPool.setCurrentAgent(new AStarAgent());
+        }
     }
 
     public void setLevel(Level level) {
