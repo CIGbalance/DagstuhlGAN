@@ -1,9 +1,11 @@
 package competition.cig.alexandrupaler;
 
-import java.util.Locale;
 import java.util.Vector;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+// Jacob: This import caused problems with the version of Java required to run the code.
+//        I don't think we use this class, and commenting this import doesn't seem to cause
+//        problems, but someone can add it back if it seems necessary.
+//import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import ch.idsia.ai.MLP;
 import ch.idsia.ai.agents.Agent;
