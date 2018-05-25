@@ -18,6 +18,7 @@ public class Settings {
     public static final String CMD_SEPARATOR = " ";
 	public static final String WASSERSTEIN_PATH = "pytorch" + File.separator + "generator_ws.py";
 	public static final String WASSERSTEIN_GAN = "pytorch" + File.separator + "netG_epoch_5000.pth";
+        public static final String GAN_DIM = "32";
 	
 	// Jacob: IMPORTANT! This is a system-specific path that I had to set.
 	//public static String PYTHON_PROGRAM = "/anaconda/bin/python";
