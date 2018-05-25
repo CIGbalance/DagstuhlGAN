@@ -40,6 +40,20 @@ public class MarioEvalFunction implements IObjectiveFunction {
 			response = ganProcess.commRecv();
 		}
 	}
+        
+        public MarioEvalFunction(String GANPath, String GANDim) throws IOException {
+		// set up process for GAN
+		ganProcess = new GANProcess(GANPath, GANDim);
+		ganProcess.start();
+		// set up mario game
+		marioProcess = new MarioProcess();
+		marioProcess.start();        
+		// consume all start-up messages that are not data responses
+		String response = "";
+		while(!response.equals("READY")) {
+			response = ganProcess.commRecv();
+		}
+	}
 
 	/**
 	 * Takes a json String representing several levels 
@@ -58,6 +72,10 @@ public class MarioEvalFunction implements IObjectiveFunction {
 		}
 		return result;
 	}
+        
+        public void exit() throws IOException{
+            ganProcess.commSend("0");
+        }
 
 	/**
 	 * Helper method to get the Mario Level from the latent vector

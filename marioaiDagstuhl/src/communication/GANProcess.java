@@ -6,10 +6,19 @@ import java.lang.ProcessBuilder.Redirect;
 import static basicMap.Settings.*;
 
 public class GANProcess extends Comm {
+    String GANPath = null;
+    String GANDim = null;
 
     public GANProcess() {
         super();
         this.threadName = "GANThread";
+    }
+    
+    public GANProcess(String GANPath, String GANDim) {
+        super();
+        this.threadName = "GANThread";
+        this.GANPath = GANPath;
+        this.GANDim = GANDim;
     }
 
     /**
@@ -25,7 +34,12 @@ public class GANProcess extends Comm {
     		}
     	
         // Run program with model architecture and weights specified as parameters
-        ProcessBuilder builder = new ProcessBuilder(PYTHON_PROGRAM, WASSERSTEIN_PATH, WASSERSTEIN_GAN);
+        ProcessBuilder builder = null;
+        if(this.GANPath == null){
+            builder = new ProcessBuilder(PYTHON_PROGRAM, WASSERSTEIN_PATH, WASSERSTEIN_GAN, GAN_DIM);
+        }else{
+            builder = new ProcessBuilder(PYTHON_PROGRAM, WASSERSTEIN_PATH, this.GANPath, this.GANDim);
+        }
         builder.redirectError(Redirect.INHERIT); // Standard error will print to console
         	try {
         		System.out.println(builder.command());
