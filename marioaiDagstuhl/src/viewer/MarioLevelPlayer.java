@@ -94,7 +94,7 @@ public class MarioLevelPlayer {
 		marioProcess.launchMario(new String[0], true); // true means there is a human player       
 		marioProcess.simulateOneLevel(level);
 		
-		// Should probably terminate the GAN process in a cleaner fashion
+                eval.exit();
 		System.exit(0);
 	}
 }

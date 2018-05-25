@@ -105,7 +105,7 @@ public class MarioRandomLevelViewer {
 			saveLevel(level, "randomSamples" + File.separator + filenameHead + "LevelClipped_" + i, true);
 			saveLevel(level, "randomSamples" + File.separator + filenameHead+ "LevelFull_" + i, false);
 		}
-		// Should probably terminate the GAN process in a cleaner fasion
+		eval.exit();
 		System.exit(0);
 	}
 }

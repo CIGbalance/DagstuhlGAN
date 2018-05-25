@@ -132,7 +132,7 @@ public class MarioLevelViewer {
 
 		saveLevel(level, "LevelClipped", true);
 		saveLevel(level, "LevelFull", false);
-		// Should probably terminate the GAN process in a cleaner fasion
+		eval.exit();
 		System.exit(0);
 	}
 }
