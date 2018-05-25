@@ -48,6 +48,7 @@ public class MarioReader {
         String inputDirectory = dir + "data/mario/levels/";
 
         String outputFile = dir + "data/mario/example.json";
+        String outputdir = dir + "data/mario/";
 
         // need to iterate over all the files in a directory
 
@@ -55,6 +56,9 @@ public class MarioReader {
 
         File file = new File(inputDirectory);
         String[] fileList = file.list();
+        
+        //System.out.println(fileList);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         for (String inputFile : fileList) {
             try {
@@ -63,6 +67,16 @@ public class MarioReader {
                 addData(examples, level);
                 System.out.println(level);
                 System.out.println("Read: " + inputFile);
+                
+                ArrayList<int[][]> examplesTmp = new ArrayList<>();
+                addData(examplesTmp, level);
+                String outTmp = gson.toJson(examplesTmp);
+                System.out.println("Created JSON String");
+                
+                PrintWriter writerTmp = new PrintWriter(outputdir + "example" + inputFile + ".json");
+                writerTmp.print(outTmp);
+                writerTmp.close();
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -71,7 +85,6 @@ public class MarioReader {
         // System.out.println(examples);
 
         System.out.println("Processed examples");
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         String out = gson.toJson(examples);
         System.out.println("Created JSON String");
@@ -97,7 +110,7 @@ public class MarioReader {
         }
         System.out.println(arrayToString(input1));
 
-        System.out.println("======== test 1 ===============");
+        System.out.println("======== test 2 ===============");
         int[][] input2 = new int[5][1];
         for (int i=0;i<input2.length;i++) {
             for (int j=0;j<input2[0].length;j++) {
