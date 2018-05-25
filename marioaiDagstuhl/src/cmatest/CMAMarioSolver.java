@@ -24,9 +24,9 @@ public class CMAMarioSolver {
         int loops = 100;
         double[][] bestX = new double[loops][32];
         double[] bestY = new double[loops];
+        MarioEvalFunction marioEvalFunction = new MarioEvalFunction();
         for(int i=0; i<loops; i++){
             System.out.println("Iteration:"+ i);
-            MarioEvalFunction marioEvalFunction = new MarioEvalFunction();
             CMAMarioSolver solver = new CMAMarioSolver(marioEvalFunction, Z_SIZE, EVALS);
             FileWriter write = new FileWriter("timeline"+i+".txt", true);
             PrintWriter print_line = new PrintWriter(write);
@@ -36,6 +36,7 @@ public class CMAMarioSolver {
             bestX[i] = MarioEvalFunction.mapArrayToOne(solution);
             bestY[i] = solver.fitFun.valueOf(MarioEvalFunction.mapArrayToOne(solution));
         }
+        marioEvalFunction.exit();
         System.out.println("Done");
         FileWriter write = new FileWriter("ex_output.txt", true);
             try (PrintWriter print_line = new PrintWriter(write)) {
@@ -46,6 +47,7 @@ public class CMAMarioSolver {
                 print_line.println(Arrays.toString(bestY));
             }
         System.out.println(Arrays.toString(bestY));
+        System.exit(0);
     }
 
     IObjectiveFunction fitFun;
