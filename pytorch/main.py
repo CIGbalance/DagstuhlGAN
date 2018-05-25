@@ -43,6 +43,7 @@ parser.add_argument('--Diters', type=int, default=5, help='number of D iters per
 parser.add_argument('--n_extra_layers', type=int, default=0, help='Number of extra layers on gen and disc')
 parser.add_argument('--experiment', default=None, help='Where to store samples and models')
 parser.add_argument('--adam', action='store_true', help='Whether to use adam (default is rmsprop)')
+parser.add_argument('--problem', type=int, default=0, help='Level examples')
 opt = parser.parse_args()
 print(opt)
 
@@ -62,7 +63,11 @@ if torch.cuda.is_available() and not opt.cuda:
  
 map_size = 32
 
-X = np.array ( json.load(open('example.json')) )
+if opt.problem == 0:
+    examplesJson = "example.json"
+else:
+    examplesJson= "sepEx/examplemario{}.json".format(opt.problem)
+X = np.array ( json.load(open(examplesJson)) )
 z_dims = 10 #Numer different title types
 
 num_batches = X.shape[0] / opt.batchSize
@@ -241,7 +246,7 @@ for epoch in range(opt.niter):
             im = combine_images( tiles2image( np.argmax( im, axis = 1) ) )
 
             plt.imsave('{0}/mario_fake_samples_{1}.png'.format(opt.experiment, gen_iterations), im)
-            torch.save(netG.state_dict(), '{0}/netG_epoch_{1}.pth'.format(opt.experiment, gen_iterations))
+            torch.save(netG.state_dict(), '{0}/netG_epoch_{1}_{2}_{3}.pth'.format(opt.experiment, gen_iterations, opt.problem, opt.nz))
 
     # do checkpointing
     #torch.save(netG.state_dict(), '{0}/netG_epoch_{1}.pth'.format(opt.experiment, epoch))

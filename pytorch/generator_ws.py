@@ -28,18 +28,23 @@ def combine_images(generated_images):
     return image
 
 if __name__ == '__main__':
- _, modelToLoad = sys.argv   #e.g. netG_epoch_2500.pth
-
  # Since the Java program is not launched from the pytorch directory,
  # it cannot find this file when it is specified as being in the current
  # working directory. This is why the network has to be a command line
  # parameter. However, this model should load by default if no parameter
  # is provided.
- if not modelToLoad:
+ if len(sys.argv) ==1:
  	modelToLoad = "netG_epoch_5000.pth"
+ else:
+	modelToLoad = sys.argv[1]
+ if len(sys.argv) >=3:
+	nz = int(sys.argv[2])
+ else:
+	nz = 32
+
 
  batchSize = 1
- nz = 32 #Dimensionality of latent vector
+ #nz = 10 #Dimensionality of latent vector
 
  imageSize = 32
  ngf = 64
@@ -83,6 +88,8 @@ if __name__ == '__main__':
  #for line in sys.stdin:
  while 1:
   line = sys.stdin.readline()
+  if len(line)==2 and int(line)==0:
+    break
   lv = numpy.array(json.loads(line))
   latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) 
 
