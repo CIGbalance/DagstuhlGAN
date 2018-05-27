@@ -1,0 +1,47 @@
+enemies in levels
+	blooper
+	bill blaster
+	bullet bill
+	buzzy beetle
+	cheep cheep
+	goomba
+	hammer bro
+	koopa paratroopa
+	koopa troopa
+	lakitu
+	lava bubble
+	piranha plant
+	spiny
+	spiny egg
+
+enemies in MarioAI
+	goomba 2		g
+	red koopa 4		r
+	green koopa 6		k
+	bullet bill 8		b
+	spiky 9			s
+	piranha plant tube 	p
+
+		
+tiles in MarioAI
+	solid			X
+	breakable		x
+	passable		-
+	empty question		q
+	tube tiles		t
+
+
+power ups in MarioAI
+	fire flower in ?15	f
+	mushroom in ?	14	m
+	coin			o
+
+replaced stars with fire flowers
+	1-up mushrooms with regular mushrooms
+replaced all breakable blocks with containers with question blocks
+coins always outside
+
+removed areas with moving platforms
+if in the air -> winged
+replaced hammer bros with red koopas
+lakitu removed
