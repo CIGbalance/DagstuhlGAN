@@ -45,3 +45,6 @@ removed areas with moving platforms
 if in the air -> winged
 replaced hammer bros with red koopas
 lakitu removed
+egg is winged spiky
+
+buzzy beetles replaced by goombas
