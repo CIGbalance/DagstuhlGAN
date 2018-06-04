@@ -102,6 +102,12 @@ ENV/
 /bin/
 
 sample_*.*
+randomSamples/*
+marioaiDagstuhl/timeline*.txt
+pytorch/.Rhistory/*
+pytorch/.idea/*
+.Rhistory
+pytorch/samples/*
 
 out
 .idea/libraries/jdom.xml
