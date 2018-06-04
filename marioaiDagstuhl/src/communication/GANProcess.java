@@ -27,11 +27,11 @@ public class GANProcess extends Comm {
     public void launchGAN() {
         System.out.println(PYTHON_PROGRAM);
     	
-    		if(!(new File(PYTHON_PROGRAM).exists())) {
+    		/*if(!(new File(PYTHON_PROGRAM).exists())) {
     			throw new RuntimeException("Before launching this program, you need to configure Settings.PYTHON_PROGRAM " +
     									  "to point to the correct version of Python you intend to use on your system. If " +
     									  "using the Wasserstein GAN, this Python version must support PyTorch.");
-    		}
+    		}*/
     	
         // Run program with model architecture and weights specified as parameters
         ProcessBuilder builder = null;

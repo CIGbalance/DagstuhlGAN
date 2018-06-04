@@ -17,38 +17,38 @@ import static basicMap.Settings.printWarnMsg;
 public class MarioReader {
 
     static Map<Character, Integer> tiles = new HashMap();
-
+    
     static {
-        tiles.put('X', 0);
-        tiles.put('S', 1);
-        tiles.put('-', 2);
-        tiles.put('?', 3);
-        tiles.put('Q', 4);
-        tiles.put('E', 5);  //Enemy
-        tiles.put('<', 6);
-        tiles.put('>', 7);
-        tiles.put('[', 8);
-        tiles.put(']', 9);
-        tiles.put('o', 10);
-        // B and b are not mentioned in the json from VGLC, but represent the cannon and support for launching Bullet Bills
-        tiles.put('B', 11); 
-        tiles.put('b', 12);
+        tiles.put('X', 0); //solid
+        tiles.put('x', 1); //breakable
+        tiles.put('-', 2); //passable
+        tiles.put('q', 3); //empty question box
+        tiles.put('f', 4); //fire flower in ?
+        tiles.put('m', 5); //mushroom in ?
+        tiles.put('o', 6); //coin
+        tiles.put('t', 7); //tube
+        tiles.put('p', 8); //piranha plant tube
+        tiles.put('b', 9); //bullet bill
+        tiles.put('g', 10); //goomba
+        tiles.put('k', 11); //green koopas + paratroopas
+        tiles.put('r', 12); //red koopas + paratroopas
+        tiles.put('s', 13); //spiny + winged spiny
     }
 
     // Is this width value may be too small for the GAN to learn well?
     static int targetWidth = 28;
 
     public static void main(String[] args) throws Exception {
-        String dir = System.getProperty("user.dir");
+        String dir = "/media/vv/DATA/svn/DagstuhlGAN";System.getProperty("user.dir");
         System.out.println("Working Directory = " +
                 dir);
         dir += "/marioaiDagstuhl/";
         // String inputFile = "data/mario/example.txt";
 
-        String inputDirectory = dir + "data/mario/levels/";
+        String inputDirectory = dir + "data/mario/levelsNew/underground/";
 
-        String outputFile = dir + "data/mario/example.json";
-        String outputdir = dir + "data/mario/";
+        String outputFile = dir + "data/mario/levelsNew/underground/example.json";
+        //String outputdir = dir + "data/mario/";
 
         // need to iterate over all the files in a directory
 
@@ -68,14 +68,14 @@ public class MarioReader {
                 System.out.println(level);
                 System.out.println("Read: " + inputFile);
                 
-                ArrayList<int[][]> examplesTmp = new ArrayList<>();
+                /*ArrayList<int[][]> examplesTmp = new ArrayList<>();
                 addData(examplesTmp, level);
                 String outTmp = gson.toJson(examplesTmp);
                 System.out.println("Created JSON String");
                 
                 PrintWriter writerTmp = new PrintWriter(outputdir + "example" + inputFile + ".json");
                 writerTmp.print(outTmp);
-                writerTmp.close();
+                writerTmp.close();*/
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -97,28 +97,6 @@ public class MarioReader {
         writer.close();
 
         System.out.println("Wrote file with " + examples.size() + " examples");
-
-
-        System.out.println("======== test 1 ===============");
-        Random rdm = new Random();
-
-        int[][] input1 = new int[5][10];
-        for (int i=0;i<input1.length;i++) {
-            for (int j=0;j<input1[0].length;j++) {
-                input1[i][j] = rdm.nextInt();
-            }
-        }
-        System.out.println(arrayToString(input1));
-
-        System.out.println("======== test 2 ===============");
-        int[][] input2 = new int[5][1];
-        for (int i=0;i<input2.length;i++) {
-            for (int j=0;j<input2[0].length;j++) {
-                input2[i][j] = rdm.nextInt();
-            }
-        }
-        System.out.println(arrayToString(input2));
-
     }
 
     static void addData(ArrayList<int[][]> examples, int[][] level) {

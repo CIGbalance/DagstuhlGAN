@@ -27,14 +27,16 @@ tiles in MarioAI
 	solid			X
 	breakable		x
 	passable		-
-	empty question		q
 	tube tiles		t
 
 
 power ups in MarioAI
-	fire flower in ?15	f
-	mushroom in ?	14	m
+	empty question		q
 	coin			o
+	brick with coin		c
+	question with coin	C
+	brick with power up	u
+	question with power up	U
 
 replaced stars with fire flowers
 	1-up mushrooms with regular mushrooms

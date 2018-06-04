@@ -40,7 +40,7 @@ public class LevelParser {
     6    "<" : ["solid","top-left pipe","pipe"],
     7    ">" : ["solid","top-right pipe","pipe"],
     8    "[" : ["solid","left pipe","pipe"],
-    9    "]" : ["solid","right pipe","pipe"],
+    9    "]" : ["solid","right pipe","pipe"],)
     10   "o" : ["coin","collectable","passable"]
     
     // These last two were not present in the json description from VDLC, but were present in the data
@@ -58,6 +58,13 @@ public class LevelParser {
         level.setBlock(5, 13, (byte) 9);
         level.setBlock(6, 13, (byte) 9);
         level.setBlock(7, 13, (byte) 9);
+        level.setBlock(4, 10, (byte) 9);
+        //level.setSpriteTemplate(3,10, new SpriteTemplate(100, false));
+        //level.setBlock(6,10,(byte)(14));
+        //level.setBlock(6,11,(byte)(14+16));
+        //level.setBlock(6,12,(byte)(14+2*16));
+        level.setBlock(3, 10, (byte) 18);
+        level.setBlock(6, 10, (byte) 16);
         
         return level;
     }
@@ -150,12 +157,13 @@ public class LevelParser {
         for(int i=0; i<height; i++){
             for(int j=0; j<width; j++){
                 int code = input.get(i).get(j);
-                if(5==code){
+                if(code>=10){
                     //set Enemy
-                    //new SpriteTemplate(type, boolean winged)
-                    level.setSpriteTemplate(j+extraStones, i, new SpriteTemplate(Enemy.ENEMY_GOOMBA, false));
-                    //System.out.println("j: "+j+" i:"+i);
-                    //set passable tile: everything not set is passable
+                    int code_below=0;
+                    if(i+1<height){//just in case we are in bottom row
+                       code_below = input.get(i+1).get(j); 
+                    }
+                    level.setSpriteTemplate(j+extraStones, i, getEnemySprite(code,code_below==2));
                 }else{
                     int encoded = codeParser(code);
                     if(encoded !=0){
@@ -169,6 +177,25 @@ public class LevelParser {
         return level;
     }
     
+    public static SpriteTemplate getEnemySprite(int code, boolean flying){
+        int type = 0;
+        switch(code){
+            case 10:
+                type=Enemy.ENEMY_GOOMBA;
+                break;
+            case 11:
+                type=Enemy.ENEMY_GREEN_KOOPA;
+                break;
+            case 12:
+                type=Enemy.ENEMY_RED_KOOPA;
+                break;
+            case 13:
+                type=Enemy.ENEMY_SPIKY;
+                break;
+        }
+        SpriteTemplate enemy = new SpriteTemplate(type, flying);
+        return enemy;
+    }
     
      
     public static int codeParser(int code){
@@ -191,6 +218,25 @@ public class LevelParser {
         }
         return output;
     }
+    
+    
+    public static int blockIdentifier(String type){
+        int output=0;
+        switch(type){
+            case "bb": output=14+0*16; break; //bullet bill
+            case "bbt": output=14+1*16; break; //bullet bill top
+            case "bbb": output=14+2*16; break; //bullet bill bottom
+            case "ttl": output=10+0+0*16; break; //tube top left
+            case "ttr": output=10+1+0*16; break; //tube top right
+            case "tbl": output=10+0+1*16; break; //tube bottom left
+            case "tbr": output=10+1+1*16; break; //tube bottom right
+            case "solid": output=9; break; //solid block
+            case "break": output=16; break; //breakable block
+        }
+        return output;
+    }
+      
+    
     
     public static int codeParserASCII(String code){
         int output = 0;

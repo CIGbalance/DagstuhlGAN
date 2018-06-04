@@ -29,7 +29,7 @@ public class evaluateLevel {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        Settings.setPythonProgram();
+        Settings.PYTHON_PROGRAM = "python";
 	MarioEvalFunction eval = null;
         
 	// Read input level

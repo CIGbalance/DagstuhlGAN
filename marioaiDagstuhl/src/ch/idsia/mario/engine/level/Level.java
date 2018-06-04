@@ -240,6 +240,15 @@ public class Level implements Cloneable
         return map[x][y];
     }
 
+    public void setBlock(int x, int y, byte b, int behavior){
+        if (x < 0) return;
+        if (y < 0) return;
+        if (x >= width) return;
+        if (y >= height) return;
+        Level.TILE_BEHAVIORS[map[x][y]]=(byte) behavior;
+        this.setBlock(x, y, b);
+    }
+    
     public void setBlock(int x, int y, byte b)
     {
         if (x < 0) return;

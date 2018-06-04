@@ -1136,7 +1136,9 @@ public class LevelScene extends Scene implements SpriteContext, Cloneable
 
     public void bump(int x, int y, boolean canBreakBricks)
     {
+        System.out.println(canBreakBricks);
         byte block = level.getBlock(x, y);
+        System.out.println(Byte.toString(Level.TILE_BEHAVIORS[block & 0xff]));
 
         if ((Level.TILE_BEHAVIORS[block & 0xff] & Level.BIT_BUMPABLE) > 0)
         {
@@ -1182,6 +1184,7 @@ public class LevelScene extends Scene implements SpriteContext, Cloneable
     public void bumpInto(int x, int y)
     {
         byte block = level.getBlock(x, y);
+        System.out.println(Byte.toString(Level.TILE_BEHAVIORS[block & 0xff]));
         if (((Level.TILE_BEHAVIORS[block & 0xff]) & Level.BIT_PICKUPABLE) > 0)
         {
             mario.getCoin();

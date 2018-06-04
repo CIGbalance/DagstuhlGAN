@@ -1,6 +1,7 @@
 package ch.idsia.mario.engine.level;
 
 import ch.idsia.mario.engine.LevelScene;
+import ch.idsia.mario.engine.sprites.CoinAnim;
 import ch.idsia.mario.engine.sprites.Enemy;
 import ch.idsia.mario.engine.sprites.FlowerEnemy;
 import ch.idsia.mario.engine.sprites.Sprite;
@@ -23,7 +24,7 @@ public class SpriteTemplate implements Cloneable
         this.type = type;
         this.winged = winged;
     }
-    
+        
     @Override
     public Object clone() throws CloneNotSupportedException
     {
@@ -34,7 +35,7 @@ public class SpriteTemplate implements Cloneable
     public void spawn(LevelScene world, int x, int y, int dir)
     {
         if (isDead) return;
-
+        
         if (type==Enemy.ENEMY_FLOWER)
         {
             sprite = new FlowerEnemy(world, x*16+15, y*16+24, x, y);
