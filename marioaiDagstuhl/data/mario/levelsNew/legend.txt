@@ -31,12 +31,14 @@ tiles in MarioAI
 
 
 power ups in MarioAI
-	empty question		q
 	coin			o
-	brick with coin		c
-	question with coin	C
-	brick with power up	u
-	question with power up	U
+	question with coin	q
+	question with power up	Q
+
+
+replaced empty question with empty brick
+replaced surprise bricks with question blocks
+
 
 replaced stars with fire flowers
 	1-up mushrooms with regular mushrooms
