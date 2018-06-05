@@ -1,25 +1,19 @@
 from __future__ import print_function
+
 import argparse
+import json
+import math
+import os
 import random
-import torch
-import torch.nn as nn
-import torch.nn.parallel
+
+import matplotlib.pyplot as plt
+import numpy as np
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
 import torch.utils.data
-import torchvision.datasets as dset
-import torchvision.transforms as transforms
-import torchvision.utils as vutils
 from torch.autograd import Variable
-import os
-import numpy as np
-import matplotlib.pyplot as plt
-
-import math
 
 import models.dcgan as dcgan
-import models.mlp as mlp
-import json
 
 # Run with "python main.py"
 
@@ -75,7 +69,7 @@ if opt.json is None:
 else:
     examplesJson = opt.json
 X = np.array(json.load(open(examplesJson)))
-z_dims = 14  # Number different tile types
+z_dims = 13 # Number different tile types
 
 num_batches = X.shape[0] / opt.batchSize
 
