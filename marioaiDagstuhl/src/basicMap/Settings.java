@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 public class Settings {
     public static final String WARN_MSG = "[WARN] ";
@@ -49,5 +50,47 @@ public class Settings {
             e.printStackTrace();
         }
     }
+    
+    public static final java.util.Map<Character, Integer> tiles = new HashMap();
+    
+    static {
+        tiles.put('X', 0); //solid
+        tiles.put('x', 1); //breakable
+        tiles.put('-', 2); //passable
+        tiles.put('q', 3); //question with coin
+        tiles.put('Q', 4); //question with power up
+        tiles.put('o', 5); //coin
+        tiles.put('t', 6); //tube
+        tiles.put('p', 7); //piranha plant tube
+        tiles.put('b', 8); //bullet bill
+        tiles.put('g', 9); //goomba
+        tiles.put('k', 10); //green koopas + paratroopas
+        tiles.put('r', 11); //red koopas + paratroopas
+        tiles.put('s', 12); //spiny + winged spiny
+    }
+    
+    public static final java.util.Map<Integer, Integer> tilesMario = new HashMap();
+    //encoding can be found in LevelScene ZMap    
+    static {
+        tilesMario.put(0, 9); //solid
+        tilesMario.put(1, 16); //breakable
+        tilesMario.put(2, 0); //passable
+        tilesMario.put(3, 21); //question with coin
+        tilesMario.put(4, 22); //question with power up
+        tilesMario.put(5, 34); //coin
+    }
+    
+    public static final java.util.Map<String, Integer> tilesAdv = new HashMap();
+    //numbers from the picture files "mapsheet.png"
+    static{
+        tilesAdv.put("bb", 14+0*16); //bullet bill shooter
+        tilesAdv.put("bbt", 14+1*16); //bullet bill top
+        tilesAdv.put("bbb", 14+2*16); //bullet bill bottom
+        tilesAdv.put("ttl", 10+0+0*16); //tube top left
+        tilesAdv.put("ttr", 10+1+0*16); //tube top right
+        tilesAdv.put("tbl", 10+0+1*16); //tube bottom left
+        tilesAdv.put("tbr", 10+1+1*16); //tube bottom right
+    }
 
+    
 }

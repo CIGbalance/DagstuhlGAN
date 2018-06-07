@@ -1,6 +1,7 @@
 package reader;
 
 
+import basicMap.Settings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonWriter;
@@ -15,26 +16,6 @@ import static basicMap.Settings.printErrorMsg;
 import static basicMap.Settings.printWarnMsg;
 
 public class MarioReader {
-
-    static Map<Character, Integer> tiles = new HashMap();
-    
-    static {
-        tiles.put('X', 0); //solid
-        tiles.put('x', 1); //breakable
-        tiles.put('-', 2); //passable
-        tiles.put('q', 3); //empty question box
-        tiles.put('f', 4); //fire flower in ?
-        tiles.put('m', 5); //mushroom in ?
-        tiles.put('o', 6); //coin
-        tiles.put('t', 7); //tube
-        tiles.put('p', 8); //piranha plant tube
-        tiles.put('b', 9); //bullet bill
-        tiles.put('g', 10); //goomba
-        tiles.put('k', 11); //green koopas + paratroopas
-        tiles.put('r', 12); //red koopas + paratroopas
-        tiles.put('s', 13); //spiny + winged spiny
-    }
-
     // Is this width value may be too small for the GAN to learn well?
     static int targetWidth = 28;
 
@@ -45,9 +26,9 @@ public class MarioReader {
         dir += "/marioaiDagstuhl/";
         // String inputFile = "data/mario/example.txt";
 
-        String inputDirectory = dir + "data/mario/levelsNew/underground/";
+        String inputDirectory = dir + "data/mario/levelsNew/overworlds/";
 
-        String outputFile = dir + "data/mario/levelsNew/underground/example.json";
+        String outputFile = dir + "data/mario/levelsNew/overworlds/example.json";
         //String outputdir = dir + "data/mario/";
 
         // need to iterate over all the files in a directory
@@ -119,13 +100,13 @@ public class MarioReader {
 
     static int[] oneHot(int x) {
         // System.out.println("Tiles size: " + tiles.size());
-        int[] vec = new int[tiles.size()];
+        int[] vec = new int[Settings.tiles.size()];
         // System.out.println("Index = " + x);
         vec[x] = 1;
         return vec;
     }
 
-    static int[][] readLevel(Scanner scanner) throws Exception {
+    public static int[][] readLevel(Scanner scanner) throws Exception {
         String line;
         ArrayList<String> lines = new ArrayList<>();
         int width = 0;
@@ -142,7 +123,7 @@ public class MarioReader {
             System.out.println("Processing line: " + lines.get(y));
             for (int x = 0; x < width; x++) {
             	try { // Added error checking to deal with unrecognized tile types
-                a[y][x] = tiles.get(lines.get(y).charAt(x));
+                a[y][x] = Settings.tiles.get(lines.get(y).charAt(x));
             	} catch(Exception e) {
             		System.out.println("Problem on ");
             		System.out.println("\ty = " + y);

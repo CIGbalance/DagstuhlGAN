@@ -2,8 +2,13 @@ package ch.idsia.scenarios;
 
 import ch.idsia.ai.tasks.ProgressTask;
 import ch.idsia.ai.tasks.Task;
+import ch.idsia.mario.engine.level.Level;
+import ch.idsia.mario.engine.level.LevelParser;
 import ch.idsia.tools.CmdLineOptions;
 import ch.idsia.tools.EvaluationOptions;
+import java.io.IOException;
+import java.util.logging.Logger;
+import static viewer.MarioLevelViewer.saveLevel;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,7 +47,18 @@ public class Play {
 //        options.setMaxFPS(false);
 //        options.setVisualization(true);
 //        options.setNumberOfTrials(1);
-        options.setLevelFile("marioaiDagstuhl/data/mario/largeExamples.json");
+                LevelParser parser = new LevelParser();
+                
+                String path = "/media/vv/DATA/svn/DagstuhlGAN/marioaiDagstuhl/data/mario/levelsNew/overworld/";
+                String file = "mario-1-1";
+         Level level = null;
+        try {
+            level = parser.createLevelASCII(path+file+".txt");
+        } catch (Exception ex) {
+            Logger.getLogger(Play.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        options.setLevel(level);
+        //options.setLevelFile("marioaiDagstuhl/data/mario/largeExamples.json");
         options.setLevelRandSeed((int) (Math.random () * Integer.MAX_VALUE));
         options.setLevelDifficulty(3);
 
@@ -52,7 +68,13 @@ public class Play {
 	        options.setLevelIndex(levelIndex += 500);
 	        task.setOptions(options);
 	        System.out.println ("Score: " + task.evaluate (options.getAgent())[0]);
-	        System.out.println("Simulation/Play finished");       
+	        System.out.println("Simulation/Play finished");
+            try {
+                saveLevel(level, file, false);
+            } catch (IOException ex) {
+                Logger.getLogger(Play.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
+
         }
     }
 }

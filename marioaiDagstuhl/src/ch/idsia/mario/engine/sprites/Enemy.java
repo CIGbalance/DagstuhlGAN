@@ -321,7 +321,7 @@ public class Enemy extends Sprite implements Cloneable
         int y = (int) (_y / 16);
         if (x == (int) (this.x / 16) && y == (int) (this.y / 16)) return false;
 
-        boolean blocking = world.level.isBlocking(x, y, xa, ya);
+        boolean blocking = this.world.level.isBlocking(x, y, xa, ya);
 
         byte block = world.level.getBlock(x, y);
 
@@ -400,7 +400,6 @@ public class Enemy extends Sprite implements Cloneable
             winged = false;
             hPic = -hPic;
             yPicO = -yPicO + 16;
-            System.out.println("bumpCheck");
         }
     }
 

@@ -9,12 +9,14 @@ import basicMap.Settings;
 import ch.idsia.mario.engine.level.Level;
 import ch.idsia.mario.engine.level.LevelParser;
 import cmatest.MarioEvalFunction;
+import communication.MarioProcess;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import reader.JsonReader;
 import static reader.JsonReader.JsonToDoubleArray;
+import static viewer.MarioRandomLevelViewer.randomUniformDoubleArray;
 
 /**
  *
@@ -29,8 +31,12 @@ public class evaluateLevel {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        Settings.PYTHON_PROGRAM = "python";
+        Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
 	MarioEvalFunction eval = null;
+        
+        String problem = null;
+        String dim = null;
+        double [] level = null;
         
 	// Read input level
 	if (args.length > 0) {
@@ -42,29 +48,37 @@ public class evaluateLevel {
             //System.out.println(strLatentVector);
             String[] parts = strLatentVector.split(", ");
             //System.out.println(parts);
-            double [] level = new double[parts.length];
+            level = new double[parts.length];
             for(int i=0; i<parts.length; i++){
                 level[i] = Double.valueOf(parts[i]);
             }
             
-            String problem = args[1].toString();
-            String dim = args[2].toString();
-            eval = new MarioEvalFunction(problem, dim);
+            problem = args[1].toString();
+            dim = args[2].toString();
+	} else {
+            problem = "/media/vv/DATA/svn/DagstuhlGAN/marioaiDagstuhl/pytorch/underground-10-50/netG_epoch_50_2818.pth";
+            dim = "10";
+            level = randomUniformDoubleArray(10);
+            
+	}
+        eval = new MarioEvalFunction(problem, dim);
             
                     
-            if(!eval.isFeasible(level)){
-                PrintWriter writer = new PrintWriter("objectives.txt", "UTF-8");
-                writer.println("0");
-                writer.close();
-            }else{
-                PrintWriter writer = new PrintWriter("objectives.txt", "UTF-8");
-                writer.println("1");
-                writer.println(eval.valueOf(level));
-                writer.close();
-            }
-	} else {
-            throw new IOException("no input received");
-	}
+        if(!eval.isFeasible(level)){
+            PrintWriter writer = new PrintWriter("objectives.txt", "UTF-8");
+            writer.println("0");
+            writer.close();
+        }else{
+            PrintWriter writer = new PrintWriter("objectives.txt", "UTF-8");
+            writer.println("1");
+            writer.println(eval.valueOf(level));
+            writer.close();
+        }
+        
+        MarioProcess marioProcess = new MarioProcess();
+        marioProcess.launchMario(new String[0], true); // true means there is a human player       
+        marioProcess.simulateOneLevel(eval.levelFromLatentVector(level));
+        
         eval.exit();
         System.exit(0);
     }
