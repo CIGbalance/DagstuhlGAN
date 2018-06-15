@@ -6,16 +6,13 @@
 package coco;
 
 import basicMap.Settings;
-import ch.idsia.mario.engine.level.Level;
-import ch.idsia.mario.engine.level.LevelParser;
+import ch.idsia.ai.agents.Agent;
+import ch.idsia.ai.agents.human.HumanKeyboardAgent;
 import cmatest.MarioEvalFunction;
-import communication.MarioProcess;
+import competition.cig.slawomirbojarski.MarioAgent;
+import competition.icegic.robin.AStarAgent;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import reader.JsonReader;
-import static reader.JsonReader.JsonToDoubleArray;
 import static viewer.MarioRandomLevelViewer.randomUniformDoubleArray;
 
 /**
@@ -34,9 +31,12 @@ public class evaluateLevel {
         Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
 	MarioEvalFunction eval = null;
         
-        String problem = null;
+        String gan = null;
         String dim = null;
         double [] level = null;
+        int fitnessFun = 0;
+        int agent = 0;
+        Agent[] agentList = {new AStarAgent(), new MarioAgent(), new HumanKeyboardAgent()};
         
 	// Read input level
 	if (args.length > 0) {
@@ -53,15 +53,18 @@ public class evaluateLevel {
                 level[i] = Double.valueOf(parts[i]);
             }
             
-            problem = args[1].toString();
+            gan = args[1].toString();
             dim = args[2].toString();
+            fitnessFun = Integer.valueOf(args[3].toString());
+            agent = Integer.valueOf(args[4].toString());
+            
 	} else {
-            problem = "/media/vv/DATA/svn/DagstuhlGAN/marioaiDagstuhl/pytorch/underground-10-50/netG_epoch_50_2818.pth";
+            gan = "/media/vv/DATA/svn/DagstuhlGAN/marioaiDagstuhl/pytorch/underground-10-50/netG_epoch_50_2818.pth";
             dim = "10";
-            level = randomUniformDoubleArray(10);
+            level = randomUniformDoubleArray(20);
             
 	}
-        eval = new MarioEvalFunction(problem, dim);
+        eval = new MarioEvalFunction(gan, dim, fitnessFun, agentList[agent]);
             
                     
         if(!eval.isFeasible(level)){
@@ -75,9 +78,9 @@ public class evaluateLevel {
             writer.close();
         }
         
-        MarioProcess marioProcess = new MarioProcess();
+        /*MarioProcess marioProcess = new MarioProcess();
         marioProcess.launchMario(new String[0], true); // true means there is a human player       
-        marioProcess.simulateOneLevel(eval.levelFromLatentVector(level));
+        marioProcess.simulateOneLevel(eval.levelFromLatentVector(level));*/
         
         eval.exit();
         System.exit(0);

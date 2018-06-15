@@ -1,5 +1,7 @@
 package cmatest;
 
+import ch.idsia.ai.agents.Agent;
+import ch.idsia.ai.agents.human.HumanKeyboardAgent;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +11,12 @@ import ch.idsia.mario.engine.level.LevelParser;
 import ch.idsia.tools.EvaluationInfo;
 import communication.GANProcess;
 import communication.MarioProcess;
+import competition.cig.slawomirbojarski.MarioAgent;
+import competition.icegic.robin.AStarAgent;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.logging.Logger;
 import reader.JsonReader;
 
 public class MarioEvalFunction implements IObjectiveFunction {
@@ -21,6 +28,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
 
 	private GANProcess ganProcess;
 	private MarioProcess marioProcess;
+        private int fitnessFun;
 
 	// changing floor will change the reason for termination
 	// (in conjunction with the target value)
@@ -41,12 +49,14 @@ public class MarioEvalFunction implements IObjectiveFunction {
 		}
 	}
         
-        public MarioEvalFunction(String GANPath, String GANDim) throws IOException {
+        public MarioEvalFunction(String GANPath, String GANDim, int fitnessFun, Agent agent) throws IOException {
 		// set up process for GAN
+                this.fitnessFun = fitnessFun;
 		ganProcess = new GANProcess(GANPath, GANDim);
 		ganProcess.start();
 		// set up mario game
-		marioProcess = new MarioProcess();
+		//marioProcess = new MarioProcess(new MarioAgent());
+                marioProcess = new MarioProcess(agent);
 		marioProcess.start();        
 		// consume all start-up messages that are not data responses
 		String response = "";
@@ -73,6 +83,21 @@ public class MarioEvalFunction implements IObjectiveFunction {
 		return result;
 	}
         
+        public static Level marioLevelFromJson(String json) {
+            List<List<List<Integer>>> allLevels = JsonReader.JsonToInt(json);
+            List<List<Integer>> mergedLevel = new ArrayList<List<Integer>>() {};
+            for(int i=0; i<allLevels.get(0).size(); i++){
+                mergedLevel.add(new ArrayList<Integer>());
+            }
+            for(List<List<Integer>> singleLevel : allLevels) {
+                for(int i=0; i<singleLevel.size(); i++){
+                    mergedLevel.get(i).addAll(singleLevel.get(i));
+                }
+            }
+            Level level = LevelParser.createLevelJson(mergedLevel);
+            return level;
+	}
+        
         public void exit() throws IOException{
             ganProcess.commSend("0");
         }
@@ -84,15 +109,21 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	 * @throws IOException Problems communicating with Python GAN process
 	 */
 	public Level levelFromLatentVector(double[] x) throws IOException {
-		x = mapArrayToOne(x);
 		// Interpret x to a level
-		// Brackets required since generator.py expects of list of multiple levels, though only one is being sent here
-		ganProcess.commSend("[" + Arrays.toString(x) + "]");
-		String levelString = ganProcess.commRecv(); // Response to command just sent
-		Level[] levels = marioLevelsFromJson("[" +levelString + "]"); // Really only one level in this array
-		Level level = levels[0];
+                int chunk_length = Integer.valueOf(ganProcess.GANDim);
+                String levelString = "";
+                for(int i =0; i<x.length; i+=chunk_length){
+                    // Brackets required since generator.py expects of list of multiple levels, though only one is being sent here
+                    double[] chunk = Arrays.copyOfRange(x, i, i+chunk_length);
+                    ganProcess.commSend("[" + Arrays.toString(chunk) + "]");
+                    levelString = levelString + ", " + ganProcess.commRecv(); // Response to command just sent
+                }
+                levelString = levelString.replaceFirst(",", "");
+                levelString = levelString.replaceFirst(" ", "");
+		Level level = marioLevelFromJson("[" +levelString + "]"); // Really only one level in this array
 		return level;
 	}
+        
 	
 	/**
 	 * Directly send a string to the GAN (Should be array of arrays of doubles in Json format).
@@ -109,15 +140,48 @@ public class MarioEvalFunction implements IObjectiveFunction {
 		return levelString;
 	}
 	
+        
+        public double evaluate(EvaluationInfo info){
+            if(this.fitnessFun==0) { //Progression / Playability
+                return (double) -info.computeDistancePassed()/LEVEL_LENGTH;   			
+            }else if(info.computeDistancePassed() < LEVEL_LENGTH){
+                return 2000;
+            }else if(this.fitnessFun==1){
+                return (double) info.computeBasicFitness();
+            }else if(this.fitnessFun==2){
+                return (double) -info.computeJumpFraction();
+            }else if(this.fitnessFun==3){
+                return (double) -info.totalActionsPerfomed;
+            }
+            return Double.NaN;
+
+        }
+        
 	/**
 	 * Gets objective score for single latent vector.
 	 */
 	@Override
 	public double valueOf(double[] x) {
-		try {
-			Level level = levelFromLatentVector(x);
-			// Do a simulation
-			EvaluationInfo info = this.marioProcess.simulateOneLevel(level);
+            EvaluationInfo info;
+            int simulations = 1;
+            double val = 0;
+            Level level = null;
+            try {
+                level = levelFromLatentVector(x);
+            } catch (IOException ex) {
+                Logger.getLogger(MarioEvalFunction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
+            for(int i=0; i<simulations; i++){
+                // Do a simulation
+                info = this.marioProcess.simulateOneLevel(level);
+                val += evaluate(info);
+                System.out.println(evaluate(info));
+            }
+            return val/simulations;
+
+            
+            // playability
+/*
 			// Fitness is negative since CMA-ES tries to minimize
                         //System.out.println("done");
                         //System.out.println(info.jumpActionsPerformed);
@@ -138,7 +202,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
 			e.printStackTrace();
 			System.exit(1);
 			return Double.NaN;
-		}
+		}*/
 	}
 
 	@Override

@@ -1,7 +1,10 @@
 package communication;
 
+import ch.idsia.ai.agents.Agent;
+import ch.idsia.ai.agents.Agent.AGENT_TYPE;
 import ch.idsia.ai.agents.AgentsPool;
 import ch.idsia.ai.agents.human.HumanKeyboardAgent;
+import ch.idsia.mario.engine.GlobalOptions;
 import ch.idsia.mario.engine.level.Level;
 import ch.idsia.mario.simulation.BasicSimulator;
 import ch.idsia.mario.simulation.Simulation;
@@ -11,14 +14,22 @@ import ch.idsia.tools.EvaluationInfo;
 import ch.idsia.tools.EvaluationOptions;
 import ch.idsia.tools.ToolsConfigurator;
 import competition.icegic.robin.AStarAgent;
+import competition.cig.slawomirbojarski.MarioAgent;
 
 public class MarioProcess extends Comm {
     private EvaluationOptions evaluationOptions;
     private Simulation simulator;
+    private Agent defaultAgent = new AStarAgent();
 
     public MarioProcess() {
         super();
         this.threadName = "MarioProcess";
+    }
+    
+    public MarioProcess(Agent defaultAgent) {
+        super();
+        this.threadName = "MarioProcess";
+        this.defaultAgent= defaultAgent;
     }
 
     /**
@@ -26,7 +37,7 @@ public class MarioProcess extends Comm {
      */
     public void launchMario() {
     	String[] options = new String[] {""};
-    	launchMario(options, false);
+    	launchMario(options, defaultAgent);
     }
  
     /**
@@ -34,15 +45,15 @@ public class MarioProcess extends Comm {
      * @param options General command line options (currently not really used)
      * @param humanPlayer Whether a human is playing rather than a bot
      */
-    public void launchMario(String[] options, boolean humanPlayer) {
+    public void launchMario(String[] options, Agent agent) {
         this.evaluationOptions = new CmdLineOptions(options);  // if none options mentioned, all defaults are used.
         // set agents
-        createAgentsPool(humanPlayer);
+        AgentsPool.setCurrentAgent(agent);
         // Short time for evolution, but more for human
-        if(!humanPlayer) evaluationOptions.setTimeLimit(20);
+        if(agent.getType()==AGENT_TYPE.AI) evaluationOptions.setTimeLimit(20);
         // TODO: Make these configurable from commandline?
-        evaluationOptions.setMaxFPS(!humanPlayer); // Slow for human players, fast otherwise
-        evaluationOptions.setVisualization(true); // Set true to watch evaluations
+        evaluationOptions.setMaxFPS(agent.getType()==AGENT_TYPE.AI); // Slow for human players, fast otherwise
+        evaluationOptions.setVisualization(GlobalOptions.VisualizationOn); // Set true to watch evaluations
         // Create Mario Component
         ToolsConfigurator.CreateMarioComponentFrame(evaluationOptions);
         evaluationOptions.setAgent(AgentsPool.getCurrentAgent());
@@ -51,18 +62,6 @@ public class MarioProcess extends Comm {
         this.simulator = new BasicSimulator(evaluationOptions.getSimulationOptionsCopy());
     }
 
-    /**
-     * Set the agent that is evaluated in the evolved levels
-     */
-    public static void createAgentsPool(boolean humanPlayer)
-    {
-    	// Could still generalize this more
-    	if(humanPlayer) {
-    		AgentsPool.setCurrentAgent(new HumanKeyboardAgent());
-        } else {
-        	AgentsPool.setCurrentAgent(new AStarAgent());
-        }
-    }
 
     public void setLevel(Level level) {
         evaluationOptions.setLevel(level);
