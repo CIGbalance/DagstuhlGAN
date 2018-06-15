@@ -2,9 +2,9 @@
 #budget=5000
 budget=50
 #dims=( 10 20 30 40 )
-dims = ( 10 )
+dims= ( 10 )
 #seeds=( 5641 3854 8370 494 1944 9249 2517 2531 5453 2982 670 56 6881 1930 5812 )
-seeds = ( 5641 )
+seeds= ( 5641 )
 for seed in "${seeds[@]}"
 do
     for dim in "${dims[@]}"
