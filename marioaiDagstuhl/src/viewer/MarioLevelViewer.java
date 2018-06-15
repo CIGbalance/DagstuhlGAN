@@ -43,7 +43,7 @@ public class MarioLevelViewer {
 		EvaluationOptions options = new CmdLineOptions(new String[0]);
 		ProgressTask task = new ProgressTask(options);
 		// Added to change level
-        options.setLevel(level);
+                options.setLevel(level);
 		task.setOptions(options);
 
 		int relevantWidth = (level.width - (excludeBufferRegion ? 2*LevelParser.BUFFER_WIDTH : 0)) * BLOCK_SIZE;

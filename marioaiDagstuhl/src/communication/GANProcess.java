@@ -6,8 +6,8 @@ import java.lang.ProcessBuilder.Redirect;
 import static basicMap.Settings.*;
 
 public class GANProcess extends Comm {
-    String GANPath = null;
-    String GANDim = null;
+    public String GANPath = null;
+    public String GANDim = null;
 
     public GANProcess() {
         super();

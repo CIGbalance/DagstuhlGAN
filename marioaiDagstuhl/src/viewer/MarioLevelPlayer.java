@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import basicMap.Settings;
+import ch.idsia.ai.agents.human.HumanKeyboardAgent;
 import ch.idsia.mario.engine.level.Level;
 import ch.idsia.mario.engine.level.LevelParser;
 import cmatest.MarioEvalFunction;
@@ -91,7 +92,7 @@ public class MarioLevelPlayer {
 		}
 
 		MarioProcess marioProcess = new MarioProcess();
-		marioProcess.launchMario(new String[0], true); // true means there is a human player       
+		marioProcess.launchMario(new String[0], new HumanKeyboardAgent()); // true means there is a human player       
 		marioProcess.simulateOneLevel(level);
 		
                 eval.exit();
