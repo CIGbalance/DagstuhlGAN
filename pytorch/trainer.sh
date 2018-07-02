@@ -7,11 +7,9 @@ do
     for dim in "${dims[@]}"
     do
         echo "python main.py --niter $budget --nz $dim --json underground.json --seed $seed"
-        python main.py --niter $budget --nz $dim --json underground.json --experiment underground-$dim-$budget --seed $seed
+        python main.py --niter $budget --nz $dim --json underground.json --experiment /scratch/results/marioGAN/underground-$dim-$budget --seed $seed
         echo "python main.py --niter $budget --nz $dim --json overworld.json --seed $seed"
-        python main.py --niter $budget --nz $dim --json overworld.json --experiment overworld-$dim-$budget --seed $seed
-        echo "python main.py --niter $budget --nz $dim --json overworlds.json --seed $seed"
-        python main.py --niter $budget --nz $dim --json overworlds.json --experiment overworlds-$dim-$budget --seed $seed
+        python main.py --niter $budget --nz $dim --json overworld.json --experiment /scratch/results/marioGAN/overworld-$dim-$budget --seed $seed
     done
 done
 
