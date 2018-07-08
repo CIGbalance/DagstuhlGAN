@@ -52,7 +52,9 @@ An already trained Pytorch model is part of this repository. It is in
 [pytorch/netG_epoch_5000.pth](https://github.com/TheHedgeify/DagstuhlGAN/blob/master/pytorch/netG_epoch_5000.pth).
 However, if you would like to re-train the GAN yourself from scratch you can run
 
+```
 python main.py
+```
 
 Once the GAN is trained (or if you use the included GAN), you can run the Java class viewer.MarioRandomLevelViewer
 to generate level images by sending several randomly generated latent vectors to the GAN.
@@ -65,9 +67,7 @@ stitched together into a larger level.
 
 ### Evolving Levels Based on Static Features
 
-The trained GAN model can be used to generate Mario levels that optimize certain tile distributions.
-
-TODO: Ask Sebastian where these files are and how to run them.
+The trained GAN model can be used to generate Mario levels that optimize certain tile distributions. See gan_optimize.py for details.
 
 ### Evolving Levels Based on Agent Performance
 
