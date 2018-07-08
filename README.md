@@ -31,7 +31,9 @@ code from this project is used in any way:
 
 ## Installing
 
-TODO: How to setup Pytorch? Sebastian?
+The framework is build on PyTorch. Installation instructions for PyTorch can be found here: https://pytorch.org/
+
+The latent vectors are optimized with a Python version of CMA-ES, which can be installed with:
 
 ```
 python -m pip install cma
@@ -48,9 +50,9 @@ There are two separate aspects to this codebase:
 
 An already trained Pytorch model is part of this repository. It is in 
 [pytorch/netG_epoch_5000.pth](https://github.com/TheHedgeify/DagstuhlGAN/blob/master/pytorch/netG_epoch_5000.pth).
-However, if you would like to re-train the GAN yourself from scratch here is how you would do it.
+However, if you would like to re-train the GAN yourself from scratch you can run
 
-TODO: Ask Sebastian.
+python main.py
 
 Once the GAN is trained (or if you use the included GAN), you can run the Java class viewer.MarioRandomLevelViewer
 to generate level images by sending several randomly generated latent vectors to the GAN.
