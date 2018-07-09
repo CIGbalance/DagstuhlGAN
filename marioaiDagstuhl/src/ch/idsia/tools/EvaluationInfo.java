@@ -45,7 +45,7 @@ public class EvaluationInfo
         // neglect totalActionsPerfomed;
         // neglect totalLengthOfLevelCells;
         // neglect totalNumberOfCoins;
-        return lengthOfLevelPassedPhys - timeSpentOnLevel + numberOfGainedCoins + marioStatus*5000;
+        return (lengthOfLevelPassedPhys - timeSpentOnLevel + numberOfGainedCoins + marioStatus*5000)/5000;
     }
 
     public double computeDistancePassed()
