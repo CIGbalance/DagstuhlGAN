@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Logger;
 import reader.JsonReader;
+import static reader.JsonReader.JsonToDoubleArray;
 
 public class MarioEvalFunction implements IObjectiveFunction {
 
@@ -135,7 +136,9 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	 * @throws IOException
 	 */
 	public String stringToFromGAN(String input) throws IOException {
-		ganProcess.commSend(input);
+                double[] x = JsonToDoubleArray(input);
+                x = mapArrayToOne(x);
+		ganProcess.commSend(Arrays.toString(x));
 		String levelString = ganProcess.commRecv(); // Response to command just sent
 		return levelString;
 	}
