@@ -11,6 +11,7 @@ import communication.GANProcess;
 import communication.MarioProcess;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
 import reader.JsonReader;
+import static reader.JsonReader.JsonToDoubleArray;
 
 public class MarioEvalFunction implements IObjectiveFunction {
 
@@ -104,7 +105,9 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	 * @throws IOException
 	 */
 	public String stringToFromGAN(String input) throws IOException {
-		ganProcess.commSend(input);
+                double[] x = JsonToDoubleArray(input);
+                x = mapArrayToOne(x);
+		ganProcess.commSend(Arrays.toString(x));
 		String levelString = ganProcess.commRecv(); // Response to command just sent
 		return levelString;
 	}
