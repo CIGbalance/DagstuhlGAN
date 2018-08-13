@@ -1,14 +1,14 @@
-#GANs trained with new encoding
+# GANs trained with new encoding
 
-##Naming schemes
+## Naming schemes
 Folder naming scheme: {sample}-{latent vector dimension}-{maximal epoch for training}
-File naming scheme: {file type}_{epoch}_{random seed for training}
+File naming scheme: {file type}\_{epoch}\_{random seed for training}
 
-##Samples
+## Samples
 
 Found in parent directory (overworld.json, overworlds.json, underground.json)
 
-###overworld.json
+### overworld.json
 * Super Mario Bros. 1-1
 * Super Mario Bros. 2-1
 * Super Mario Bros. 3-1
@@ -22,7 +22,7 @@ Found in parent directory (overworld.json, overworlds.json, underground.json)
 * Super Mario Bros. 8-1
 * Super Mario Bros. 8-2
 
-###overworlds.json
+### overworlds.json
 * Super Mario Bros. 1-1
 * Super Mario Bros. 2-1
 * Super Mario Bros. 3-1
@@ -43,6 +43,6 @@ Found in parent directory (overworld.json, overworlds.json, underground.json)
 * Super Mario Bros. 2 (Japan) 4-2
 * Super Mario Bros. 2 (Japan) B-1
 
-###underground.json
+### underground.json
 * Super Mario Bros. 1-2
 * Super Mario Bros. 4-2
