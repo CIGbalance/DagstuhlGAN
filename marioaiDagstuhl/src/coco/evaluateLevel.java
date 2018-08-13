@@ -8,7 +8,9 @@ package coco;
 import basicMap.Settings;
 import ch.idsia.ai.agents.Agent;
 import ch.idsia.ai.agents.human.HumanKeyboardAgent;
+import ch.idsia.mario.engine.GlobalOptions;
 import cmatest.MarioEvalFunction;
+import communication.MarioProcess;
 import competition.cig.slawomirbojarski.MarioAgent;
 import competition.icegic.robin.AStarAgent;
 import java.io.IOException;
@@ -59,9 +61,9 @@ public class evaluateLevel {
             agent = Integer.valueOf(args[4].toString());
             
 	} else {
-            gan = "/media/vv/DATA/svn/DagstuhlGAN/marioaiDagstuhl/pytorch/underground-10-50/netG_epoch_50_2818.pth";
-            dim = "10";
-            level = randomUniformDoubleArray(20);
+            gan = "pytorch/newGANs/underground-30-5000/netG_epoch_4999_5641.pth";
+            dim = "30";
+            level = randomUniformDoubleArray(60);
             
 	}
         eval = new MarioEvalFunction(gan, dim, fitnessFun, agentList[agent]);
@@ -78,9 +80,10 @@ public class evaluateLevel {
             writer.close();
         }
         
-        /*MarioProcess marioProcess = new MarioProcess();
-        marioProcess.launchMario(new String[0], true); // true means there is a human player       
-        marioProcess.simulateOneLevel(eval.levelFromLatentVector(level));*/
+        GlobalOptions.VisualizationOn = true;
+        MarioProcess marioProcess = new MarioProcess();
+        marioProcess.launchMario(new String[0], new HumanKeyboardAgent());       
+        marioProcess.simulateOneLevel(eval.levelFromLatentVector(level));
         
         eval.exit();
         System.exit(0);

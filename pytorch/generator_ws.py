@@ -34,13 +34,13 @@ if __name__ == '__main__':
  # parameter. However, this model should load by default if no parameter
  # is provided.
  if len(sys.argv) ==1:
- 	modelToLoad = "netG_epoch_5000.pth"
+    modelToLoad = "netG_epoch_5000.pth"
  else:
-	modelToLoad = sys.argv[1]
+    modelToLoad = sys.argv[1]
  if len(sys.argv) >=3:
-	nz = int(sys.argv[2])
+    nz = int(sys.argv[2])
  else:
-	nz = 32
+    nz = 32
 
 
  batchSize = 1
