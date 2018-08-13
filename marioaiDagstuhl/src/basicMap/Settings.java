@@ -23,7 +23,7 @@ public class Settings {
 	
 	// Jacob: IMPORTANT! This is a system-specific path that I had to set.
 	//public static String PYTHON_PROGRAM = "/anaconda/bin/python";
-    public static String PYTHON_PROGRAM = "/usr/bin/python";
+    public static String PYTHON_PROGRAM = "python";
 
     public static void printWarnMsg(String msg) {
         System.out.println(WARN_MSG + msg);

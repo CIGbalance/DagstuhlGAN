@@ -76,7 +76,7 @@ public class LevelParser {
                     level.setBlock(j + extraStones, i, Settings.tilesAdv.get("ttl").byteValue());
                     level.setBlock(j + extraStones +1, i, Settings.tilesAdv.get("ttr").byteValue());
                     for(int k=i+1; k<height; k++){
-                        if(input[k][j]==2 || input[k][j+1]==2){
+                        if(input[k][j]==2 || (j<width-1 && input[k][j+1]==2)){
                             level.setBlock(j+extraStones, k, Settings.tilesAdv.get("tbl").byteValue());
                             level.setBlock(j+extraStones+1, k, Settings.tilesAdv.get("tbr").byteValue());
                         }else{

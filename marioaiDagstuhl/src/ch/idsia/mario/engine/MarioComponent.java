@@ -172,11 +172,16 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
                 for (int i = 0; i < Environment.numberOfButtons; ++i){
                     if (action[i])
                     {
+                        ++totalActionsPerfomed;
+                        break;
+                    }
+                }
+                for (int i = 0; i < Environment.numberOfButtons; ++i){
+                    if (action[i])
+                    {
                         if(i==Mario.KEY_JUMP){
                             jumpActionsPerformed++;
                         }
-                        ++totalActionsPerfomed;
-                        break;
                     }
                 }
             }
