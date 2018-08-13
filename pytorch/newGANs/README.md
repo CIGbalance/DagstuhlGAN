@@ -1,8 +1,8 @@
 # GANs trained with new encoding
 
 ## Naming schemes
-Folder naming scheme: {sample}-{latent vector dimension}-{maximal epoch for training}
-File naming scheme: {file type}\_{epoch}\_{random seed for training}
+* Folder naming scheme: {sample}-{latent vector dimension}-{maximal epoch for training}
+* File naming scheme: {file type}\_{epoch}\_{random seed for training}
 
 ## Samples
 
