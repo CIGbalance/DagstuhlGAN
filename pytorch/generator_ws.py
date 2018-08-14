@@ -47,9 +47,10 @@ if __name__ == '__main__':
  if len(sys.argv) >=4:
     # User can set this to 10 to recreate behavior of original Mario GAN in GECCO 2018
  	z_dims = int(sys.argv[3])
+ elif len(sys.argv) ==1: # If equal to 1, then the old netG_epoch_5000.pth model was loaded above
+ 	z_dims = 10 # Number of tiles in original MarioGAN
  else:
  	z_dims = 13 # This is the new default
-
 
  batchSize = 1
  #nz = 10 #Dimensionality of latent vector
