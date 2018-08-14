@@ -1,24 +1,21 @@
 package cmatest;
 
-import ch.idsia.ai.agents.Agent;
-import ch.idsia.ai.agents.human.HumanKeyboardAgent;
+import static reader.JsonReader.JsonToDoubleArray;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
+import ch.idsia.ai.agents.Agent;
 import ch.idsia.mario.engine.level.Level;
 import ch.idsia.mario.engine.level.LevelParser;
 import ch.idsia.tools.EvaluationInfo;
 import communication.GANProcess;
 import communication.MarioProcess;
-import competition.cig.slawomirbojarski.MarioAgent;
-import competition.icegic.robin.AStarAgent;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.logging.Logger;
 import reader.JsonReader;
-import static reader.JsonReader.JsonToDoubleArray;
 
 public class MarioEvalFunction implements IObjectiveFunction {
 
