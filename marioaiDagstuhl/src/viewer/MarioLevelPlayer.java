@@ -12,6 +12,7 @@ import ch.idsia.mario.engine.level.Level;
 import ch.idsia.mario.engine.level.LevelParser;
 import cmatest.MarioEvalFunction;
 import communication.MarioProcess;
+import competition.icegic.robin.AStarAgent;
 import reader.JsonReader;
 
 /**
@@ -33,17 +34,20 @@ public class MarioLevelPlayer {
 	public static void main(String[] args) throws IOException {
 		Settings.setPythonProgram();
 		// This is used because it contains code for communicating with the GAN
-		MarioEvalFunction eval = new MarioEvalFunction();
+                String GanPath = "/media/vv/DATA/svn/gbea/code-experiments/rw-problems/gan-mario/GAN/overworlds-10-5000/netG_epoch_4999_5641.pth";
+                
+		MarioEvalFunction eval = new MarioEvalFunction(GanPath, "10", 27, new AStarAgent());
 
 		Level level;
 		// Read input level
-		String strLatentVector = "";
-		if (args.length > 0) {
+		String strLatentVector = "[[0.399468679,0.558408489,0.648763207,-0.475929351,-0.17576051,0.157533175,0.322191532,0.103245111,0.0822296638,-0.894546112],[-0.679256326,-0.643430687,0.146795224,-0.663548282,-0.767950146,-0.265928491,-0.907324051,0.545989637,-0.283232998,-0.737325743],[0.547165207,-0.409930497,-0.92882174,0.564390761,0.594278304,0.608712547,-0.803062922,-0.11755018,-0.915811674,-0.0204875417],[0.400866802,0.81029031,-0.900207679,0.737290572,-0.0333398143,-0.422349962,-0.495400763,0.887581723,-0.876503077,0.467294395],[0.449801353,-0.358109518,0.367348703,0.513199543,-0.931694362,0.23088336,0.230901976,0.0306934656,-0.778126148,-0.768768305],[-0.118502759,-0.92448363,0.928024756,0.456140581,0.279709475,-0.338058615,-0.974212895,0.573614058,0.255235263,0.833261622],[-0.481838742,-0.775280449,-0.05769006,0.770488205,-0.693994697,-0.922075671,0.935639745,-0.800797006,0.0140820693,0.49699932],[0.0556630278,0.914185724,0.0024008508,0.526156424,-0.606877576,0.249522793,0.0172895353,-0.233472308,0.771374213,0.189263971],[0.135723986,-0.305053359,0.575282448,0.45330423,-0.0418926899,0.172883926,-0.94344013,0.497231268,0.551034248,0.602603982],[-0.064456038,0.378262589,-0.526901629,-0.412364395,0.319589535,-0.622127062,-0.548949834,-0.139416146,-0.0521241853,-0.169519469],[-0.767006857,0.793759404,0.241370542,-0.311046783,0.363733449,-0.0519150191,-0.885912042,-0.726715415,-0.96184896,0.509438327]]";
+                if(true){
+		/*if (args.length > 0) {
 			StringBuilder builder = new StringBuilder();
 			for (String str : args) {
 				builder.append(str);
 			}
-			strLatentVector = builder.toString();
+			strLatentVector = builder.toString();*/
 			Settings.printInfoMsg("Passed vector(s): " + strLatentVector);
 			// If the input starts with two square brackets, then it must be an array of arrays,
 			// and hence a series of several latent vectors rather than just one. In this case,
@@ -92,7 +96,7 @@ public class MarioLevelPlayer {
 		}
 
 		MarioProcess marioProcess = new MarioProcess();
-		marioProcess.launchMario(new String[0], new HumanKeyboardAgent()); // true means there is a human player       
+		marioProcess.launchMario(new String[0], new AStarAgent()); // true means there is a human player       
 		marioProcess.simulateOneLevel(level);
 		
                 eval.exit();

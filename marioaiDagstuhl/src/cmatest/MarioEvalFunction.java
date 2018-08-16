@@ -16,6 +16,7 @@ import communication.GANProcess;
 import communication.MarioProcess;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
 import reader.JsonReader;
+import static reader.JsonReader.JsonToDoubleArray;
 
 public class MarioEvalFunction implements IObjectiveFunction {
 

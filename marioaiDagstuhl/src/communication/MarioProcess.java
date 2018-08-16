@@ -50,10 +50,10 @@ public class MarioProcess extends Comm {
         // set agents
         AgentsPool.setCurrentAgent(agent);
         // Short time for evolution, but more for human
-        if(agent.getType()==AGENT_TYPE.AI) evaluationOptions.setTimeLimit(20);
+        //if(agent.getType()==AGENT_TYPE.AI) evaluationOptions.setTimeLimit(20);
         // TODO: Make these configurable from commandline?
-        evaluationOptions.setMaxFPS(agent.getType()==AGENT_TYPE.AI); // Slow for human players, fast otherwise
-        evaluationOptions.setVisualization(GlobalOptions.VisualizationOn); // Set true to watch evaluations
+       // evaluationOptions.setMaxFPS(agent.getType()==AGENT_TYPE.AI); // Slow for human players, fast otherwise
+        evaluationOptions.setVisualization(true); // Set true to watch evaluations
         // Create Mario Component
         ToolsConfigurator.CreateMarioComponentFrame(evaluationOptions);
         evaluationOptions.setAgent(AgentsPool.getCurrentAgent());
