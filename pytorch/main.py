@@ -241,21 +241,18 @@ for epoch in range(opt.niter):
         print('[%d/%d][%d/%d][%d] Loss_D: %f Loss_G: %f Loss_D_real: %f Loss_D_fake %f'
               % (epoch, opt.niter, i, num_batches, gen_iterations,
                  errD.data[0], errG.data[0], errD_real.data[0], errD_fake.data[0]))
-        if gen_iterations % 5000 == 0:  # was 500
 
-            fake = netG(Variable(fixed_noise, volatile=True))
+fake = netG(Variable(fixed_noise, volatile=True))
 
-            im = fake.data.cpu().numpy()
-            # print('SHAPE fake',type(im), im.shape)
-            # print('SUM ',np.sum( im, axis = 1) )
+im = fake.data.cpu().numpy()
+# print('SHAPE fake',type(im), im.shape)
+# print('SUM ',np.sum( im, axis = 1) )
 
-            im = combine_images(tiles2image(np.argmax(im, axis=1)))
+im = combine_images(tiles2image(np.argmax(im, axis=1)))
 
-            plt.imsave('{0}/mario_fake_samples_{1}_{2}.png'.format(opt.experiment, gen_iterations, opt.seed), im)
-            torch.save(netG.state_dict(), '{0}/netG_epoch_{1}_{2}.pth'.format(opt.experiment, gen_iterations, opt.seed))
+plt.imsave('{0}/mario_fake_samples_{1}_{2}.png'.format(opt.experiment, epoch, opt.seed), im)
 
-    # do checkpointing
-	torch.save(netG.state_dict(), '{0}/netG_epoch_{1}_{2}.pth'.format(opt.experiment, epoch, opt.seed))
-	torch.save(netD.state_dict(), '{0}/netD_epoch_{1}_{2}.pth'.format(opt.experiment, epoch, opt.seed))
-    # torch.save(netG.state_dict(), '{0}/netG_epoch_{1}.pth'.format(opt.experiment, epoch))
-    # torch.save(netD.state_dict(), '{0}/netD_epoch_{1}.pth'.format(opt.experiment, epoch))
+# do checkpointing
+torch.save(netG.state_dict(), '{0}/netG_epoch_{1}_{2}.pth'.format(opt.experiment, epoch, opt.seed))
+torch.save(netD.state_dict(), '{0}/netD_epoch_{1}_{2}.pth'.format(opt.experiment, epoch, opt.seed))
+
