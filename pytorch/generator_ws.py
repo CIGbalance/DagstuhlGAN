@@ -14,6 +14,7 @@ import models.dcgan as dcgan
 import math
 
 import random
+from collections import OrderedDict
 
 def combine_images(generated_images):
     num = generated_images.shape[0]
@@ -34,14 +35,22 @@ if __name__ == '__main__':
  # parameter. However, this model should load by default if no parameter
  # is provided.
  if len(sys.argv) ==1:
-    modelToLoad = "netG_epoch_5000.pth"
+ 	modelToLoad = "netG_epoch_5000.pth"
  else:
-    modelToLoad = sys.argv[1]
+ 	modelToLoad = sys.argv[1]
  if len(sys.argv) >=3:
-    nz = int(sys.argv[2])
+ 	nz = int(sys.argv[2])
  else:
-    nz = 32
+ 	nz = 32
 
+ #Jacob: I added this to maintain backwards compatibility
+ if len(sys.argv) >=4:
+    # User can set this to 10 to recreate behavior of original Mario GAN in GECCO 2018
+ 	z_dims = int(sys.argv[3])
+ elif len(sys.argv) ==1: # If equal to 1, then the old netG_epoch_5000.pth model was loaded above
+ 	z_dims = 10 # Number of tiles in original MarioGAN
+ else:
+ 	z_dims = 13 # This is the new default
 
  batchSize = 1
  #nz = 10 #Dimensionality of latent vector
@@ -50,11 +59,29 @@ if __name__ == '__main__':
  ngf = 64
  ngpu = 1
  n_extra_layers = 0
- z_dims = 13 #number different titles
+ #z_dims = 10 #number different titles: set by command line above
 
+ # This is a new DCGAN model that has the proper state dict labels/keys for the latest version of PyTorch (no periods '.')
  generator = dcgan.DCGAN_G(imageSize, nz, z_dims, ngf, ngpu, n_extra_layers)
- #generator.load_state_dict(torch.load('netG_epoch_24.pth', map_location=lambda storage, loc: storage))
- generator.load_state_dict(torch.load(modelToLoad, map_location=lambda storage, loc: storage))
+ #print(generator.state_dict()) 
+ # This is a state dictionary with deprecated key labels/names
+ deprecatedModel = torch.load(modelToLoad, map_location=lambda storage, loc: storage)
+ #print(deprecatedModel)
+ # Make new model with weights/parameters from deprecatedModel but labels/keys from generator.state_dict()
+ fixedModel = OrderedDict()
+ for (goodKey,ignore) in generator.state_dict().items():
+   # Take the good key and replace the : with . in order to get the deprecated key so the associated value can be retrieved
+   badKey = goodKey.replace(":",".")
+   #print(goodKey)
+   #print(badKey)
+   # Some parameter settings of the generator.state_dict() are not actually part of the saved models
+   if badKey in deprecatedModel:
+     goodValue = deprecatedModel[badKey]
+     fixedModel[goodKey] = goodValue
+
+ #print(fixedModel)
+ # Load the parameters with the fixed labels  
+ generator.load_state_dict(fixedModel)
 
  testing = False
 

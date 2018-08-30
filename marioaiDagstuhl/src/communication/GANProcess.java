@@ -36,7 +36,10 @@ public class GANProcess extends Comm {
         // Run program with model architecture and weights specified as parameters
         ProcessBuilder builder = null;
         if(this.GANPath == null){
-            builder = new ProcessBuilder(PYTHON_PROGRAM, WASSERSTEIN_PATH, WASSERSTEIN_GAN, GAN_DIM);
+        	// 10 is the original number of tiles in the GECCO 2018 GAN, but the default later changed to 13. This setting overrides it.
+            builder = new ProcessBuilder(PYTHON_PROGRAM, WASSERSTEIN_PATH, WASSERSTEIN_GAN, GAN_DIM, "10");
+            this.GANPath = WASSERSTEIN_PATH;
+            this.GANDim = GAN_DIM; // Set here to avoid a null pointer later
         }else{
             builder = new ProcessBuilder(PYTHON_PROGRAM, WASSERSTEIN_PATH, this.GANPath, this.GANDim);
         }
