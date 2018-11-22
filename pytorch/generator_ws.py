@@ -79,9 +79,14 @@ if __name__ == '__main__':
      goodValue = deprecatedModel[badKey]
      fixedModel[goodKey] = goodValue
 
- #print(fixedModel)
- # Load the parameters with the fixed labels  
- generator.load_state_dict(fixedModel)
+ if not fixedModel:
+   #print("LOAD REGULAR")
+   #print(deprecatedModel)
+   # If the fixedModel was empty, then the model was trained with the new labels, and the regular load process is fine
+   generator.load_state_dict(deprecatedModel)
+ else:
+   # Load the parameters with the fixed labels  
+   generator.load_state_dict(fixedModel)
 
  testing = False
 
