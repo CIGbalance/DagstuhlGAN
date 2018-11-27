@@ -5,38 +5,43 @@ import numpy as np
 from math import log
 import random
 import sys
-from io import StringIO
 
-#parser = argparse.ArgumentParser()
-#parser.add_argument('--inputDir', default=None, help='InputFolder')
+parser = argparse.ArgumentParser()
+parser.add_argument('--inputDir', default=None, help='Folder containing Training samples')
+parser.add_argument('-ox', '--outx', type=int, default=100, help='Dimension for output (x)')
+parser.add_argument('-oy', '--outy', type=int, default=14, help='Dimension for output (y)')
+parser.add_argument('-fx', '--filterx', type=int, default=2, help='Dimension for filter (x)')
+parser.add_argument('-fy', '--filtery', type=int, default=2, help='Dimension for filter (y)')
+parser.add_argument('--seed', type=int, default=0, help='Random seed')
+parser.add_argument('-b', '--border', default="", help='Character to mark borders, empty will not use borders')
 
-#opt = parser.parse_args()
 
-border="."
-#inputFolder=opt.inputDir
-inputFolder="levels"
+opt = parser.parse_args()
 
-filter_x = 3
-filter_y = 3
+if opt.inputDir is None:
+    print("need input directory for training samples")
+    exit(-1)
 
-output_x = 100
-output_y = 14
+if opt.seed == 0:
+    opt.seed = random.randint(1, 10000)
+
+print("Random Seed: ", opt.seed)
+random.seed(opt.seed)
+
+border= opt.border
+inputFolder=opt.inputDir
+
+filter_x = opt.filterx
+filter_y = opt.filtery
+
+output_x = opt.outx
+output_y = opt.outy
 
 if border!="":
     output_x+=2
     output_y+=2
 patterns_x = output_x-filter_x +1
 patterns_y = output_y-filter_y+1
-
-#def translate(input, translateMap):
-#    for x in np.nditer(input, op_flags=['readwrite']):
-#        tmp = np.array2string(x)
-#        if tmp not in translateMap:
-#            translateMap[tmp]=len(translateMap)
-#        x[...] = translateMap[tmp]
-#    return translateMap
-
-
 
 def patternsFromSample(patternsMap, input, filter_x, filter_y, x_dims, y_dims):
     total = 0
@@ -55,7 +60,6 @@ def patternsFromSample(patternsMap, input, filter_x, filter_y, x_dims, y_dims):
 
 def processInput(inputFolder):
     patternsMap={}
-    #translateMap={}
     total=0
     for file in os.listdir(inputFolder):
         if file.endswith(".txt"):
@@ -70,22 +74,14 @@ def processInput(inputFolder):
                 x_dims = input.shape[1]  # sample width
                 y_dims = input.shape[0]  # sample height
                 print(input)
-            #translateMap = translate(input,translateMap)
-            #input = input.astype(int)
-            #print(input)
             total += patternsFromSample(patternsMap, input, filter_x, filter_y, x_dims, y_dims)
     for key, value in patternsMap.items():
         patternsMap[key]=float(value)/total
 
-    #translateMap[np.array2string(np.array(" "))] = len(translateMap)
-    #reverseTranslate = {}
-    #for key, value in translateMap.items():
-    #    reverseTranslate[value] = key
-    return patternsMap#, patternsMap, reverseTranslate
+    return patternsMap
 
 def patternSubset(pattern, offset_y, offset_x):
     p = np.array(list(pattern))
-    #p = np.array(pattern.replace("[","").replace("]","").split(" "),dtype=int)
     p.shape=(filter_y, filter_x)
     if offset_x<0 and offset_y<0:
         p = p[0:filter_y+offset_y:,0:filter_x+offset_x]
@@ -119,7 +115,6 @@ def buildWave(patterns_y, patterns_x):
     wave = [[1] * patterns_x for i in range(patterns_y)]
     return np.array(wave)
 
-
 def findLowestEntropy(patternsMap, level, patterns_y, patterns_x):
     cell = [-1]*2
     minEntropy = float("inf")
@@ -144,17 +139,12 @@ def observe(patternsMap, level, patterns_y, patterns_x, wave):
         sys.exit(-1)
     elif cell == [-1]*2:
         return True
-    #print(cell)
     pattern_probs = [a * b for a, b in zip(patternsMap.values(), level[cell[0]][cell[1]])]
-    #print(pattern_probs)
     pattern = min(np.where(np.cumsum(pattern_probs) > random.uniform(0, sum(pattern_probs)))[0])
-    #print(pattern)
     ##could produce errors if value is exact max value. ignore for now
     level[cell[0]][cell[1]] = [0]*len(patternsMap.keys())
     level[cell[0]][cell[1]][pattern]=1
     wave[cell[0]][cell[1]]=1
-    #print(level[cell[0]][cell[1]])
-    #print(wave[cell[0]][cell[1]])
     return False
 
 def propagate(level,coefficientMatrix, wave, patterns_y, patterns_x, filter_y, filter_x):
@@ -181,8 +171,6 @@ def propagate(level,coefficientMatrix, wave, patterns_y, patterns_x, filter_y, f
                     allowed_patterns = [min(a, b) for a, b in zip(prev_allowed,allowed_patterns)]
                     if sum(allowed_patterns)==0:
                         sys.exit(1)
-                    #if sum(allowed_patterns)==1:
-                    #    print("test")
                     if np.sum(prev_allowed)>np.sum(allowed_patterns):
                         wave[neighbour[0]][neighbour[1]]=1
                         level[neighbour[0]][neighbour[1]] = allowed_patterns
@@ -194,12 +182,6 @@ def propagate(level,coefficientMatrix, wave, patterns_y, patterns_x, filter_y, f
         if y>=patterns_y:
             x=0
             y=0
-            #print(np.sum(wave))
-            #print(np.sum(level))
-            #print(wave)
-            #print("---")
-            #print(allSum)
-            allSum=0
     return 0
 
 def convertToLevel(level, patternsMap):
@@ -208,25 +190,19 @@ def convertToLevel(level, patternsMap):
         for x in range(patterns_x):
             if sum(level[y][x])==1:
                 patterns[y][x] = patternsMap.keys()[np.where(level[y][x]==1)[0][0]]
-    #print(patterns)
     output =  [[0]*output_x  for i in range(output_y)]
     for y in range(patterns_y):
         for x in range(patterns_x):
             pattern = patterns[y][x]
             if pattern != -1:
                 p = np.array(list(pattern))
-                # p = np.array(pattern.replace("[","").replace("]","").split(" "),dtype=int)
                 p.shape = (filter_y, filter_x)
                 for offset_y in range(filter_y):
                     for offset_x in range(filter_x):
                         output[y+offset_y][x+offset_x]=p[offset_y][offset_x]
-    #print(output)
-    #for y in range(output_y):
-    #    for x in range(output_x):
-    #        output[y][x]=reverseTranslate[output[y][x]].replace("'","")
     for xs in output:
         print("".join(map(str, xs)).replace("0"," "))
-
+    return output
 
 def doBorderStuff(patternsMap, border, level, wave):
     border_bottom = [0]*len(patternsMap.keys())
@@ -262,17 +238,14 @@ def doBorderStuff(patternsMap, border, level, wave):
     for y in range(1,patterns_y-1):
         for x in range(1,patterns_x-1):
             level[y][x] = no_border
-    print(wave)
     print(np.sum(level, axis=2))
     propagate(level, coefficientMatrix, wave, patterns_y, patterns_x, filter_y, filter_x)
-    print(wave)
     print(np.sum(level, axis=2))
 
 patternsMap= processInput(inputFolder)
 print(patternsMap)
-#print(list(patternsMap.keys())[0])
 coefficientMatrix=buildPropagator(patternsMap, filter_y, filter_x)
-#print(coefficientMatrix)
+print(coefficientMatrix)
 level = buildLevel(patternsMap, patterns_y, patterns_x)
 wave = buildWave(patterns_y, patterns_x)
 if border!="":
@@ -283,11 +256,14 @@ while not done:
     propagate(level, coefficientMatrix,wave,patterns_y,patterns_x,filter_y,filter_x)
     convertToLevel(level, patternsMap)
     print("")
-    #print(np.sum(level, axis=2))
-    #print("......")
+    print(np.sum(level, axis=2))
+    print("......")
+f= open("wfc_"+os.path.basename(os.path.normpath(inputFolder))+"_"+str(opt.outx)+"_"+str(opt.outy)+"_"+str(filter_x)+"_"+str(filter_y)+"_"+str(opt.seed)+"_"+str(border!="")+".txt","w+")
+output = convertToLevel(level,patternsMap)
+for xs in output:
+    line = "".join(map(str, xs)).replace("0", " ").replace(border,"")
+    if len(line)>0:
+        line +="\n"
+    f.write(line)
+f.close()
 
-#convertToLevel(level,reverseTranslate, patternsMap)
-
-#cell = findLowestEntropy(patternsMap,level, y_dims, x_dims)
-#print(cell)
-#print(patternSubset(list(patternsMap.keys())[0],-1,-1))
