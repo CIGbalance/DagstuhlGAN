@@ -21,4 +21,4 @@ module load python/2.7.15
 cd /data/autoScratch/weekly/$USER
 #$ -cwd
 
-python $HOME/DagstuhlGAN/wfc/wfc.py --inputDir ${HOME}/DagstuhlGAN/wfc/training_levels/${inputDir} -ox $ox -oy $oy -fx $fx -fy $fy --seed $seed -b $b 2>&1 log_${inputDir}_${ox}_${oy}_${fx}_${fy}_${seed}_${border}.txt
+python $HOME/DagstuhlGAN/wfc/wfc.py --inputDir ${HOME}/DagstuhlGAN/wfc/training_levels/${inputDir} -ox $ox -oy $oy -fx $fx -fy $fy --seed $seed -b "$b" > log_${inputDir}_${ox}_${oy}_${fx}_${fy}_${seed}_${border}.txt
