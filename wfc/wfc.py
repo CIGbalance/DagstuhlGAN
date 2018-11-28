@@ -8,7 +8,7 @@ import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--inputDir', default=None, help='Folder containing Training samples')
-parser.add_argument('-ox', '--outx', type=int, default=100, help='Dimension for output (x)')
+parser.add_argument('-ox', '--outx', type=int, default=28, help='Dimension for output (x)')
 parser.add_argument('-oy', '--outy', type=int, default=14, help='Dimension for output (y)')
 parser.add_argument('-fx', '--filterx', type=int, default=2, help='Dimension for filter (x)')
 parser.add_argument('-fy', '--filtery', type=int, default=2, help='Dimension for filter (y)')
