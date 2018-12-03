@@ -61,7 +61,7 @@ public class evaluateLevel {
             agent = Integer.valueOf(args[4].toString());
             
 	} else {
-            gan = "pytorch/newGANs/underground-30-5000/netG_epoch_4999_5641.pth";
+            gan = "pytorch/newGANs/underground-5-5000/netG_epoch_4999_5641.pth";
             dim = "30";
             level = randomUniformDoubleArray(60);
             
