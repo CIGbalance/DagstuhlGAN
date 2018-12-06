@@ -28,7 +28,7 @@ import ch.idsia.mario.environments.Environment;
 public class Constants {
 
 	/** constants */
-	public static final int VERBOSITY = 0; // 0: quiet, 1: small talk, 2: talkative, 3: blabbermouth
+	public static final int VERBOSITY = 1; // 0: quiet, 1: small talk, 2: talkative, 3: blabbermouth
 	public static final boolean USE_AGENT = true;
 	public static final boolean USE_CHAMP = false; // use Robin Baumgarten's A* agent
 	public static final boolean INFINITE = false;

@@ -42,8 +42,10 @@ public class ScaredAgent extends BasicAIAgent implements Agent {
 
     public boolean[] getAction(Environment observation) {
         byte[][] levelScene = observation.getLevelSceneObservation(/*1*/);
+        byte[][] enemies = observation.getEnemiesObservation();
+
         if (/*levelScene[11][13] != 0 ||*/ levelScene[11][12] != 0 ||
-           /* levelScene[12][13] == 0 ||*/ levelScene[12][12] == 0 )
+           /* levelScene[12][13] == 0 ||*/ levelScene[12][12] == 0 ||  enemies[11][13] != 0 || enemies[11][12]!=0)
         {
             if (observation.mayMarioJump() || ( !observation.isMarioOnGround() && action[Mario.KEY_JUMP]))
             {

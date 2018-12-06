@@ -64,6 +64,11 @@ public class MarioAgent implements Agent {
 		// if rules are still empty, add hand-coded rules
 		if (rules == null)
 			loadRulesFromFile("hand-coded.rules");
+                if(rules==null){
+                    System.out.println("rules not loaded");
+                }else if (rules.length> 0){
+                    System.out.println("rules loaded");
+                }
 		this.reset();
 	}
 	

@@ -7,6 +7,14 @@ package coco;
 
 import basicMap.Settings;
 import ch.idsia.ai.agents.Agent;
+import ch.idsia.ai.agents.ai.ForwardJumpingAgent;
+import ch.idsia.ai.agents.ai.LargeMLPAgent;
+import ch.idsia.ai.agents.ai.RandomAgent;
+import ch.idsia.ai.agents.ai.SRNAgent;
+import ch.idsia.ai.agents.ai.ScaredAgent;
+import ch.idsia.ai.agents.ai.ScaredSpeedyAgent;
+import ch.idsia.ai.agents.ai.SimpleMLPAgent;
+import ch.idsia.ai.agents.ai.TimingAgent;
 import ch.idsia.ai.agents.human.HumanKeyboardAgent;
 import ch.idsia.mario.engine.GlobalOptions;
 import cmatest.MarioEvalFunction;
@@ -30,15 +38,18 @@ public class evaluateLevel {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        //Settings.PYTHON_PROGRAM = "python";
+        //Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
 	MarioEvalFunction eval = null;
         
         String gan = null;
         String dim = null;
         double [] level = null;
         int fitnessFun = 0;
-        int agent = 0;
-        Agent[] agentList = {new AStarAgent(), new MarioAgent(), new HumanKeyboardAgent()};
+        int agent = 1;//
+        //Agent[] agentList = {new AStarAgent(), new MarioAgent(), new HumanKeyboardAgent(), new ScaredAgent(), new ForwardJumpingAgent(),
+        //new RandomAgent(), new ScaredSpeedyAgent(), new SimpleMLPAgent()};
+        Agent[] agentList = {new AStarAgent(), new ScaredAgent(), new HumanKeyboardAgent()};
+        GlobalOptions.VisualizationOn = false;
         
 	// Read input level
 	if (args.length > 0) {
@@ -61,15 +72,23 @@ public class evaluateLevel {
             agent = Integer.valueOf(args[4].toString());
             
 	} else {
-            gan = "pytorch/newGANs/underground-5-5000/netG_epoch_4999_5641.pth";
-            dim = "30";
-            level = randomUniformDoubleArray(60);
+            Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
+
+            gan = "/media/vv/DATA/svn/gbea/code-experiments/rw-problems/gan-mario/GAN/underground-5-5000/netG_epoch_4999_5641.pth";
+            dim = "5";
+            level = randomUniformDoubleArray(5);
+            
             
 	}
         eval = new MarioEvalFunction(gan, dim, fitnessFun, agentList[agent]);
             
-                    
-        if(!eval.isFeasible(level)){
+        PrintWriter writer = new PrintWriter("objectives.txt", "UTF-8");
+        writer.println("1");
+        writer.println(eval.valueOf(level));
+        writer.close();         
+        
+        
+        /*if(!eval.isFeasible(level)){
             PrintWriter writer = new PrintWriter("objectives.txt", "UTF-8");
             writer.println("0");
             writer.close();
@@ -78,15 +97,18 @@ public class evaluateLevel {
             writer.println("1");
             writer.println(eval.valueOf(level));
             writer.close();
-        }
+        }*/
         
-        GlobalOptions.VisualizationOn = true;
-        MarioProcess marioProcess = new MarioProcess();
-        marioProcess.launchMario(new String[0], new HumanKeyboardAgent());       
-        marioProcess.simulateOneLevel(eval.levelFromLatentVector(level));
+        /*if(args.length==0){
+            GlobalOptions.VisualizationOn = true;
+            MarioProcess marioProcess = new MarioProcess();
+            marioProcess.launchMario(new String[0], new HumanKeyboardAgent());       
+            marioProcess.simulateOneLevel(eval.levelFromLatentVector(level));
+        }*/
         
         eval.exit();
         System.exit(0);
     }
+
     
 }
