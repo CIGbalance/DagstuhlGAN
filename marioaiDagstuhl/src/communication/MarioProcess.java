@@ -55,7 +55,7 @@ public class MarioProcess extends Comm {
         evaluationOptions.setMaxFPS(agent.getType()==AGENT_TYPE.AI); // Slow for human players, fast otherwise
         evaluationOptions.setVisualization(agent.getType()!=AGENT_TYPE.AI); // Set true to watch evaluations
         // Create Mario Component
-        ToolsConfigurator.CreateMarioComponentFrame(evaluationOptions);
+        //ToolsConfigurator.CreateMarioComponentFrame(evaluationOptions);
         evaluationOptions.setAgent(AgentsPool.getCurrentAgent());
         evaluationOptions.setNumberOfTrials(30);
         System.out.println(evaluationOptions.getAgent().getClass().getName());

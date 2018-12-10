@@ -117,7 +117,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         adjustFPS();
         EvaluationInfo evaluationInfo = new EvaluationInfo();
 
-        VolatileImage image = null;
+        /*VolatileImage image = null;
         Graphics g = null;
         Graphics og = null;
 
@@ -131,7 +131,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
             drawString(og, msgClick, 160 - msgClick.length() * 4, 110, 7);
         }
 
-        addFocusListener(this);
+        addFocusListener(this);*/
 
         // Remember the starting time
         long tm = System.currentTimeMillis();
@@ -157,10 +157,10 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
             float alpha = 0;
 
 //            og.setColor(Color.RED);
-            if (GlobalOptions.VisualizationOn) {
+            /*if (GlobalOptions.VisualizationOn) {
                 og.fillRect(0, 0, 320, 240);
                 scene.render(og, alpha);
-            }
+            }*/
 
             if (agent instanceof ServerAgent && !((ServerAgent) agent).isAvailable()) {
                 System.err.println("Agent became unavailable. Simulation Stopped");
@@ -252,7 +252,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
             System.out.println(diePerc);*/
             
 
-            if (GlobalOptions.VisualizationOn) {
+            /*if (GlobalOptions.VisualizationOn) {
 
                 String msg = "Agent: " + agent.getName();
                 ((LevelScene) scene).drawStringDropShadow(og, msg, 0, 7, 5);
@@ -291,12 +291,12 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
                 } else {
                     g.drawImage(image, 0, 0, null);
                 }
-            } else {
+            }*/// else {
                 // Win or Die without renderer!! independently.
                 marioStatus = ((LevelScene) scene).mario.getStatus();
                 if (marioStatus != Mario.STATUS_RUNNING)
                     stop();
-            }
+            //}
             // Delay depending on how far we are behind.
             if (delay > 0)
                 try {
