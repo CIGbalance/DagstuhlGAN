@@ -191,11 +191,15 @@ public class MarioEvalFunction implements IObjectiveFunction {
             int simulations = 30;
             double val = 0;
             String levelString = "";
+            long start = System.nanoTime();
             try {
                 levelString = StringFromLatentVector(x);
             } catch (IOException ex) {
                 Logger.getLogger(MarioEvalFunction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
+            long time = System.nanoTime() - start;
+            System.out.println("GAN communication took "+ time + "ns");
+            start = System.nanoTime();
             for(int i=0; i<simulations; i++){
                 Level level = marioLevelFromJson("[" +levelString + "]");
                 // Do a simulation
@@ -204,6 +208,8 @@ public class MarioEvalFunction implements IObjectiveFunction {
                 val += v;
                 System.out.println(v);
             }
+            time = System.nanoTime()-start;
+            System.out.println("Simulation took "+ time + "ns, average of " + time/simulations +"ns");
             return val/simulations;
 
             

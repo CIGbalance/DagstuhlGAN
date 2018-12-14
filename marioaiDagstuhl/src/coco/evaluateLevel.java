@@ -37,6 +37,8 @@ public class evaluateLevel {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
+        long start = System.nanoTime();
+
         // TODO code application logic here
         //Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
 	MarioEvalFunction eval = null;
@@ -50,6 +52,7 @@ public class evaluateLevel {
         //new RandomAgent(), new ScaredSpeedyAgent(), new SimpleMLPAgent()};
         Agent[] agentList = {new AStarAgent(), new ScaredAgent(), new HumanKeyboardAgent()};
         GlobalOptions.VisualizationOn = false;
+        String outFile = "objectives.txt";
         
 	// Read input level
 	if (args.length > 0) {
@@ -70,6 +73,7 @@ public class evaluateLevel {
             dim = args[2].toString();
             fitnessFun = Integer.valueOf(args[3].toString());
             agent = Integer.valueOf(args[4].toString());
+            outFile = args[5].toString();
             
 	} else {
             Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
@@ -80,13 +84,19 @@ public class evaluateLevel {
             
             
 	}
+        long time = System.nanoTime() - start;
+        System.out.println("Startup took "+ time + "ns");
         eval = new MarioEvalFunction(gan, dim, fitnessFun, agentList[agent]);
-            
-        PrintWriter writer = new PrintWriter("objectives.txt", "UTF-8");
-        writer.println("1");
-        writer.println(eval.valueOf(level));
-        writer.close();         
+        double val = eval.valueOf(level);
+
         
+        start = System.nanoTime();
+        PrintWriter writer = new PrintWriter(outFile, "UTF-8");
+        writer.println("1");
+        writer.println(val);
+        writer.close();         
+        time = System.nanoTime() - start;
+        System.out.println("File output took "+ time + "ns");
         
         /*if(!eval.isFeasible(level)){
             PrintWriter writer = new PrintWriter("objectives.txt", "UTF-8");
@@ -106,7 +116,10 @@ public class evaluateLevel {
             marioProcess.simulateOneLevel(eval.levelFromLatentVector(level));
         }*/
         
+        start = System.nanoTime();
         eval.exit();
+        time = System.nanoTime() - start;
+        System.out.println("Closing took "+ time + "ns");
         System.exit(0);
     }
 
