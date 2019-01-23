@@ -68,6 +68,8 @@ if opt.problem == 0:
 else:
     examplesJson= "sepEx/examplemario{}.json".format(opt.problem)
 X = np.array ( json.load(open(examplesJson)) )
+print(X)
+print(X.shape)
 z_dims = 10 #Numer different title types
 
 num_batches = X.shape[0] / opt.batchSize

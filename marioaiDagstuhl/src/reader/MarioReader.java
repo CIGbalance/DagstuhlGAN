@@ -45,10 +45,10 @@ public class MarioReader {
         dir += "/marioaiDagstuhl/";
         // String inputFile = "data/mario/example.txt";
 
-        String inputDirectory = dir + "data/mario/levels/";
+        String inputDirectory = "/media/vv/DATA/svn/GameGAN/data/mario/levels/";
 
-        String outputFile = dir + "data/mario/example.json";
-        String outputdir = dir + "data/mario/";
+        String outputFile = "/media/vv/DATA/svn/GameGAN/data/mario/levels/levels.json";
+        String outputdir = "/media/vv/DATA/svn/GameGAN/data/mario/levels/";
 
         // need to iterate over all the files in a directory
 
@@ -99,7 +99,7 @@ public class MarioReader {
         System.out.println("Wrote file with " + examples.size() + " examples");
 
 
-        System.out.println("======== test 1 ===============");
+        /*System.out.println("======== test 1 ===============");
         Random rdm = new Random();
 
         int[][] input1 = new int[5][10];
@@ -117,7 +117,7 @@ public class MarioReader {
                 input2[i][j] = rdm.nextInt();
             }
         }
-        System.out.println(arrayToString(input2));
+        System.out.println(arrayToString(input2));*/
 
     }
 
