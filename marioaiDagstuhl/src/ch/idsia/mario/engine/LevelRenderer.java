@@ -25,11 +25,11 @@ public class LevelRenderer
 		this.height = height;
 
 		this.level = level;
-		image = graphicsConfiguration.createCompatibleImage(width, height, Transparency.BITMASK);
+		/*image = graphicsConfiguration.createCompatibleImage(width, height, Transparency.BITMASK);
 		g = (Graphics2D) image.getGraphics();
 		g.setComposite(AlphaComposite.Src);
 
-		updateArea(0, 0, width, height);
+		updateArea(0, 0, width, height);*/
 	}
 
 	/**

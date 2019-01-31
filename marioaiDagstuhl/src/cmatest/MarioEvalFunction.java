@@ -13,6 +13,7 @@ import communication.GANProcess;
 import communication.MarioProcess;
 import competition.cig.slawomirbojarski.MarioAgent;
 import competition.icegic.robin.AStarAgent;
+import competition.icegic.robin.astar.sprites.Mario;
 import fr.inria.optimization.cmaes.fitness.IObjectiveFunction;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -125,6 +126,21 @@ public class MarioEvalFunction implements IObjectiveFunction {
 		return level;
 	}
         
+        public String StringFromLatentVector(double[] x) throws IOException {
+		// Interpret x to a level
+                int chunk_length = Integer.valueOf(ganProcess.GANDim);
+                String levelString = "";
+                for(int i =0; i<x.length; i+=chunk_length){
+                    // Brackets required since generator.py expects of list of multiple levels, though only one is being sent here
+                    double[] chunk = Arrays.copyOfRange(x, i, i+chunk_length);
+                    ganProcess.commSend("[" + Arrays.toString(chunk) + "]");
+                    levelString = levelString + ", " + ganProcess.commRecv(); // Response to command just sent
+                }
+                levelString = levelString.replaceFirst(",", "");
+                levelString = levelString.replaceFirst(" ", "");
+		return levelString;
+	}
+        
 	
 	/**
 	 * Directly send a string to the GAN (Should be array of arrays of doubles in Json format).
@@ -140,21 +156,27 @@ public class MarioEvalFunction implements IObjectiveFunction {
                 x = mapArrayToOne(x);
 		ganProcess.commSend(Arrays.toString(x));
 		String levelString = ganProcess.commRecv(); // Response to command just sent
-		return levelString;
+		return levelString;//
 	}
 	
-        
+     
         public double evaluate(EvaluationInfo info){
             if(this.fitnessFun==0) { //Progression / Playability
-                return (double) -info.computeDistancePassed()/LEVEL_LENGTH;   			
-            }else if(info.computeDistancePassed() < LEVEL_LENGTH){
-                return 2000;
+                return (double) - info.lengthOfLevelPassedCells/(info.totalLengthOfLevelCells-14)+1;//14 is buffer in front and back   			
             }else if(this.fitnessFun==1){
                 return (double) info.computeBasicFitness();
             }else if(this.fitnessFun==2){
-                return (double) -info.computeJumpFraction();
+                if(info.marioStatus != Mario.STATUS_WIN){
+                    return 1;
+                }else{
+                    return (double) info.ticksOnGround/info.totalTicks;
+                }
             }else if(this.fitnessFun==3){
-                return (double) -info.totalActionsPerfomed;
+                if(info.marioStatus != Mario.STATUS_WIN){
+                    return 1;
+                }else{
+                    return (double) -info.timeSpentOnLevel/info.totalTimeGiven+1;
+                }
             }
             return Double.NaN;
 
@@ -166,20 +188,28 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	@Override
 	public double valueOf(double[] x) {
             EvaluationInfo info;
-            int simulations = 1;
+            int simulations = 30;
             double val = 0;
-            Level level = null;
+            String levelString = "";
+            long start = System.nanoTime();
             try {
-                level = levelFromLatentVector(x);
+                levelString = StringFromLatentVector(x);
             } catch (IOException ex) {
                 Logger.getLogger(MarioEvalFunction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
+            long time = System.nanoTime() - start;
+            System.out.println("GAN communication took "+ time + "ns");
+            start = System.nanoTime();
             for(int i=0; i<simulations; i++){
+                Level level = marioLevelFromJson("[" +levelString + "]");
                 // Do a simulation
                 info = this.marioProcess.simulateOneLevel(level);
-                val += evaluate(info);
-                System.out.println(evaluate(info));
+                double v = evaluate(info);
+                val += v;
+                System.out.println(v);
             }
+            time = System.nanoTime()-start;
+            System.out.println("Simulation took "+ time + "ns, average of " + time/simulations +"ns");
             return val/simulations;
 
             

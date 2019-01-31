@@ -43,6 +43,7 @@ if __name__ == '__main__':
     nz = 32
 
 
+
  batchSize = 1
  #nz = 10 #Dimensionality of latent vector
 

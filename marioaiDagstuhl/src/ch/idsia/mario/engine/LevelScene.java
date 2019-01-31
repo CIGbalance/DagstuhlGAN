@@ -635,7 +635,7 @@ public class LevelScene extends Scene implements SpriteContext, Cloneable
         paused = false;
         //Sprite.spriteContext = this;
         sprites.clear();
-        layer = new LevelRenderer(level, graphicsConfiguration, 320, 240);
+        /*layer = new LevelRenderer(level, graphicsConfiguration, 320, 240);
         for (int i = 0; i < 2; i++)
         {
             int scrollSpeed = 4 >> i;
@@ -643,7 +643,7 @@ public class LevelScene extends Scene implements SpriteContext, Cloneable
             int h = ((level.height * 16) - 240) / scrollSpeed + 240;
             Level bgLevel = BgLevelGenerator.createLevel(w / 32 + 1, h / 32 + 1, i == 0, levelType);
             bgLayer[i] = new BgRenderer(bgLevel, graphicsConfiguration, 320, 240, scrollSpeed);
-        }
+        }*/
         mario = new Mario(this);
         sprites.add(mario);
         startTime = 1;
@@ -684,15 +684,15 @@ public class LevelScene extends Scene implements SpriteContext, Cloneable
         paused = false;
         //Sprite.spriteContext = this;
         sprites.clear();
-        layer = new LevelRenderer(level, graphicsConfiguration, 320, 240);
-        for (int i = 0; i < 2; i++)
+        layer = new LevelRenderer(level, null, 320, 240);
+        /*for (int i = 0; i < 2; i++)
         {
             int scrollSpeed = 4 >> i;
             int w = ((level.width * 16) - 320) / scrollSpeed + 320;
             int h = ((level.height * 16) - 240) / scrollSpeed + 240;
             Level bgLevel = BgLevelGenerator.createLevel(w / 32 + 1, h / 32 + 1, i == 0, levelType);
             bgLayer[i] = new BgRenderer(bgLevel, graphicsConfiguration, 320, 240, scrollSpeed);
-        }
+        }*/
         mario = new Mario(this);
         sprites.add(mario);
         startTime = 1;

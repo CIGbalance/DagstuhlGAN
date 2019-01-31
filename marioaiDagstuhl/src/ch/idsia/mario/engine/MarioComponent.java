@@ -117,7 +117,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         adjustFPS();
         EvaluationInfo evaluationInfo = new EvaluationInfo();
 
-        VolatileImage image = null;
+        /*VolatileImage image = null;
         Graphics g = null;
         Graphics og = null;
 
@@ -131,7 +131,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
             drawString(og, msgClick, 160 - msgClick.length() * 4, 110, 7);
         }
 
-        addFocusListener(this);
+        addFocusListener(this);*/
 
         // Remember the starting time
         long tm = System.currentTimeMillis();
@@ -139,8 +139,10 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         int marioStatus = Mario.STATUS_RUNNING;
         this.levelScene.mario.setMode(Mario.MODE.MODE_SMALL);
 
-        int totalActionsPerfomed = 0;
-        int jumpActionsPerformed = 0;
+        //int totalActionsPerfomed = 0;
+        //int jumpActionsPerformed = 0;
+        int ticksOnGround = 0;
+        int totalTicks = 0;
 // TODO: Manage better place for this:
         levelScene.mario.resetCoins();
         LevelScene backup = null;
@@ -155,10 +157,10 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
             float alpha = 0;
 
 //            og.setColor(Color.RED);
-            if (GlobalOptions.VisualizationOn) {
+            /*if (GlobalOptions.VisualizationOn) {
                 og.fillRect(0, 0, 320, 240);
                 scene.render(og, alpha);
-            }
+            }*/
 
             if (agent instanceof ServerAgent && !((ServerAgent) agent).isAvailable()) {
                 System.err.println("Agent became unavailable. Simulation Stopped");
@@ -167,7 +169,11 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
             }
 
             boolean[] action = agent.getAction(this/*DummyEnvironment*/);
-            if (action != null)
+            if(action == null){
+                System.err.println("Null Action received. Skipping simulation...");
+                stop();
+            }
+            /*if (action != null)
             {
                 for (int i = 0; i < Environment.numberOfButtons; ++i){
                     if (action[i])
@@ -189,6 +195,11 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
             {
                 System.err.println("Null Action received. Skipping simulation...");
                 stop();
+            }*/
+            
+            totalTicks++;
+            if(((LevelScene) scene).mario.isOnGround()){
+                ticksOnGround++;
             }
 
 
@@ -241,7 +252,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
             System.out.println(diePerc);*/
             
 
-            if (GlobalOptions.VisualizationOn) {
+            /*if (GlobalOptions.VisualizationOn) {
 
                 String msg = "Agent: " + agent.getName();
                 ((LevelScene) scene).drawStringDropShadow(og, msg, 0, 7, 5);
@@ -280,12 +291,12 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
                 } else {
                     g.drawImage(image, 0, 0, null);
                 }
-            } else {
+            }*/// else {
                 // Win or Die without renderer!! independently.
                 marioStatus = ((LevelScene) scene).mario.getStatus();
                 if (marioStatus != Mario.STATUS_RUNNING)
                     stop();
-            }
+            //}
             // Delay depending on how far we are behind.
             if (delay > 0)
                 try {
@@ -311,8 +322,10 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         evaluationInfo.totalTimeGiven = levelScene.getTotalTime();
         evaluationInfo.numberOfGainedCoins = levelScene.mario.coins;
 //        evaluationInfo.totalNumberOfCoins   = -1 ; // TODO: total Number of coins.
-        evaluationInfo.totalActionsPerfomed = totalActionsPerfomed; // Counted during the play/simulation process
-        evaluationInfo.jumpActionsPerformed = jumpActionsPerformed; // Counted during play/simulation
+        evaluationInfo.totalActionsPerfomed = 0;//totalActionsPerfomed; // Counted during the play/simulation process
+        evaluationInfo.jumpActionsPerformed = 0;//jumpActionsPerformed; // Counted during play/simulation
+        evaluationInfo.ticksOnGround = ticksOnGround;
+        evaluationInfo.totalTicks = totalTicks;
         evaluationInfo.totalFramesPerfomed = frame;
         evaluationInfo.marioMode = levelScene.mario.getMode();
         evaluationInfo.killsTotal = levelScene.mario.world.killedCreaturesTotal;
