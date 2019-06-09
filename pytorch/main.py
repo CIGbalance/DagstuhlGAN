@@ -255,4 +255,3 @@ plt.imsave('{0}/mario_fake_samples_{1}_{2}.png'.format(opt.experiment, epoch, op
 # do checkpointing
 torch.save(netG.state_dict(), '{0}/netG_epoch_{1}_{2}.pth'.format(opt.experiment, epoch, opt.seed))
 torch.save(netD.state_dict(), '{0}/netD_epoch_{1}_{2}.pth'.format(opt.experiment, epoch, opt.seed))
-
