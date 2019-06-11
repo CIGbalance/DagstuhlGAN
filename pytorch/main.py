@@ -1,4 +1,7 @@
 from __future__ import print_function
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 
 import argparse
 import json
@@ -71,7 +74,7 @@ else:
 X = np.array(json.load(open(examplesJson)))
 z_dims = 13 # Number different tile types
 
-num_batches = X.shape[0] / opt.batchSize
+num_batches = old_div(X.shape[0], opt.batchSize)
 
 print("SHAPE ", X.shape)
 X_onehot = np.eye(z_dims, dtype='uint8')[X]
@@ -126,17 +129,17 @@ mone = one * -1
 
 
 def tiles2image(tiles):
-    return plt.get_cmap('rainbow')(tiles / float(z_dims))
+    return plt.get_cmap('rainbow')(old_div(tiles, float(z_dims)))
 
 
 def combine_images(generated_images):
     num = generated_images.shape[0]
     width = int(math.sqrt(num))
-    height = int(math.ceil(float(num) / width))
+    height = int(math.ceil(old_div(float(num), width)))
     shape = generated_images.shape[1:]
     image = np.zeros((height * shape[0], width * shape[1], shape[2]), dtype=generated_images.dtype)
     for index, img in enumerate(generated_images):
-        i = int(index / width)
+        i = int(old_div(index, width))
         j = index % width
         image[i * shape[0]:(i + 1) * shape[0], j * shape[1]:(j + 1) * shape[1]] = img
     return image
