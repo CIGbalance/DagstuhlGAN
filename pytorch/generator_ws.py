@@ -126,7 +126,8 @@ if __name__ == '__main__':
   lv = numpy.array(json.loads(line))
   latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) 
 
-  levels = generator(Variable(latent_vector, volatile=True))
+  with torch.no_grad():
+    levels = generator(Variable(latent_vector))
 
   #levels.data = levels.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
 

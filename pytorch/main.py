@@ -141,7 +141,6 @@ def combine_images(generated_images):
         image[i * shape[0]:(i + 1) * shape[0], j * shape[1]:(j + 1) * shape[1]] = img
     return image
 
-
 if opt.cuda:
     netD.cuda()
     netG.cuda()
@@ -214,7 +213,8 @@ for epoch in range(opt.niter):
 
             # train with fake
             noise.resize_(opt.batchSize, nz, 1, 1).normal_(0, 1)
-            noisev = Variable(noise, volatile=True)  # totally freeze netG
+            with torch.no_grad():
+                noisev = Variable(noise)  # totally freeze netG
             fake = Variable(netG(noisev).data)
             inputv = fake
             errD_fake = netD(inputv)
@@ -242,7 +242,8 @@ for epoch in range(opt.niter):
               % (epoch, opt.niter, i, num_batches, gen_iterations,
                  errD.data[0], errG.data[0], errD_real.data[0], errD_fake.data[0]))
 
-fake = netG(Variable(fixed_noise, volatile=True))
+with torch.no_grad():
+	fake = netG(Variable(fixed_noise))
 
 im = fake.data.cpu().numpy()
 # print('SHAPE fake',type(im), im.shape)
