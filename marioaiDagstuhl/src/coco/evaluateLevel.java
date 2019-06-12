@@ -21,6 +21,9 @@ import cmatest.MarioEvalFunction;
 import communication.MarioProcess;
 import competition.cig.slawomirbojarski.MarioAgent;
 import competition.icegic.robin.AStarAgent;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static viewer.MarioRandomLevelViewer.randomUniformDoubleArray;
@@ -91,10 +94,10 @@ public class evaluateLevel {
 
         
         start = System.nanoTime();
-        PrintWriter writer = new PrintWriter(outFile, "UTF-8");
-        writer.println("1");
-        writer.println(val);
-        writer.close();         
+	//TODO: implement append val
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(new File(outFile), true /* append = true */), "UTF-8")) {
+            writer.println(val);
+        }
         time = System.nanoTime() - start;
         System.out.println("File output took "+ time + "ns");
         
