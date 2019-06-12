@@ -95,6 +95,7 @@ public class evaluateLevel {
         
         start = System.nanoTime();
 	//TODO: implement append val
+	FileUtils.writeStringToFile(outFile, val, true);
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(new File(outFile), true /* append = true */), "UTF-8")) {
             writer.println(val);
         }
