@@ -22,7 +22,6 @@ public class Util implements Serial {
                     new ReflectionFactory.GetReflectionFactoryAction());
 
 
-
     public static void main(String[] args) {
         String test = "Hello";
         System.out.println(stringable(test));

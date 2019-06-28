@@ -22,10 +22,8 @@ import communication.MarioProcess;
 import competition.cig.slawomirbojarski.MarioAgent;
 import competition.icegic.robin.AStarAgent;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+
 import static viewer.MarioRandomLevelViewer.randomUniformDoubleArray;
 
 /**
@@ -79,9 +77,9 @@ public class evaluateLevel {
             outFile = args[5].toString();
             
 	} else {
-            Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
+            //Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
 
-            gan = "/media/vv/DATA/svn/gbea/code-experiments/rw-problems/gan-mario/GAN/underground-5-5000/netG_epoch_4999_5641.pth";
+            gan = "/media/vanessa/Data/svn/gbea/code-experiments/rw-problems/gan-mario/GAN/underground-5-5000/netG_epoch_4999_5641.pth";
             dim = "5";
             level = randomUniformDoubleArray(5);
             
@@ -94,11 +92,12 @@ public class evaluateLevel {
 
         
         start = System.nanoTime();
-	//TODO: implement append val
-	FileUtils.writeStringToFile(outFile, val, true);
-        try (PrintWriter writer = new PrintWriter(new FileOutputStream(new File(outFile), true /* append = true */), "UTF-8")) {
-            writer.println(val);
-        }
+        BufferedWriter writer = new BufferedWriter(
+                new FileWriter(outFile, true)  //Set true for append mode
+        );
+        writer.write(Double.toString(val));
+        writer.newLine();   //Add new line
+        writer.close();
         time = System.nanoTime() - start;
         System.out.println("File output took "+ time + "ns");
         
