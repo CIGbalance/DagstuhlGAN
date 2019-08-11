@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 # This generator program expands a low-dimentional latent vector into a 2D array of tiles.
 # Each line of input should be an array of z vectors (which are themselves arrays of floats -1 to 1)
 # Each line of output is an array of 32 levels (which are arrays-of-arrays of integer tile ids)
@@ -19,11 +23,11 @@ from collections import OrderedDict
 def combine_images(generated_images):
     num = generated_images.shape[0]
     width = int(math.sqrt(num))
-    height = int(math.ceil(float(num)/width))
+    height = int(math.ceil(old_div(float(num),width)))
     shape = generated_images.shape[1:]
     image = numpy.zeros((height*shape[0], width*shape[1],shape[2]), dtype=generated_images.dtype)
     for index, img in enumerate(generated_images):
-        i = int(index/width)
+        i = int(old_div(index,width))
         j = index % width
         image[i*shape[0]:(i+1)*shape[0], j*shape[1]:(j+1)*shape[1]] = img
     return image
@@ -42,6 +46,7 @@ if __name__ == '__main__':
     nz = int(sys.argv[2])
  else:
     nz = 32
+
 
  #Jacob: I added this to maintain backwards compatibility
  if len(sys.argv) >=4:
@@ -69,7 +74,7 @@ if __name__ == '__main__':
  #print(deprecatedModel)
  # Make new model with weights/parameters from deprecatedModel but labels/keys from generator.state_dict()
  fixedModel = OrderedDict()
- for (goodKey,ignore) in generator.state_dict().items():
+ for (goodKey,ignore) in list(generator.state_dict().items()):
    # Take the good key and replace the : with . in order to get the deprecated key so the associated value can be retrieved
    badKey = goodKey.replace(":",".")
    #print(goodKey)
@@ -107,7 +112,7 @@ if __name__ == '__main__':
    im = numpy.argmax( im, axis = 1)
    #print(json.dumps(levels.data.tolist()))
    print("Saving to file ")
-   im = ( plt.get_cmap('rainbow')( im/float(z_dims) ) )
+   im = ( plt.get_cmap('rainbow')( old_div(im,float(z_dims)) ) )
 
    plt.imsave('fake_sample.png', combine_images(im) )
 
@@ -125,7 +130,8 @@ if __name__ == '__main__':
   lv = numpy.array(json.loads(line))
   latent_vector = torch.FloatTensor( lv ).view(batchSize, nz, 1, 1) 
 
-  levels = generator(Variable(latent_vector, volatile=True))
+  with torch.no_grad():
+    levels = generator(Variable(latent_vector))
 
   #levels.data = levels.data[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
 

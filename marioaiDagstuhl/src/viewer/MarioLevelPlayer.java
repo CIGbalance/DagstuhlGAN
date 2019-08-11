@@ -32,7 +32,8 @@ public class MarioLevelPlayer {
 	public static final int LEVEL_HEIGHT = 14;	
 
 	public static void main(String[] args) throws IOException {
-		Settings.setPythonProgram();
+                Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
+		//Settings.setPythonProgram();
 		// This is used because it contains code for communicating with the GAN
                 String GanPath = "/media/vv/DATA/svn/gbea/code-experiments/rw-problems/gan-mario/GAN/overworlds-10-5000/netG_epoch_4999_5641.pth";
                 

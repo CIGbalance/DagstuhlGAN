@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+from builtins import range
 import torch
 import torch.nn as nn
 
@@ -29,7 +30,7 @@ class MLP_G(nn.Module):
     def forward(self, input):
         input = input.view(input.size(0), input.size(1))
         if isinstance(input.data, torch.cuda.FloatTensor) and self.ngpu > 1:
-            output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
+            output = nn.parallel.data_parallel(self.main, input, list(range(self.ngpu)))
         else:
             output = self.main(input)
         return output.view(output.size(0), self.nc, self.isize, self.isize)
@@ -59,7 +60,7 @@ class MLP_D(nn.Module):
         input = input.view(input.size(0),
                            input.size(1) * input.size(2) * input.size(3))
         if isinstance(input.data, torch.cuda.FloatTensor) and self.ngpu > 1:
-            output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
+            output = nn.parallel.data_parallel(self.main, input, list(range(self.ngpu)))
         else:
             output = self.main(input)
         output = output.mean(0)

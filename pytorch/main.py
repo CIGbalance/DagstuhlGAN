@@ -1,4 +1,7 @@
 from __future__ import print_function
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 
 import argparse
 import json
@@ -71,7 +74,7 @@ else:
 X = np.array(json.load(open(examplesJson)))
 z_dims = 13 # Number different tile types
 
-num_batches = X.shape[0] / opt.batchSize
+num_batches = old_div(X.shape[0], opt.batchSize)
 
 print("SHAPE ", X.shape)
 X_onehot = np.eye(z_dims, dtype='uint8')[X]
@@ -126,21 +129,20 @@ mone = one * -1
 
 
 def tiles2image(tiles):
-    return plt.get_cmap('rainbow')(tiles / float(z_dims))
+    return plt.get_cmap('rainbow')(old_div(tiles, float(z_dims)))
 
 
 def combine_images(generated_images):
     num = generated_images.shape[0]
     width = int(math.sqrt(num))
-    height = int(math.ceil(float(num) / width))
+    height = int(math.ceil(old_div(float(num), width)))
     shape = generated_images.shape[1:]
     image = np.zeros((height * shape[0], width * shape[1], shape[2]), dtype=generated_images.dtype)
     for index, img in enumerate(generated_images):
-        i = int(index / width)
+        i = int(old_div(index, width))
         j = index % width
         image[i * shape[0]:(i + 1) * shape[0], j * shape[1]:(j + 1) * shape[1]] = img
     return image
-
 
 if opt.cuda:
     netD.cuda()
@@ -214,7 +216,8 @@ for epoch in range(opt.niter):
 
             # train with fake
             noise.resize_(opt.batchSize, nz, 1, 1).normal_(0, 1)
-            noisev = Variable(noise, volatile=True)  # totally freeze netG
+            with torch.no_grad():
+                noisev = Variable(noise)  # totally freeze netG
             fake = Variable(netG(noisev).data)
             inputv = fake
             errD_fake = netD(inputv)
@@ -242,7 +245,8 @@ for epoch in range(opt.niter):
               % (epoch, opt.niter, i, num_batches, gen_iterations,
                  errD.data[0], errG.data[0], errD_real.data[0], errD_fake.data[0]))
 
-fake = netG(Variable(fixed_noise, volatile=True))
+with torch.no_grad():
+	fake = netG(Variable(fixed_noise))
 
 im = fake.data.cpu().numpy()
 # print('SHAPE fake',type(im), im.shape)
@@ -255,3 +259,4 @@ plt.imsave('{0}/mario_fake_samples_{1}_{2}.png'.format(opt.experiment, epoch, op
 # do checkpointing
 torch.save(netG.state_dict(), '{0}/netG_epoch_{1}_{2}.pth'.format(opt.experiment, epoch, opt.seed))
 torch.save(netD.state_dict(), '{0}/netD_epoch_{1}_{2}.pth'.format(opt.experiment, epoch, opt.seed))
+

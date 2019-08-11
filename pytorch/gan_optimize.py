@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 # This generator program expands a low-dimentional latent vector into a 2D array of tiles.
 # Each line of input should be an array of z vectors (which are themselves arrays of floats -1 to 1)
 # Each line of output is an array of 32 levels (which are arrays-of-arrays of integer tile ids)
@@ -53,11 +56,11 @@ PIPE = 6 #7, 8 9
 def combine_images(generated_images):
     num = generated_images.shape[0]
     width = int(math.sqrt(num))
-    height = int(math.ceil(float(num)/width))
+    height = int(math.ceil(old_div(float(num),width)))
     shape = generated_images.shape[1:]
     image = numpy.zeros((height*shape[0], width*shape[1],shape[2]), dtype=generated_images.dtype)
     for index, img in enumerate(generated_images):
-        i = int(index/width)
+        i = int(old_div(index,width))
         j = index % width
         image[i*shape[0]:(i+1)*shape[0], j*shape[1]:(j+1)*shape[1]] = img
     return image
@@ -110,8 +113,8 @@ es.optimize(gan_maximse_title_type)
 
 # es.result_pretty()
 best = numpy.array(es.best.get()[0])
-print ("BEST ", best)
-print("Fitness", gan_fitness_function(best))
+print(("BEST ", best))
+print(("Fitness", gan_fitness_function(best)))
 
 
 # levels.data[levels.data > 0.] = 1  #SOLID BLOCK
@@ -124,7 +127,7 @@ im = im[:,:,:14,:28] #Cut of rest to fit the 14x28 tile dimensions
 im = numpy.argmax( im, axis = 1)
 #print(json.dumps(levels.data.tolist()))
 print("Saving to file ")
-im = ( plt.get_cmap('rainbow')( im/float(features) ) )
+im = ( plt.get_cmap('rainbow')( old_div(im,float(features)) ) )
 plt.imsave('fake_sample.png', combine_images(im) )
 
 #vutils.save_image(levels.data, 'generated_samples.png')

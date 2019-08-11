@@ -1,3 +1,6 @@
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 import torch
 import torch.nn as nn
 import torch.nn.parallel
@@ -14,7 +17,7 @@ class DCGAN_D(nn.Module):
                         nn.Conv2d(nc, ndf, 4, 2, 1, bias=False))
         main.add_module('initial:relu:{0}'.format(ndf),
                         nn.LeakyReLU(0.2, inplace=True))
-        csize, cndf = isize / 2, ndf
+        csize, cndf = old_div(isize, 2), ndf
 
         # Extra layers
         for t in range(n_extra_layers):
@@ -35,7 +38,7 @@ class DCGAN_D(nn.Module):
             main.add_module('pyramid:{0}:relu'.format(out_feat),
                             nn.LeakyReLU(0.2, inplace=True))
             cndf = cndf * 2
-            csize = csize / 2
+            csize = old_div(csize, 2)
 
         # state size. K x 4 x 4
         main.add_module('final:{0}-{1}:conv'.format(cndf, 1),
@@ -45,7 +48,7 @@ class DCGAN_D(nn.Module):
 
     def forward(self, input):
         if self.ngpu > 1 and isinstance(input.data, torch.cuda.FloatTensor):
-            output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
+            output = nn.parallel.data_parallel(self.main, input, list(range(self.ngpu)))
         else: 
             output = self.main(input)
             
@@ -99,8 +102,8 @@ class DCGAN_G(nn.Module):
         self.main = main
 
     def forward(self, input):
-        if isinstance(input.data, torch.cuda.FloatTensor) and self.ngpu > 1:
-            output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
+        if self.ngpu > 1 and isinstance(input.data, torch.cuda.FloatTensor):
+            output = nn.parallel.data_parallel(self.main, input, list(range(self.ngpu)))
         else: 
             output = self.main(input)
 
@@ -121,7 +124,7 @@ class DCGAN_D_nobn(nn.Module):
                         nn.Conv2d(nc, ndf, 4, 2, 1, bias=False))
         main.add_module('initial:relu:{0}'.format(ndf),
                         nn.LeakyReLU(0.2, inplace=True))
-        csize, cndf = isize / 2, ndf
+        csize, cndf = old_div(isize, 2), ndf
 
         # Extra layers
         for t in range(n_extra_layers):
@@ -138,7 +141,7 @@ class DCGAN_D_nobn(nn.Module):
             main.add_module('pyramid:{0}:relu'.format(out_feat),
                             nn.LeakyReLU(0.2, inplace=True))
             cndf = cndf * 2
-            csize = csize / 2
+            csize = old_div(csize, 2)
 
         # state size. K x 4 x 4
         main.add_module('final:{0}-{1}:conv'.format(cndf, 1),
@@ -148,7 +151,7 @@ class DCGAN_D_nobn(nn.Module):
 
     def forward(self, input):
         if isinstance(input.data, torch.cuda.FloatTensor) and self.ngpu > 1:
-            output = nn.parallel.data_parallel(self.main, input, range(self.ngpu))
+            output = nn.parallel.data_parallel(self.main, input, list(range(self.ngpu)))
         else: 
             output = self.main(input)
             
@@ -196,7 +199,7 @@ class DCGAN_G_nobn(nn.Module):
 
     def forward(self, input):
         if isinstance(input.data, torch.cuda.FloatTensor) and self.ngpu > 1:
-            output = nn.parallel.data_parallel(self.main, input,  range(self.ngpu))
+            output = nn.parallel.data_parallel(self.main, input,  list(range(self.ngpu)))
         else: 
             output = self.main(input)
         return output 
