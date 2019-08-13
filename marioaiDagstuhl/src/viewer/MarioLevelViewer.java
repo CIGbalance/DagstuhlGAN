@@ -75,7 +75,7 @@ public class MarioLevelViewer {
 		// This is used because it contains code for communicating with the GAN
                 String GanPath = "/media/vv/DATA/svn/gbea/code-experiments/rw-problems/gan-mario/GAN/underground-10-5000/netG_epoch_4999_5641.pth";
                 
-		MarioEvalFunction eval = new MarioEvalFunction(GanPath, "10", 27, new AStarAgent());
+		MarioEvalFunction eval = new MarioEvalFunction(GanPath, "10", 27, new AStarAgent(),1);
 
 		Level level;
 		// Read input level

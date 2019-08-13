@@ -41,7 +41,7 @@ public class evaluateLevel {
         long start = System.nanoTime();
 
         // TODO code application logic here
-        //Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
+        Settings.PYTHON_PROGRAM = "python3";
 	MarioEvalFunction eval = null;
         
         String gan = null;
@@ -54,6 +54,7 @@ public class evaluateLevel {
         Agent[] agentList = {new AStarAgent(), new ScaredAgent(), new HumanKeyboardAgent()};
         GlobalOptions.VisualizationOn = false;
         String outFile = "objectives.txt";
+        int simulations=30;
         
 	// Read input level
 	if (args.length > 0) {
@@ -74,7 +75,7 @@ public class evaluateLevel {
             dim = args[2].toString();
             fitnessFun = Integer.valueOf(args[3].toString());
             agent = Integer.valueOf(args[4].toString());
-            outFile = args[5].toString();
+            simulations = Integer.valueOf(args[5].toString());
             
 	} else {
             //Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
@@ -87,17 +88,18 @@ public class evaluateLevel {
 	}
         long time = System.nanoTime() - start;
         System.out.println("Startup took "+ time + "ns");
-        eval = new MarioEvalFunction(gan, dim, fitnessFun, agentList[agent]);
+        eval = new MarioEvalFunction(gan, dim, fitnessFun, agentList[agent], simulations);
         double val = eval.valueOf(level);
 
         
         start = System.nanoTime();
-        BufferedWriter writer = new BufferedWriter(
+        /*BufferedWriter writer = new BufferedWriter(
                 new FileWriter(outFile, true)  //Set true for append mode
         );
         writer.write(Double.toString(val));
         writer.newLine();   //Add new line
-        writer.close();
+        writer.close();*/
+        System.out.println("Result"+val);
         time = System.nanoTime() - start;
         System.out.println("File output took "+ time + "ns");
         

@@ -31,6 +31,7 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	private GANProcess ganProcess;
 	private MarioProcess marioProcess;
         private int fitnessFun;
+        private int simulations = 30;
 
 	// changing floor will change the reason for termination
 	// (in conjunction with the target value)
@@ -51,7 +52,8 @@ public class MarioEvalFunction implements IObjectiveFunction {
 		}
 	}
         
-        public MarioEvalFunction(String GANPath, String GANDim, int fitnessFun, Agent agent) throws IOException {
+        public MarioEvalFunction(String GANPath, String GANDim, int fitnessFun, Agent agent, int simulations) throws IOException {
+                this.simulations = simulations;
 		// set up process for GAN
                 this.fitnessFun = fitnessFun;
 		ganProcess = new GANProcess(GANPath, GANDim);
@@ -188,7 +190,6 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	@Override
 	public double valueOf(double[] x) {
             EvaluationInfo info;
-            int simulations = 30;
             double val = 0;
             String levelString = "";
             long start = System.nanoTime();
