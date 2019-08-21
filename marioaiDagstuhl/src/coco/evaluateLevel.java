@@ -51,11 +51,11 @@ public class evaluateLevel {
         double [] level = null;
         int fitnessFun = 0;
         int agent = 1;//
+        int simulations = 30;
         //Agent[] agentList = {new AStarAgent(), new MarioAgent(), new HumanKeyboardAgent(), new ScaredAgent(), new ForwardJumpingAgent(),
         //new RandomAgent(), new ScaredSpeedyAgent(), new SimpleMLPAgent()};
         Agent[] agentList = {new AStarAgent(), new ScaredAgent(), new HumanKeyboardAgent()};
         GlobalOptions.VisualizationOn = false;
-        String outFile = "objectives.txt";
         
 	// Read input level
 	if (args.length > 0) {
@@ -76,7 +76,7 @@ public class evaluateLevel {
             dim = args[2].toString();
             fitnessFun = Integer.valueOf(args[3].toString());
             agent = Integer.valueOf(args[4].toString());
-            outFile = args[5].toString();
+            simulations = Integer.valueOf(args[5].toString());
             
 	} else {
             Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
@@ -89,36 +89,14 @@ public class evaluateLevel {
 	}
         long time = System.nanoTime() - start;
         System.out.println("Startup took "+ time + "ns");
-        eval = new MarioEvalFunction(gan, dim, fitnessFun, agentList[agent]);
+        eval = new MarioEvalFunction(gan, dim, fitnessFun, agentList[agent], simulations);
         double val = eval.valueOf(level);
 
         
         start = System.nanoTime();
-	//TODO: implement append val
-	FileUtils.writeStringToFile(outFile, val, true);
-        try (PrintWriter writer = new PrintWriter(new FileOutputStream(new File(outFile), true /* append = true */), "UTF-8")) {
-            writer.println(val);
-        }
+        System.out.println("Result" + val);
         time = System.nanoTime() - start;
         System.out.println("File output took "+ time + "ns");
-        
-        /*if(!eval.isFeasible(level)){
-            PrintWriter writer = new PrintWriter("objectives.txt", "UTF-8");
-            writer.println("0");
-            writer.close();
-        }else{
-            PrintWriter writer = new PrintWriter("objectives.txt", "UTF-8");
-            writer.println("1");
-            writer.println(eval.valueOf(level));
-            writer.close();
-        }*/
-        
-        /*if(args.length==0){
-            GlobalOptions.VisualizationOn = true;
-            MarioProcess marioProcess = new MarioProcess();
-            marioProcess.launchMario(new String[0], new HumanKeyboardAgent());       
-            marioProcess.simulateOneLevel(eval.levelFromLatentVector(level));
-        }*/
         
         start = System.nanoTime();
         eval.exit();
