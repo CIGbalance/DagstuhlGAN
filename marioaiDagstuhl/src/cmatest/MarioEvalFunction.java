@@ -50,12 +50,12 @@ public class MarioEvalFunction implements IObjectiveFunction {
         
         public MarioEvalFunction(String GANPath, String GANDim, int fitnessFun, Agent agent) throws IOException {
 		// set up process for GAN
-                this.fitnessFun = fitnessFun;
+        this.fitnessFun = fitnessFun;                
 		ganProcess = new GANProcess(GANPath, GANDim);
 		ganProcess.start();
 		// set up mario game
 		//marioProcess = new MarioProcess(new MarioAgent());
-                marioProcess = new MarioProcess(agent);
+		marioProcess = new MarioProcess(agent);
 		marioProcess.start();        
 		// consume all start-up messages that are not data responses
 		String response = "";
