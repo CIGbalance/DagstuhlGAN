@@ -79,6 +79,8 @@ if __name__ == '__main__':
      goodValue = deprecatedModel[badKey]
      fixedModel[goodKey] = goodValue
 
+#  print("****    fixedModel:    ", fixedModel )
+
  if not fixedModel:
    #print("LOAD REGULAR")
    #print(deprecatedModel)

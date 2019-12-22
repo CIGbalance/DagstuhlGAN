@@ -47,7 +47,7 @@ public class GANProcess extends Comm {
         	try {
         		System.out.println(builder.command());
             this.process = builder.start();
-        } catch (IOException e) {
+        	} catch (IOException e) {
             e.printStackTrace();
         }
     }
