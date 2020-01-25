@@ -30,7 +30,7 @@ public class simpleEvaluateLevel {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        Settings.setPythonProgram();
+        //Settings.setPythonProgram();
 	MarioEvalFunction eval = new MarioEvalFunction();
         int dim=32;
         

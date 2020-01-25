@@ -17,8 +17,8 @@ public class Settings {
     public static final boolean ACCESSIBLE = true;
 
     public static final String CMD_SEPARATOR = " ";
-    public static String WASSERSTEIN_PATH = ".."  + File.separator + ".."  + File.separator + ".."  + File.separator + ".."  + File.separator + "DagstuhlGAN/pytorch" + File.separator + "generator_ws.py";
-    public static final String WASSERSTEIN_GAN = "pytorch" + File.separator + "netG_epoch_5000.pth";
+    public static String WASSERSTEIN_PATH = "../pytorch" + File.separator + "generator_ws.py";
+    public static final String WASSERSTEIN_GAN = "../pytorch" + File.separator + "netG_epoch_5000.pth";
     public static final String GAN_DIM = "32";
 	
 	// Jacob: IMPORTANT! This is a system-specific path that I had to set.

@@ -41,7 +41,7 @@ public class evaluateLevel {
         long start = System.nanoTime();
 
         // TODO code application logic here
-        Settings.PYTHON_PROGRAM = "python3";
+        Settings.PYTHON_PROGRAM = "python";
 	MarioEvalFunction eval = null;
 
         
@@ -55,11 +55,7 @@ public class evaluateLevel {
         //new RandomAgent(), new ScaredSpeedyAgent(), new SimpleMLPAgent()};
         Agent[] agentList = {new AStarAgent(), new ScaredAgent(), new HumanKeyboardAgent()};
         GlobalOptions.VisualizationOn = false;
-<<<<<<< HEAD
-=======
         String outFile = "objectives.txt";
-        int simulations=30;
->>>>>>> b642b2e6ea19ebfa51378b25d93f3bd3013e9ef1
         
 	// Read input level
 	if (args.length > 0) {
@@ -81,8 +77,6 @@ public class evaluateLevel {
             fitnessFun = Integer.valueOf(args[3].toString());
             agent = Integer.valueOf(args[4].toString());
             simulations = Integer.valueOf(args[5].toString());
-<<<<<<< HEAD
-=======
             
 
             int index = gan.lastIndexOf(File.separator);
@@ -91,12 +85,11 @@ public class evaluateLevel {
             }
             Settings.WASSERSTEIN_PATH = gan.substring(0, index) +File.separator + "pytorch" +File.separator + "generator_ws.py";
 
->>>>>>> b642b2e6ea19ebfa51378b25d93f3bd3013e9ef1
             
 	} else {
             //Settings.PYTHON_PROGRAM = "/media/vv/DATA/anaconda2/bin/python";
 
-            gan = "/media/vanessa/Data/svn/gbea/code-experiments/rw-problems/gan-mario/GAN/underground-5-5000/netG_epoch_4999_5641.pth";
+            gan = "../pytorch/newGANs/overworld-5-5000/netG_epoch_4999_5641.pth";
             dim = "5";
             level = randomUniformDoubleArray(5);
             
@@ -109,17 +102,7 @@ public class evaluateLevel {
 
         
         start = System.nanoTime();
-<<<<<<< HEAD
-        System.out.println("Result" + val);
-=======
-        /*BufferedWriter writer = new BufferedWriter(
-                new FileWriter(outFile, true)  //Set true for append mode
-        );
-        writer.write(Double.toString(val));
-        writer.newLine();   //Add new line
-        writer.close();*/
         System.out.println("Result"+val);
->>>>>>> b642b2e6ea19ebfa51378b25d93f3bd3013e9ef1
         time = System.nanoTime() - start;
         System.out.println("File output took "+ time + "ns");
         

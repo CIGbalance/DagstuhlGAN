@@ -53,10 +53,6 @@ public class MarioEvalFunction implements IObjectiveFunction {
 	}
         
         public MarioEvalFunction(String GANPath, String GANDim, int fitnessFun, Agent agent, int simulations) throws IOException {
-<<<<<<< HEAD
-=======
-                this.simulations = simulations;
->>>>>>> b642b2e6ea19ebfa51378b25d93f3bd3013e9ef1
 		// set up process for GAN
                 this.simulations=simulations;
                 this.fitnessFun = fitnessFun;
