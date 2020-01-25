@@ -118,3 +118,4 @@ marioaiDagstuhl/marioaiDagstuhl.iml
 *.dat
 my_python_path.txt
 pytorch/newGANs
+/oldMario/nbproject/private/

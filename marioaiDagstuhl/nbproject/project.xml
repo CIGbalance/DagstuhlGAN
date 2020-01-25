@@ -4,13 +4,20 @@
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>MarioGAN</name>
+<<<<<<< HEAD
+=======
+            <explicit-platform explicit-source-supported="true"/>
+>>>>>>> b642b2e6ea19ebfa51378b25d93f3bd3013e9ef1
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>
             <test-roots/>
         </data>
+<<<<<<< HEAD
         <libraries xmlns="http://www.netbeans.org/ns/ant-project-libraries/1">
             <definitions>../lib/nblibraries.properties</definitions>
         </libraries>
+=======
+>>>>>>> b642b2e6ea19ebfa51378b25d93f3bd3013e9ef1
     </configuration>
 </project>
