@@ -79,6 +79,8 @@ public class evaluateLevel {
             simulations = Integer.valueOf(args[5].toString());
             
 
+            gan = gan.replace("\\", File.separator);
+            gan = gan.replace("/", File.separator);
             int index = gan.lastIndexOf(File.separator);
             for(int i=0; i<2; i++){
                 index = gan.lastIndexOf(File.separator, index - 1);
